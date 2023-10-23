@@ -1,0 +1,41 @@
+@import '../../styles/color.scss';
+.container{
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    gap: 54px;
+    .content {
+        padding: 20px;
+        .sidebarLinks {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            .active {
+              color:$accent-color
+            }
+          
+          }
+          
+          
+          .sidebarLink a {
+            display: flex;
+            gap:16px;
+            text-decoration: none;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            &:hover{
+              color:$accent-color
+            }
+          }
+          
+         
+         
+      }
+      
+      
+
+}
