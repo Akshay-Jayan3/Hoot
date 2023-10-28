@@ -1,0 +1,52 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    // gap:16px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 5px;
+    width: 100%;
+    padding-inline: 8px;
+    padding-block: 8px;
+
+    .info {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        gap: 8px;
+
+        .thumbnail {
+            width: 24px;
+            height: 24px;
+            background-color: #FF09D4;
+        }
+
+        .titleArtist {
+
+            display: flex;
+            flex-direction: column;
+            // align-items: center;
+            justify-content: center;
+            padding-inline: 8px;
+            // gap:4px
+
+            p {
+                margin: 0;
+            }
+
+            .title {
+                font-size: 16px;
+
+            }
+            .artist{
+                font-size: 10px;
+            }
+        }
+
+    }
+
+}

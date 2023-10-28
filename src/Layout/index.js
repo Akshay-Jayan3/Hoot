@@ -1,14 +1,14 @@
 import React from "react";
 import Sidebar from "../components/Sidebar";
 
-const Layout = ({children}) => {
+const Layout = ({ children }) => {
   return (
     <div class="container">
-      <div class="sidebar-container"><Sidebar/></div>
-
-      <div class="main-content">
-        <h1>{children}</h1>
+      <div class="sidebar-container">
+        <Sidebar />
       </div>
+
+      <div class="main-content">{children}</div>
 
       {/* <div class="current-song">
         <h2>Currently Playing</h2>
