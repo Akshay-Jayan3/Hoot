@@ -8,7 +8,7 @@ import FolderOpenOutlinedIcon from "@mui/icons-material/FolderOpenOutlined";
 var jsmediatags = window.jsmediatags;
 
 const FolderSelection = () => {
-  const { updateFolder,updateMetadata } = useContext(MainContext);
+  const { updateFolder, updateMetadata } = useContext(MainContext);
   const navigate = useNavigate();
 
   const selectFolder = async () => {
@@ -16,7 +16,7 @@ const FolderSelection = () => {
       const folderSelected = await window.electron.selectFolder();
       const fs = window.electron.fs;
       const path = window.electron.path;
-  
+
       if (folderSelected) {
         updateFolder(folderSelected);
         localStorage.setItem("selected-folder", folderSelected);
@@ -25,8 +25,14 @@ const FolderSelection = () => {
             console.error(err);
             return;
           }
-          let metadata=[];
-          files.forEach((fileName) => {
+          let metadata = [];
+          let fileCount = 0;
+          let imgUrl;
+          const musicFiles = files.filter((file) => {
+            return /\.(mp3|wav)$/.test(file);
+          });
+          
+          musicFiles.forEach((fileName) => {
             const filePath = path.join(folderSelected, fileName);
             fs.readFile(filePath, (err, data) => {
               if (err) {
@@ -35,19 +41,36 @@ const FolderSelection = () => {
                 const file = new File([data], fileName, { type: "audio/mpeg" });
                 jsmediatags.read(file, {
                   onSuccess: function (tag) {
-                    if(tag.tags){
+                    if (tag.tags) {
+                      const {data,format} = tag.tags.picture;
+                      
+                      if (data) {
+                        let base64String = "";
+                        for (let i = 0; i < data.length; i++) {
+                          base64String += String.fromCharCode(data[i]);
+                        }
+                        imgUrl = `data:${format};base64,${window.btoa(
+                          base64String
+                        )}`;
+                      }
+
                       const filedata = {
                         title: tag.tags.title,
                         album: tag.tags.album,
                         artist: tag.tags.artist,
-                        picture: tag.tags.picture,
-                        path:filePath
+                        picture: imgUrl,
+                        path: `file:///${folderSelected}\\${fileName}`,
                       };
-                      metadata.push(filedata)
-
-
+                      metadata.push(filedata);
                     }
-                   
+                    fileCount++;
+                    if (fileCount === files.length) {
+                      updateMetadata(metadata);
+                      localStorage.setItem(
+                        "AllSongs",
+                        JSON.stringify(metadata)
+                      );
+                    }
                   },
                   onError: function (error) {
                     console.log(":(", error.type, error.info);
@@ -56,14 +79,15 @@ const FolderSelection = () => {
               }
             });
           });
-          updateMetadata(metadata)
+          // // localStorage.setItem('AllSongs', JSON.stringify(metadata));
+          // updateMetadata(metadata);
         });
       }
     } catch (error) {
       console.error(error);
     }
   };
-  
+
   return (
     <div>
       <button className={styles.selectButton} onClick={selectFolder}>

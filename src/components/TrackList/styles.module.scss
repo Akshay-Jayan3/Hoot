@@ -5,8 +5,9 @@
     justify-content: center;
     align-items: center;
     gap:16px;
-    margin-top: 80px;
-    // padding-inline: 16px;
-    // padding-block: 16px;
-    // background-color: bisque;
+    margin-top: 56px;
+   .trackNo{
+    display: flex;
+    align-self: flex-start;
+   }
 }

@@ -1,17 +1,42 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./styles.module.scss";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import { MainContext } from "../../context/MainContext";
 
-const Track = () => {
+const Track = ({ track, setSelectedMusicFile }) => {
+  const { updateLastPlayed } = useContext(MainContext);
+
+  function truncateText(text, maxLength) {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + "...";
+    }
+    return text;
+  }
+
   return (
-    <div className={styles.wrapper}>
+    <div
+      className={styles.wrapper}
+      onClick={() => {
+        setSelectedMusicFile(track);
+        updateLastPlayed(track);
+        localStorage.setItem("lastplayed", JSON.stringify(track));
+      }}
+    >
       <div className={styles.info}>
-        <div className={styles.thumbnail}><img/></div>
-        <div className={styles.titleArtist}><p className={styles.title}>title</p><p className={styles.artist}>Singer</p></div>
+        <div className={styles.thumbnail}>
+          <img src={track.picture} />
+        </div>
+        <div className={styles.titleArtist}>
+          <p className={styles.title}>{truncateText(track?.title, 30)}</p>
+          <p className={styles.artist}>{truncateText(track?.artist, 20)}</p>
+        </div>
       </div>
-      <div>Album</div>
-      <div>duration</div>
-      <div><FavoriteBorderOutlinedIcon/></div>
+      <div>
+        <p>{truncateText(track?.album, 10)}</p>
+      </div>
+      <div>
+        <FavoriteBorderOutlinedIcon />
+      </div>
       {/* <div>more</div> */}
     </div>
   );

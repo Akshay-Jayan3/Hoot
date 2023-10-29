@@ -1,21 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Header from "../../components/Header";
 import { MainContext } from "../../context/MainContext";
 import TrackList from "../../components/TrackList";
 import Search from "../../components/Search";
+import AudioPlayer from "../../components/AudioPlayer";
 
 const Songs = () => {
-  // const {metadData} = useContext(MainContext)
-  const metadData = [
-    { title: "music" },
-    { title: "music" },
-    { title: "music" },
-    { title: "music" },
-    { title: "music" },
-    { title: "music" },
-    { title: "music" },
-    { title: "music" },
-  ];
+  const {metadData} = useContext(MainContext)
+  const [selectedMusicFile,setSelectedMusicFile]=useState('')
+  // localStorage.setItem('AllSongs', JSON.stringify(metadData));
+
   return (
     <div className="Songspage">
       <div className="mainsection">
@@ -27,14 +21,16 @@ const Songs = () => {
 
         <div className="songs-container">
           {metadData && metadData.length > 0 ? (
-            <TrackList tracks={metadData} />
+            <TrackList tracks={metadData} setSelectedMusicFile={setSelectedMusicFile} />
           ) : (
             <p>no songs</p>
           )}
         </div>
       </div>
       <div className="currentMusic">
-        <div className="musicCard"></div>
+        <div className="musicCard">
+          <AudioPlayer selectedMusicFile={selectedMusicFile} AllSongs={metadData} setSelectedMusicFile={setSelectedMusicFile}/>
+        </div>
       </div>
     </div>
   );
