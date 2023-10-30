@@ -9,7 +9,8 @@
     .wrapper {
         display: flex;
         align-items: center;
-        gap: 24px;
+        justify-content: space-around;
+        // gap: 24px;
         height: 100%;
         width: 100%;
         flex-direction: column;

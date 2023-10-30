@@ -5,14 +5,20 @@ export const MainContext = createContext({
   folderStored: null,
   metadData: null,
   lastPlayed:null,
+  albums:null,
+  artists:null,
   updateFolder: () => {},
   updateMetadata: () => {},
+  updateAlbums: () => {},
+  updateArtists: () => {},
 });
 
 export const MainContextProvider = ({ children }) => {
   const [folderStored, setfolderStored] = useState(null);
   const [metadData, setMetadData] = useState(null);
   const [lastPlayed, setLastPlayed] = useState(null);
+  const [albums, setAlbums] = useState(null);
+  const [artists, setArtists] = useState(null);
   useEffect(() => {
     const storedFolder = localStorage.getItem("selected-folder");
     const Allsongs = localStorage.getItem("AllSongs");
@@ -39,12 +45,18 @@ export const MainContextProvider = ({ children }) => {
   const updateMetadata = (newfolder) => {
     setMetadData(newfolder);
   };
+  const updateAlbums = (album) => {
+    setAlbums(album);
+  };
   const updateLastPlayed = (lastPlayed) => {
     setLastPlayed(lastPlayed);
   };
+  const updateArtists = (artists) => {
+    setArtists(artists);
+  };
   return (
     <MainContext.Provider
-      value={{ folderStored, updateFolder, metadData, lastPlayed,updateMetadata ,updateLastPlayed}}
+      value={{ folderStored, updateFolder, metadData, lastPlayed,albums,artists,updateMetadata ,updateLastPlayed,updateAlbums,updateArtists}}
     >
       {children}
     </MainContext.Provider>

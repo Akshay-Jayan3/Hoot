@@ -8,7 +8,7 @@ import FolderOpenOutlinedIcon from "@mui/icons-material/FolderOpenOutlined";
 var jsmediatags = window.jsmediatags;
 
 const FolderSelection = () => {
-  const { updateFolder, updateMetadata } = useContext(MainContext);
+  const { updateFolder, updateMetadata ,updateAlbums,updateArtists} = useContext(MainContext);
   const navigate = useNavigate();
 
   const selectFolder = async () => {
@@ -26,6 +26,8 @@ const FolderSelection = () => {
             return;
           }
           let metadata = [];
+          let albums=[]
+          let artists=[]
           let fileCount = 0;
           let imgUrl;
           const musicFiles = files.filter((file) => {
@@ -66,6 +68,8 @@ const FolderSelection = () => {
                     fileCount++;
                     if (fileCount === files.length) {
                       updateMetadata(metadata);
+                      updateAlbums(metadata.map((item)=>(item.album)))
+                      updateArtists(metadata.map((item)=>(item.artist)))
                       localStorage.setItem(
                         "AllSongs",
                         JSON.stringify(metadata)

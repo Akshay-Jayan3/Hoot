@@ -7,7 +7,7 @@ const Sidebar = () => {
   const location = useLocation()
   return (
     <div className={styles.container}>
-      <div>
+      <div className={styles.logo}>
         <p>Logo</p>
       </div>
       <div className={styles.content}>
