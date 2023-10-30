@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import styles from "./styles.module.scss";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 
-const ArtistList = ({ artist, setSelectedMusicFile }) => {;
+const ArtistList = ({ artist, HandleFile }) => {;
     console.log(artist)
 
 
@@ -10,7 +10,7 @@ const ArtistList = ({ artist, setSelectedMusicFile }) => {;
     <div
       className={styles.wrapper}
       onClick={() => {
-        setSelectedMusicFile(artist);
+        HandleFile();
         // updateLastPlayed(track);
         // localStorage.setItem("lastplayed", JSON.stringify(track));
       }}

@@ -21,7 +21,7 @@ const Songs = () => {
 
         <div className="songs-container">
           {metadData && metadData.length > 0 ? (
-            <TrackList tracks={metadData} setSelectedMusicFile={setSelectedMusicFile} />
+            <TrackList tracks={metadData} HandleFile={setSelectedMusicFile} type={'track'} />
           ) : (
             <p>no songs</p>
           )}
