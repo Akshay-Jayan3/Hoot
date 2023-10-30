@@ -1,0 +1,11 @@
+.AlbumContainer{
+    width:100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+    grid-gap: 16px;
+    margin-top: 56px;
+   .trackNo{
+    display: flex;
+    align-self: flex-start;
+   }
+}
