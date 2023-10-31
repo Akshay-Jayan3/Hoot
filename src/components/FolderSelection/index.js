@@ -68,7 +68,7 @@ const FolderSelection = () => {
                     fileCount++;
                     if (fileCount === files.length) {
                       updateMetadata(metadata);
-                      updateAlbums(metadata.map((item)=>({album:item.album,thumbnail:item.picture})))
+                      updateAlbums(metadata.map((item)=>(item.album)))
                       updateArtists(metadata.map((item)=>(item.artist)))
                       localStorage.setItem(
                         "AllSongs",
