@@ -44,17 +44,20 @@ const FolderSelection = () => {
                 jsmediatags.read(file, {
                   onSuccess: function (tag) {
                     if (tag.tags) {
-                      const {data,format} = tag.tags.picture;
+                      if( tag.tags.picture){
+                        const {data,format} = tag.tags.picture;
                       
-                      if (data) {
-                        let base64String = "";
-                        for (let i = 0; i < data.length; i++) {
-                          base64String += String.fromCharCode(data[i]);
+                        if (data) {
+                          let base64String = "";
+                          for (let i = 0; i < data.length; i++) {
+                            base64String += String.fromCharCode(data[i]);
+                          }
+                          imgUrl = `data:${format};base64,${window.btoa(
+                            base64String
+                          )}`;
                         }
-                        imgUrl = `data:${format};base64,${window.btoa(
-                          base64String
-                        )}`;
                       }
+                      
 
                       const filedata = {
                         title: tag.tags.title,
@@ -66,7 +69,7 @@ const FolderSelection = () => {
                       metadata.push(filedata);
                     }
                     fileCount++;
-                    if (fileCount === files.length) {
+                    if (fileCount === musicFiles.length) {
                       updateMetadata(metadata);
                       updateAlbums(metadata.map((item)=>(item.album)))
                       updateArtists(metadata.map((item)=>(item.artist)))

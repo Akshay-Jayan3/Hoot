@@ -3,11 +3,11 @@ import styles from "./styles.module.scss";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import { MainContext } from "../../context/MainContext";
 
-const Track = ({ track, setSelectedMusicFile }) => {
+const Track = ({ track, HandleFile }) => {
   const { updateLastPlayed } = useContext(MainContext);
 
   function truncateText(text, maxLength) {
-    if (text.length > maxLength) {
+    if (text?.length > maxLength) {
       return text.slice(0, maxLength) + "...";
     }
     return text;
@@ -17,7 +17,7 @@ const Track = ({ track, setSelectedMusicFile }) => {
     <div
       className={styles.wrapper}
       onClick={() => {
-        setSelectedMusicFile(track);
+        HandleFile(track);
         updateLastPlayed(track);
         localStorage.setItem("lastplayed", JSON.stringify(track));
       }}

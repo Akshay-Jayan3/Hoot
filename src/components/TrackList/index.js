@@ -7,7 +7,7 @@ const TrackList = ({ tracks, HandleFile ,type}) => {
   return (
     <div className={styles.trackContainer}>
       <div className={styles.trackNo}>
-        <p>{tracks && tracks.length} {type==="track" ? "songs found":type ==="artist" ? "artists found" :null}</p>
+        <p>{tracks && tracks?.length} {type==="track" ? "songs found":type ==="artist" ? "artists found" :null}</p>
       </div>
       {tracks && tracks?.length > 0
         ? tracks?.map((track, i) =>
