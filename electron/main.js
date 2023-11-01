@@ -1,6 +1,6 @@
 const { app, BrowserWindow, dialog, ipcMain } = require("electron");
+const { Sequelize } = require('sequelize');
 const isDev = require("electron-is-dev");
-const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
 
 function createWindow() {
@@ -14,61 +14,22 @@ function createWindow() {
       webSecurity: false,
     },
   });
-  const dbPath = path.join(__dirname, '../db', 'music.sqlite');
-  console.log(dbPath)
-  let db = new sqlite3.Database(dbPath, (err) => {
-    if (err) {
-      // Cannot open database
-      console.error(err.message);
-      throw err;
-    } else {
-      console.log("Connected to the SQLite database.");
-      db.run(
-        `CREATE TABLE IF NOT EXISTS metadata (
-          id INTEGER PRIMARY KEY,
-          title TEXT,
-          artist TEXT,
-          album TEXT,
-          filePath TEXT
-        )`,
-        (err) => {
-          if (err) {
-            console.log("Table creation error: ", err);
-          } else {
-            console.log("Table created successfully.");
-          }
-        }
-      );
-    }
-    // const newData = {
-    //   title: 'Sample Song',
-    //   artist: 'Sample Artist',
-    //   album: 'Sample Album',
-    //   filePath: '/path/to/sample-song.mp3', // Replace with the actual file path
-    // };
-    
-    // // Insert the data into the 'metadata' table
-    // db.run(
-    //   'INSERT INTO metadata (title, artist, album, filePath) VALUES (?, ?, ?, ?)',
-    //   [newData.title, newData.artist, newData.album, newData.filePath],
-    //   (err) => {
-    //     if (err) {
-    //       console.error('Error inserting data:', err.message);
-    //     } else {
-    //       console.log('Data inserted successfully.');
-    //     }
-    //   }
-    // );
-    
-    
-    db.all("SELECT * FROM metadata", (err, rows) => {
-      if (err) {
-        console.error(err.message);
-      } else {
-        console.log('Data from the "metadata" table:', rows);
-      }
-    });
+  const sequelize = new Sequelize({
+    dialect: 'sqlite', // Use the appropriate database dialect
+    storage: path.join(__dirname, '../db', 'music.sqlite')
   });
+  
+  // const User = require('./models/User')(sequelize);
+  
+  // Test the connection
+  (async () => {
+    try {
+      await sequelize.authenticate();
+      console.log('Connection has been established successfully.');
+    } catch (error) {
+      console.error('Unable to connect to the database:', error);
+    }
+  })();
 
   if (isDev) {
     win.loadURL("http://localhost:3000"); // When in development mode
