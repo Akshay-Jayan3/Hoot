@@ -4,7 +4,7 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 
 const Album = ({ album, HandleFile }) => {
     function truncateText(text, maxLength) {
-        if (text.length > maxLength) {
+        if (text?.length > maxLength) {
           return text.slice(0, maxLength) + "...";
         }
         return text;
@@ -21,7 +21,7 @@ const Album = ({ album, HandleFile }) => {
     >
       <div className={styles.info}>
         <div className={styles.picture}>
-          <img src={album.thumbnail} />
+          <img src={album.coverArt} />
         </div>
         <div className={styles.details}>
           <p className={styles.artist}>{truncateText(album.album,20)}</p>

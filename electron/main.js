@@ -32,6 +32,41 @@ ipcMain.on('getMusicMetadata', async (event) => {
     event.reply('musicMetadata', []);
   }
 });
+ipcMain.on('getArtist', async (event) => {
+  try {
+    const metadata = await database.getArtist();
+    event.reply('musicMetadata', metadata);
+  } catch (error) {
+    event.reply('musicMetadata', []);
+  }
+});
+ipcMain.on('getAlbum', async (event) => {
+  try {
+    const metadata = await database.getAlbum();
+    event.reply('musicMetadata', metadata);
+  } catch (error) {
+    event.reply('musicMetadata', []);
+  }
+});
+
+ipcMain.on('getFavorite', async (event) => {
+  try {
+    const metadata = await database.getFavorite();
+    event.reply('musicMetadata', metadata);
+  } catch (error) {
+    event.reply('musicMetadata', []);
+  }
+});
+
+ipcMain.on('getPlaylist', async (event) => {
+  try {
+    const metadata = await database.getPlaylist();
+    event.reply('musicMetadata', metadata);
+  } catch (error) {
+    event.reply('musicMetadata', []);
+  }
+});
+
 
 ipcMain.handle("select-folder", async () => {
   const result = await dialog.showOpenDialog({

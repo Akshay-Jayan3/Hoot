@@ -13,8 +13,11 @@ const Playlist = sequelize.define("Playlist", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  CoverArt: {
+    type: DataTypes.STRING,
+  },
 });
-
+Playlist.sync()
 // Define a many-to-many relationship with MusicMetadata
 Playlist.belongsToMany(MusicMetadata, { through: "PlaylistMusicMetadata" });
 

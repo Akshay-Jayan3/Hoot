@@ -15,7 +15,6 @@ const Album = sequelize.define("Album", {
   CoverArt: {
     type: DataTypes.STRING,
   },
-  // Add more fields as needed
 });
 
 Album.sync();
