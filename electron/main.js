@@ -1,7 +1,6 @@
 const { app, BrowserWindow, dialog, ipcMain } = require("electron");
 const isDev = require("electron-is-dev");
 const path = require("path");
-const dbfunctions = require('./dbfunctions');
 
 function createWindow() {
   const win = new BrowserWindow({
