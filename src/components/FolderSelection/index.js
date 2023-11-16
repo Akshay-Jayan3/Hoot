@@ -1,9 +1,11 @@
 import React, { useContext, useState } from "react";
 import MusicPlayer from "../AudioPlayer/index";
-import styles from "./styles.module.scss";
+import styles from "./styles.module.scss"; 
 import { useNavigate } from "react-router-dom";
 import { MainContext } from "../../context/MainContext";
 import FolderOpenOutlinedIcon from "@mui/icons-material/FolderOpenOutlined";
+import * as cachemanager from '../../cacheStore/index'
+import { cacheEntities } from "../../cacheStore/cacheEntities";
 
 var jsmediatags = window.jsmediatags;
 
@@ -71,6 +73,7 @@ const FolderSelection = () => {
                     fileCount++;
                     if (fileCount === musicFiles.length) {
                       updateMetadata(metadata);
+                      cachemanager.addEntity(cacheEntities.SONGS,metadata).then((res)=>(console.log(res)))
                       updateAlbums(metadata.map((item)=>({name:item.album,coverArt:item.picture})))
                       updateArtists(metadata.map((item)=>(item.artist)))
                       localStorage.setItem(

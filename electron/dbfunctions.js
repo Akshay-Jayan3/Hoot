@@ -23,9 +23,37 @@ async function getByField(modelName, field, value) {
 }
 
 async function add(modelName, data) {
-  const model = getModelByName(modelName);
-  return model.create(data);
+  try {
+    const model = getModelByName(modelName);
+    console.log(model)
+
+    if (!model) {
+      throw new Error(`Model not found for ${modelName}`);
+    }
+
+    const addedEntities = await Promise.all(
+      data.map(async (data) => {
+        const [entity, created] = await model.findOrCreate({
+          where: { title: data.title },
+          defaults: data,
+        });
+
+        if (!created) {
+          console.log(`Song "${data.title}" by "${data.artist}" already exists.`);
+        }
+
+        return entity;
+      })
+    );
+    console.log(`Entity added for ${modelName}:`, addedEntities);
+
+    return addedEntities;
+  } catch (error) {
+    console.error(`Error adding entity for ${modelName}:`, error.message);
+    throw error;
+  }
 }
+
 
 async function updateById(modelName, id, updatedData) {
   const model = getModelByName(modelName);
@@ -49,15 +77,15 @@ async function deleteById(modelName, id) {
 
 function getModelByName(modelName) {
   switch (modelName) {
-    case "MusicMetadata":
+    case "Songs":
       return MusicMetadata;
-    case "Artistdata":
+    case "Artists":
       return Artistdata;
-    case "Albumdata":
+    case "Albums":
       return Albumdata;
-    case "Favouritedata":
+    case "Favourites":
       return Favouritedata;
-    case "Playlistdata":
+    case "Playlists":
       return Playlistdata;
     // Add more cases as needed for other models
     default:

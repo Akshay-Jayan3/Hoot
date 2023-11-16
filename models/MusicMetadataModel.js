@@ -11,6 +11,7 @@ const MusicMetadata = sequelize.define('MusicMetadata', {
   title: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,
   },
   artist: {
     type: DataTypes.STRING,
@@ -18,16 +19,16 @@ const MusicMetadata = sequelize.define('MusicMetadata', {
   album: {
     type: DataTypes.STRING,
   },
-  genre: {
+  path: {
     type: DataTypes.STRING,
   },
-  duration: {
-    type: DataTypes.INTEGER, // Store duration in seconds, for example
+  picture: {
+    type: DataTypes.STRING, 
   },
-  // Add more fields as needed
+  
 });
 
-// Create the table if it doesn't exist
+
 MusicMetadata.sync();
 
 

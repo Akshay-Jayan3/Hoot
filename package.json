@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "electron-dialog": "^2.0.0",
     "electron-is-dev": "^2.0.0",
+    "electronmon": "^2.0.2",
     "howler": "^2.2.4",
     "react": "^18.2.0",
     "react-audio-player": "^0.17.0",
@@ -23,15 +24,16 @@
     "sequelize": "^6.33.0",
     "sequelize-cli": "^6.6.1",
     "sqlite3": "^5.1.6",
+    "wait-on": "^7.2.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "concurrently \"npm run react\" \"npm run electron\" ",
+    "start": "concurrently -k \"cross-env BROWSER=none npm run react\" \"wait-on http://localhost:3000 && electronmon .\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "react": "react-scripts start",
-    "electron": "electron ."
+    "react": "react-scripts start"
+   
   },
   "eslintConfig": {
     "extends": [
@@ -53,6 +55,7 @@
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
     "electron": "^27.0.2"
   }
 }
