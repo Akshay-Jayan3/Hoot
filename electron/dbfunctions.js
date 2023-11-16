@@ -25,29 +25,13 @@ async function getByField(modelName, field, value) {
 async function add(modelName, data) {
   try {
     const model = getModelByName(modelName);
-    console.log(model)
-
     if (!model) {
       throw new Error(`Model not found for ${modelName}`);
     }
 
-    const addedEntities = await Promise.all(
-      data.map(async (data) => {
-        const [entity, created] = await model.findOrCreate({
-          where: { title: data.title },
-          defaults: data,
-        });
-
-        if (!created) {
-          console.log(`Song "${data.title}" by "${data.artist}" already exists.`);
-        }
-
-        return entity;
-      })
-    );
-    console.log(`Entity added for ${modelName}:`, addedEntities);
-
-    return addedEntities;
+    const addedSongs = await model.bulkCreate(data, { ignoreDuplicates: true });
+    console.log(`Added ${addedSongs.length} songs to the database.`);
+    return addedSongs;
   } catch (error) {
     console.error(`Error adding entity for ${modelName}:`, error.message);
     throw error;

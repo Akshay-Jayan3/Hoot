@@ -3,7 +3,7 @@ const {getallEntities,addentity,getentityById,getentityByField,updateEntity,dele
 const getAllEntities = async (modelName) => {
   try {
     const entities = await getallEntities(modelName);
-    console.log(`Entities retrieved for ${modelName}:`, entities);
+    return {status:"s",data:entities,message:"Songs retrieved from db successfully"}
   } catch (error) {
     console.error(`Error getting entities for ${modelName}:`, error.message);
   }

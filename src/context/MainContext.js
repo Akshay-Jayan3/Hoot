@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { createContext } from "react";
+import * as cachemanager from "../cacheStore/index";
+import { cacheEntities } from "../cacheStore/cacheEntities";
 
 export const MainContext = createContext({
   folderStored: null,
   metadData: null,
-  lastPlayed:null,
-  albums:null,
-  artists:null,
+  lastPlayed: null,
+  albums: null,
+  artists: null,
   updateFolder: () => {},
   updateMetadata: () => {},
   updateAlbums: () => {},
@@ -21,22 +23,19 @@ export const MainContextProvider = ({ children }) => {
   const [artists, setArtists] = useState(null);
   useEffect(() => {
     const storedFolder = localStorage.getItem("selected-folder");
-    const Allsongs = localStorage.getItem("AllSongs");
     const lastplayed = localStorage.getItem("lastplayed");
-
-  
+    cachemanager.getAllEntities(cacheEntities.SONGS).then((res) => {
+      if (res) {
+        setMetadData(res.data);
+      }
+    });
 
     if (storedFolder) {
       setfolderStored(storedFolder);
     }
-    if (Allsongs) {
-       setMetadData(JSON.parse(Allsongs));
-
-    }
     if (lastplayed) {
       setLastPlayed(JSON.parse(lastplayed));
-
-   }
+    }
   }, []);
 
   const updateFolder = (newfolder) => {
@@ -56,7 +55,18 @@ export const MainContextProvider = ({ children }) => {
   };
   return (
     <MainContext.Provider
-      value={{ folderStored, updateFolder, metadData, lastPlayed,albums,artists,updateMetadata ,updateLastPlayed,updateAlbums,updateArtists}}
+      value={{
+        folderStored,
+        updateFolder,
+        metadData,
+        lastPlayed,
+        albums,
+        artists,
+        updateMetadata,
+        updateLastPlayed,
+        updateAlbums,
+        updateArtists,
+      }}
     >
       {children}
     </MainContext.Provider>
