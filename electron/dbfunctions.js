@@ -58,6 +58,61 @@ async function deleteById(modelName, id) {
 
   return instance.destroy();
 }
+const addSongToPlaylist = async (modelName,modelName2,songId, playlistId) => {
+ 
+  try {
+    const Songmodel = getModelByName(modelName);
+    const Playlistmodel = getModelByName(modelName2);
+    if (!Songmodel || !Playlistmodel) {
+      throw new Error(`Model not found`);
+    }
+    const song = await Songmodel.findByPk(songId);
+    const playlist = await Playlistmodel.findByPk(playlistId);
+
+    if (song && playlist) {
+    
+      const isSongInPlaylist = await playlist.hasSongs(song);
+
+      if (!isSongInPlaylist) {
+        
+        await playlist.addSongs(song);
+        console.log(`Song "${song.title}" added to playlist "${playlist.name}".`);
+        return song;
+      } else {
+        console.log(`Song "${song.title}" is already in playlist "${playlist.name}".`);
+        return null; // Song is already in the playlist
+      }
+    } else {
+      throw new Error('Song or playlist not found.');
+    }
+  } catch (error) {
+    console.error('Error adding song to playlist:', error.message);
+    throw error;
+  }
+};
+
+// Example: Get songs from a playlist
+const getSongsFromPlaylist = async (modelName,playlistId) => {
+  try {
+    const model = getModelByName(modelName);
+    if (!model) {
+      throw new Error(`Model not found for ${modelName}`);
+    }
+    const playlist = await model.findByPk(playlistId, {
+      include: Song,
+    });
+
+    if (playlist) {
+      return playlist.Songs;
+    } else {
+      throw new Error('Playlist not found.');
+    }
+  } catch (error) {
+    console.error('Error getting songs from playlist:', error.message);
+    throw error;
+  }
+};
+
 
 function getModelByName(modelName) {
   switch (modelName) {
@@ -71,7 +126,6 @@ function getModelByName(modelName) {
       return Favouritedata;
     case "Playlists":
       return Playlistdata;
-    // Add more cases as needed for other models
     default:
       throw new Error(`Model ${modelName} not recognized`);
   }
@@ -84,4 +138,6 @@ module.exports = {
   add,
   updateById,
   deleteById,
+  addSongToPlaylist,
+  getSongsFromPlaylist
 };

@@ -16,6 +16,21 @@
         cursor: pointer;
         transform: translateY(-5px);
     }
+    .favouriteBtn {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        transition: transform 0.3s ease-in-out;
+    
+        &:hover {
+          transform: scale(1.1);
+          cursor: pointer;
+        }
+      }
+    
+      .favorite {
+        transform: scale(1.1);
+      }
 
     .info {
         display: flex;
@@ -32,6 +47,7 @@
                 object-fit: contain;
             }
         }
+        
 
         .titleArtist {
 

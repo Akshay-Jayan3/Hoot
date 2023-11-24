@@ -25,6 +25,11 @@ const MusicMetadata = sequelize.define('MusicMetadata', {
   picture: {
     type: DataTypes.STRING, 
   },
+  isFavorite:{
+    type:DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  }
   
 });
 

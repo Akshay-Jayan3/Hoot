@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import styles from "./styles.module.scss";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import { MainContext } from "../../context/MainContext";
 
-const ArtistList = ({ artist, HandleFile }) => {;
-    console.log(artist)
+const ArtistList = ({ artist, HandleFile }) => {
 
 
   return (

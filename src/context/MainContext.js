@@ -1,34 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { createContext } from "react";
-import * as cachemanager from "../cacheStore/index";
-import { cacheEntities } from "../cacheStore/cacheEntities";
 
 export const MainContext = createContext({
   folderStored: null,
-  metadData: null,
   lastPlayed: null,
   albums: null,
   artists: null,
+  isPlaying:false,
   updateFolder: () => {},
-  updateMetadata: () => {},
   updateAlbums: () => {},
   updateArtists: () => {},
+  updateNowPlaying: () => {}
 });
 
 export const MainContextProvider = ({ children }) => {
   const [folderStored, setfolderStored] = useState(null);
-  const [metadData, setMetadData] = useState(null);
   const [lastPlayed, setLastPlayed] = useState(null);
+  const [nowplaying,setNowplaying] = useState('')
   const [albums, setAlbums] = useState(null);
   const [artists, setArtists] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   useEffect(() => {
     const storedFolder = localStorage.getItem("selected-folder");
     const lastplayed = localStorage.getItem("lastplayed");
-    cachemanager.getAllEntities(cacheEntities.SONGS).then((res) => {
-      if (res) {
-        setMetadData(res.data);
-      }
-    });
+
 
     if (storedFolder) {
       setfolderStored(storedFolder);
@@ -41,9 +36,6 @@ export const MainContextProvider = ({ children }) => {
   const updateFolder = (newfolder) => {
     setfolderStored(newfolder);
   };
-  const updateMetadata = (newfolder) => {
-    setMetadData(newfolder);
-  };
   const updateAlbums = (album) => {
     setAlbums(album);
   };
@@ -53,19 +45,25 @@ export const MainContextProvider = ({ children }) => {
   const updateArtists = (artists) => {
     setArtists(artists);
   };
+  const updateNowPlaying = (song) => {
+    setNowplaying(song);
+  };
+ 
   return (
     <MainContext.Provider
       value={{
         folderStored,
-        updateFolder,
-        metadData,
         lastPlayed,
         albums,
         artists,
-        updateMetadata,
+        nowplaying,
+        isPlaying,
+        updateFolder,
         updateLastPlayed,
         updateAlbums,
         updateArtists,
+        updateNowPlaying,
+        setIsPlaying
       }}
     >
       {children}

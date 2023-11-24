@@ -6,14 +6,14 @@ import SkipPreviousRoundedIcon from "@mui/icons-material/SkipPreviousRounded";
 import SkipNextRoundedIcon from "@mui/icons-material/SkipNextRounded";
 import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUpRounded";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
-import {MainContext} from "../../context/MainContext"
+import { MainContext } from "../../context/MainContext";
 
-
-const AudioPlayer = ({ selectedMusicFile, AllSongs}) => {
-  const {lastPlayed,updateLastPlayed} =useContext(MainContext)
-  const [currentSong,setCurrentSong]=useState(null)
-  const [isPlaying, setIsPlaying] = useState(false);
+const AudioPlayer = ({ selectedMusicFile, AllSongs ,toggleFavorite}) => {
+  const { lastPlayed, updateLastPlayed, isPlaying, setIsPlaying } =
+    useContext(MainContext);
+  const [currentSong, setCurrentSong] = useState(null);
   const [sound, setSound] = useState(null);
   const [duration, setDuration] = useState(null);
   const [seekPosition, setSeekPosition] = useState(0);
@@ -22,29 +22,24 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs}) => {
     min: 0,
     sec: 0,
   });
-  const [startPlay,setStartPlay]=useState(null)
-  console.log(isPlaying)
 
   useEffect(() => {
-  if(selectedMusicFile){
-    setCurrentSong(selectedMusicFile)
-  }else{
-    setCurrentSong(lastPlayed)
-  }
-    
-  }, [selectedMusicFile,lastPlayed])
-  
+    if (selectedMusicFile) {
+      setCurrentSong(selectedMusicFile);
+    } else {
+      setCurrentSong(lastPlayed);
+    }
+  }, [selectedMusicFile, lastPlayed]);
+
   useEffect(() => {
     if (currentSong) {
       const newSound = new Howl({
         src: [currentSong.path],
         onplay: () => {
           setIsPlaying(true);
-          setStartPlay("start")
         },
         onpause: () => {
           setIsPlaying(false);
-          setStartPlay(null)
         },
         onload: () => {
           setDuration(newSound.duration());
@@ -52,13 +47,10 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs}) => {
         },
         onend: () => {
           setIsPlaying(false);
-          setStartPlay(null)
-
         },
         html5: true,
       });
       setSound(newSound);
-      
     }
     return () => {
       sound?.unload();
@@ -67,7 +59,6 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs}) => {
 
   useEffect(() => {
     if (duration) {
-     
       const min = Math.floor(duration / 60);
       const secRemain = Math.floor(duration % 60);
       setTime({
@@ -76,14 +67,16 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs}) => {
       });
     }
   }, [currentSong]);
- 
+
   const togglePlayback = () => {
     if (isPlaying) {
       sound.pause();
     } else {
-      if (!sound.playing()) { // Check if the sound is not already playing
+      if (!sound.playing()) {
+        // Check if the sound is not already playing
         sound.play();
-      } else if (currentSong.title !== selectedMusicFile.title) { // Check if the current song is different from the selected song
+      } else if (currentSong.title !== selectedMusicFile.title) {
+        // Check if the current song is different from the selected song
         sound.pause();
         setCurrentSong(selectedMusicFile); // Update the current song
         sound.play();
@@ -102,27 +95,30 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs}) => {
 
   const playNextSong = () => {
     sound.pause();
-    const currentIndex = AllSongs.findIndex((song) => song.title === currentSong.title);
+    const currentIndex = AllSongs.findIndex(
+      (song) => song.title === currentSong.title
+    );
     const nextIndex = (currentIndex + 1) % AllSongs.length;
     const nextSong = AllSongs[nextIndex];
     setCurrentSong(nextSong);
-    updateLastPlayed(nextSong)
+    updateLastPlayed(nextSong);
     localStorage.setItem("lastplayed", JSON.stringify(nextSong));
   };
   const playPreviousSong = () => {
     sound.pause();
-    const currentIndex = AllSongs.findIndex((song) => song.title === currentSong.title);
+    const currentIndex = AllSongs.findIndex(
+      (song) => song.title === currentSong.title
+    );
     const PreviousIndex = (currentIndex - 1) % AllSongs.length;
-    let PreviousSong =''
-    if(PreviousIndex !== 0){
+    let PreviousSong = "";
+    if (PreviousIndex !== 0) {
       PreviousSong = AllSongs[PreviousIndex];
     }
     setCurrentSong(PreviousSong);
-    updateLastPlayed(PreviousSong)
+    updateLastPlayed(PreviousSong);
     localStorage.setItem("lastplayed", JSON.stringify(PreviousSong));
-   
   };
- 
+
   const handleSeekChange = (e) => {
     const newSeekPosition = parseFloat(e.target.value);
     setSeekPosition(newSeekPosition);
@@ -140,7 +136,7 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs}) => {
       {currentSong ? (
         <div className={styles.wrapper}>
           <h1>Now Playing</h1>
-          <div className={startPlay ? styles.start:styles.picture}>
+          <div className={isPlaying ? styles.start : styles.picture}>
             <img src={currentSong?.picture} />
           </div>
           <div className={styles.metadata}>
@@ -148,26 +144,34 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs}) => {
             <p>{truncateText(currentSong?.artist, 30)}</p>
           </div>
           <div className={styles.time}>
-            <p>
-            {currentTime.toFixed(2)} 
-            </p>
+            <p>{currentTime.toFixed(2)}</p>
             <input
-            type="range"
-            min={0}
-            max={duration | 0.00}
-            step={0.01}
-            value={seekPosition}
-            onChange={handleSeekChange}
-          />
+              type="range"
+              min={0}
+              max={duration | 0.0}
+              step={0.01}
+              value={seekPosition}
+              onChange={handleSeekChange}
+            />
             <p>
-              {time.min}:{time.sec} 
+              {time.min}:{time.sec}
             </p>
           </div>
-         
 
           <div className={styles.controls}>
             <div>
-              <FavoriteBorderOutlinedIcon />
+              <button
+                onClick={(e) => toggleFavorite(e, selectedMusicFile.id, selectedMusicFile,true)}
+                className={`${styles.favouriteBtn} ${
+                  selectedMusicFile.isFavorite ? styles.favorite : ""
+                }`}
+              >
+                {selectedMusicFile.isFavorite ? (
+                  <FavoriteIcon style={{ color: "red" }} />
+                ) : (
+                  <FavoriteBorderOutlinedIcon style={{ color: "#fff" }} />
+                )}
+              </button>
             </div>
             <div className={styles.playebackwrapper}>
               <button onClick={playPreviousSong} className={styles.skip}>
@@ -180,10 +184,7 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs}) => {
                   <PlayArrowRoundedIcon fontSize="large" />
                 )}
               </button>
-              <button
-                onClick={playNextSong}
-                className={styles.skip}
-              >
+              <button onClick={playNextSong} className={styles.skip}>
                 <SkipNextRoundedIcon fontSize="large" />
               </button>
             </div>

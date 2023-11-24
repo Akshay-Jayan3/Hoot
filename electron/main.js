@@ -89,21 +89,25 @@ ipcMain.handle(ADD, async (event, modelName, data) => {
   }
 });
 
-ipcMain.handle(DELETE_BY_ID, async (event, modelName, id, updatedData) => {
+ipcMain.handle(UPDATE_BY_ID, async (event, modelName, id, updatedData) => {
   try {
     const updatedEntity = await dbfunctions.updateById(
       modelName,
       id,
       updatedData
     );
-    return updatedEntity.toJSON();
+    return {
+      status: 'S',
+      data: updatedEntity,
+      message: 'Entity updated successfully',
+    };
   } catch (error) {
     console.error(`Error updating ${modelName.name} by ID:`, error.message);
     throw error;
   }
 });
 
-ipcMain.handle(UPDATE_BY_ID, async (event, modelName, id) => {
+ipcMain.handle(DELETE_BY_ID, async (event, modelName, id) => {
   try {
     await dbfunctions.deleteById(modelName, id);
     return { success: true };

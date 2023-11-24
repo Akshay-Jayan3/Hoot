@@ -57,7 +57,7 @@ const AppRouter = () => {
               path="/favourites"
               element={
                 <ProtectedRoute>
-                  <Playlists />
+                  <Favourites />
                 </ProtectedRoute>
               }
             />
@@ -65,7 +65,7 @@ const AppRouter = () => {
               path="/playlists"
               element={
                 <ProtectedRoute>
-                  <Favourites />
+                  <Playlists />
                 </ProtectedRoute>
               }
             />

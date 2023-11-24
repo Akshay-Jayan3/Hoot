@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styles from "./styles.module.scss";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import { MainContext } from "../../context/MainContext";
 
-const Track = ({ track, HandleFile }) => {
-  const { updateLastPlayed } = useContext(MainContext);
+const Track = ({ track, toggleFavorite }) => {
+  const { updateLastPlayed, updateNowPlaying } = useContext(MainContext);
 
   function truncateText(text, maxLength) {
     if (text?.length > maxLength) {
@@ -17,7 +18,7 @@ const Track = ({ track, HandleFile }) => {
     <div
       className={styles.wrapper}
       onClick={() => {
-        HandleFile(track);
+        updateNowPlaying(track);
         updateLastPlayed(track);
         localStorage.setItem("lastplayed", JSON.stringify(track));
       }}
@@ -35,7 +36,18 @@ const Track = ({ track, HandleFile }) => {
         <p>{truncateText(track?.album, 10)}</p>
       </div>
       <div>
-        <FavoriteBorderOutlinedIcon />
+        <button
+          onClick={(e) => toggleFavorite(e, track.id,track)}
+          className={`${styles.favouriteBtn} ${
+            track.isFavorite ? styles.favorite : ""
+          }`}
+        >
+          {track.isFavorite ? (
+            <FavoriteIcon style={{ color: "red" }} />
+          ) : (
+            <FavoriteBorderOutlinedIcon style={{ color: "#fff" }} />
+          )}
+        </button>
       </div>
       {/* <div>more</div> */}
     </div>

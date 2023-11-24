@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import styles from "./styles.module.scss";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 
-const Album = ({ album, HandleFile }) => {
+const Album = ({ album, HandleFile ,setSelectedAlbum}) => {
     function truncateText(text, maxLength) {
         if (text?.length > maxLength) {
           return text.slice(0, maxLength) + "...";
@@ -15,16 +15,15 @@ const Album = ({ album, HandleFile }) => {
       className={styles.wrapper}
       onClick={() => {
         HandleFile();
-        // updateLastPlayed(track);
-        // localStorage.setItem("lastplayed", JSON.stringify(track));
+        setSelectedAlbum(album)
       }}
     >
       <div className={styles.info}>
         <div className={styles.picture}>
-          <img src={album.coverArt} />
+          <img src={album.CoverArt} />
         </div>
         <div className={styles.details}>
-          <p className={styles.artist}>{truncateText(album.album,20)}</p>
+          <p className={styles.artist}>{truncateText(album.name,20)}</p>
           <div>
             <FavoriteBorderOutlinedIcon />
           </div>
