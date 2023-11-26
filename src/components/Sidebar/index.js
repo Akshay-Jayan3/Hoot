@@ -8,7 +8,7 @@ const Sidebar = () => {
   return (
     <div className={styles.container}>
       <div className={styles.logo}>
-        <p>Logo</p>
+        <h2>AirTune</h2>
       </div>
       <div className={styles.content}>
         <ul className={styles.sidebarLinks}>

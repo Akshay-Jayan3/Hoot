@@ -13,7 +13,7 @@ const Albums = () => {
   const [metaData,setMetaData] =useState(null)
   const [albums,setAlbums]=useState(null)
   const {nowplaying} = useContext(MainContext)
-  const [showAlbums,setShowAlbums]=useState(true)
+  const [showAlbums,setShowAlbums]=useState(false)
   const [selectedAlbum,setSelectedAlbum]=useState([])
   
 
@@ -42,15 +42,15 @@ const Albums = () => {
   return (
     <div className="Songspage">
       <div className="mainsection">
-        <Search />
+        <Search showback={showAlbums} HandleBack={HandleSelectAlbum} />
         <Header
           heading={"Music For You"}
           description={"Listen to your favourite songs"}
         />
 
         <div className="songs-container">
-          {showAlbums ? albums && albums?.length > 0 ? (
-            <AlbumList albums={albums} HandleFile={HandleSelectAlbum} setSelectedAlbum={setSelectedAlbum}/>
+          {!showAlbums ? albums && albums?.length > 0 ? (
+            <AlbumList albums={albums} HandleFile={HandleSelectAlbum} setSelectedAlbum={setSelectedAlbum} count={filteredSongs.length} type={"Album"}/>
           ) : (
             <p>no artists</p>
           ):filteredSongs && filteredSongs?.length > 0 ? (

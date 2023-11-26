@@ -71,11 +71,37 @@
     &::-webkit-scrollbar {
       display: none;
     }
-    .songs-container{
-      width:100%;
-      // background-color: azure;
-      // padding-inline: 48px;
+    .songs-container {
+      width: 100%;
+      padding-block: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .Addplaylist {
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: #fff;
+        padding-inline: 1em;
+        padding-block: 1em;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+
+        &:hover {
+          opacity: 0.8;
+          cursor: pointer;
+          transform: scale(1.05);
+        }
+      }
     }
+  
   }
   .currentMusic{
     flex: 1;

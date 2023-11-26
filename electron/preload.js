@@ -7,7 +7,8 @@ const {
   ADD,
   DELETE_BY_ID,
   UPDATE_BY_ID,
-  SELECT_FOLDER
+  SELECT_FOLDER,
+  DELETE_ALL
 } = require("./constants");
 
 contextBridge.exposeInMainWorld('electron', {
@@ -18,6 +19,7 @@ contextBridge.exposeInMainWorld('electron', {
   updateEntity:(modelName, id, updatedData) => ipcRenderer.invoke(UPDATE_BY_ID,modelName, id, updatedData),
   deleteEntity:(modelName,id) => ipcRenderer.invoke(DELETE_BY_ID,modelName,id),
   addentity:(modelName,data) => ipcRenderer.invoke(ADD,modelName,data),
+  deleteAllentity:(modelName) => ipcRenderer.invoke(DELETE_ALL,modelName),
   fs: require('fs'),
   path:require('path')
 });

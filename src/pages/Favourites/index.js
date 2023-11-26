@@ -7,7 +7,7 @@ import AudioPlayer from "../../components/AudioPlayer";
 import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
 const Favourites = () => {
-  const { nowplaying } = useContext(MainContext);
+  const { nowplaying ,updateNowPlaying} = useContext(MainContext);
   const [metaData, setMetadData] = useState(null);
 
   console.log(metaData)
@@ -20,6 +20,29 @@ const Favourites = () => {
   }, []);
 
   const filteredSongs = metaData?.filter((song) => (song.isFavorite));
+
+  const toggleFavorite = (event, trackId, track,nowplaying) => {
+    event.stopPropagation();
+    cachemanager
+      .updateEntityById(cacheEntities.SONGS, trackId, {
+        ...track,
+        isFavorite: !track.isFavorite,
+      })
+      .then(() => {
+        if(nowplaying){
+          updateNowPlaying({...track,isFavorite:!track.isFavorite});
+        }
+        setMetadData((prevTracks) =>
+          prevTracks.map((prevTrack) =>
+            prevTrack.id === trackId
+              ? { ...prevTrack, isFavorite: !prevTrack.isFavorite }
+              : prevTrack
+          )
+        );
+      })
+      .catch((error) => console.error("Error editing:", error));
+  };
+
 
   return (
     <div className="Songspage">
@@ -35,7 +58,7 @@ const Favourites = () => {
             <TrackList
               tracks={filteredSongs}
               type={"track"}
-              setMetadData={setMetadData}
+              toggleFavorite={toggleFavorite}
             />
           ) : (
             <p>no songs</p>

@@ -5,7 +5,14 @@
     flex-direction: column;
     justify-content: space-around;
     .logo{
+      display: flex;
+      align-items: center;
+      justify-content: center;
       height:48px;
+      p{
+        font-size: 20px;
+        font-weight: 500;
+      }
     }
     .content {
         padding: 20px;

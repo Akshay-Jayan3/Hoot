@@ -11,7 +11,13 @@ const Artist = sequelize.define("Artist", {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,
   },
+  isFavorite:{
+    type:DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  }
   // Add more fields as needed
 });
 

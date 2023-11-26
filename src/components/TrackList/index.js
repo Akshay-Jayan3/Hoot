@@ -3,7 +3,7 @@ import Track from "../Track";
 import styles from "./styles.module.scss";
 import ArtistList from "../ArtistList";
 
-const TrackList = ({ tracks,type,toggleFavorite}) => {
+const TrackList = ({ tracks,type,toggleFavorite,HandleFile}) => {
   return (
     <div className={styles.trackContainer}>
       <div className={styles.trackNo}>
@@ -14,7 +14,7 @@ const TrackList = ({ tracks,type,toggleFavorite}) => {
             type === "track" ? (
               <Track track={track} key={i} toggleFavorite={toggleFavorite}/>
             ) : type === "artist" ? (
-              <ArtistList artist={track} key={i} />
+              <ArtistList artist={track} key={i} HandleFile={HandleFile} />
             ) : (
               <></>
             )

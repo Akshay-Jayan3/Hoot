@@ -28,7 +28,6 @@
         .picture {
             width: 100%;
             aspect-ratio: 1/1;
-            box-shadow: 0 8px 32px 0 rgba(255, 9, 212, 0.37);
 
             img {
                 width: 100%;
@@ -38,15 +37,23 @@
         }
 
 
-        .details {
+        .detailsWrapper {
 
             display: flex;
             width:100%;
-            // align-items: center;
+            align-items: center;
             justify-content: space-between;
             padding-inline: 8px;
             overflow: hidden;
             // gap:4px
+            .details{
+                display: flex;
+                flex-direction: column;
+                gap:4px;
+                .count{
+                    font-size: 12px;
+                }
+            }
 
             p {
                 margin: 0;

@@ -1,4 +1,4 @@
-const {getallEntities,addentity,getentityById,getentityByField,updateEntity,deleteEntity,} = window.electron
+const {getallEntities,addentity,getentityById,getentityByField,updateEntity,deleteEntity,deleteAllentity} = window.electron
 
 const getAllEntities = async (modelName) => {
   try {
@@ -60,6 +60,14 @@ const deleteEntityById = async (modelName, id) => {
     console.error(`Error deleting entity for ${modelName} with ID ${id}:`, error.message);
   }
 };
+const deleteALLEntity = async (modelName, id) => {
+  try {
+    const deleted= await deleteAllentity(modelName);
+    console.log(`Entity deleted for ${modelName}`,deleted);
+  } catch (error) {
+    console.error(`Error deleting entity for ${modelName}:`, error.message);
+  }
+};
 
 export {
   getAllEntities,
@@ -68,4 +76,5 @@ export {
   addEntity,
   updateEntityById,
   deleteEntityById,
+  deleteALLEntity
 };

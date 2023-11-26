@@ -1,20 +1,36 @@
-import React, { useContext, useState } from "react";
+import React, { useState ,useEffect} from "react";
 import Header from "../../components/Header";
-import { MainContext } from "../../context/MainContext";
 import TrackList from "../../components/TrackList";
 import Search from "../../components/Search";
 import AudioPlayer from "../../components/AudioPlayer";
+import * as cachemanager from "../../cacheStore/index";
+import { cacheEntities } from "../../cacheStore/cacheEntities";
 
 const Artists = () => {
-  const {metadData,artists} = useContext(MainContext)
+  const [metaData,setMetaData] =useState(null)
+  const [artists,setArtists] =useState(null)
   const [selectedMusicFile,setSelectedMusicFile]=useState(null)
-  const [showArtists,setShowArtist]=useState(true)
+  const [showArtists,setShowArtist]=useState(false)
+  const [selectedAlbum,setSelectedAlbum]=useState([])
 
-  const filteredMetadata = metadData?.filter((item) => {
-    return artists?.includes(item.artist);
-  });
+  useEffect(() => {
+    cachemanager.getAllEntities(cacheEntities.SONGS).then((res) => {
+      if (res) {
+        setMetaData(res.data);
+      }
+    });
+    cachemanager.getAllEntities(cacheEntities.ARTISTS).then((res) => {
+      if (res) {
+        setArtists(res.data);
+      }
+    });
+  }, [])
+  const filteredSongs = selectedAlbum
+      ? metaData?.filter((song) => song.artist === selectedAlbum.name)
+      : metaData;
 
-  const HandleSelectArtist=()=>{
+  const HandleSelectArtist=(artist)=>{
+    setSelectedAlbum(artist)
     setShowArtist(!showArtists)
   }
 
@@ -23,19 +39,19 @@ const Artists = () => {
   return (
     <div className="Songspage">
       <div className="mainsection">
-        <Search />
+        <Search showback={showArtists} HandleBack={()=> setShowArtist(!showArtists)}/>
         <Header
           heading={"Music For You"}
           description={"Listen to your favourite songs"}
         />
 
         <div className="songs-container">
-          {showArtists? artists && artists?.length > 0 ? (
+          {!showArtists ? artists && artists?.length > 0 ? (
             <TrackList tracks={artists} HandleFile={HandleSelectArtist} type={'artist'} />
           ) : (
             <p>no artists</p>
-          ):filteredMetadata && filteredMetadata?.length > 0 ? (
-            <TrackList tracks={filteredMetadata} HandleFile={setSelectedMusicFile} type={'track'} />
+          ):filteredSongs && filteredSongs?.length > 0 ? (
+            <TrackList tracks={filteredSongs} type={'track'} />
           ) : (
             <p>no songs</p>
           )}
@@ -44,7 +60,7 @@ const Artists = () => {
       </div>
       <div className="currentMusic">
         <div className="musicCard">
-          <AudioPlayer selectedMusicFile={selectedMusicFile} AllSongs={metadData} setSelectedMusicFile={setSelectedMusicFile}/>
+          <AudioPlayer selectedMusicFile={selectedMusicFile} AllSongs={metaData} setSelectedMusicFile={setSelectedMusicFile}/>
         </div>
       </div>
     </div>

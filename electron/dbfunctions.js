@@ -58,6 +58,16 @@ async function deleteById(modelName, id) {
 
   return instance.destroy();
 }
+async function deleteAll(modelName) {
+  const model = getModelByName(modelName);
+
+  // Delete all records from the table
+  return model.destroy({
+    where: {}, 
+    truncate: true, 
+  });
+}
+
 const addSongToPlaylist = async (modelName,modelName2,songId, playlistId) => {
  
   try {
@@ -139,5 +149,6 @@ module.exports = {
   updateById,
   deleteById,
   addSongToPlaylist,
-  getSongsFromPlaylist
+  getSongsFromPlaylist,
+  deleteAll
 };

@@ -163,10 +163,10 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs ,toggleFavorite}) => {
               <button
                 onClick={(e) => toggleFavorite(e, selectedMusicFile.id, selectedMusicFile,true)}
                 className={`${styles.favouriteBtn} ${
-                  selectedMusicFile.isFavorite ? styles.favorite : ""
+                  selectedMusicFile?.isFavorite ? styles.favorite : ""
                 }`}
               >
-                {selectedMusicFile.isFavorite ? (
+                {selectedMusicFile?.isFavorite ? (
                   <FavoriteIcon style={{ color: "red" }} />
                 ) : (
                   <FavoriteBorderOutlinedIcon style={{ color: "#fff" }} />

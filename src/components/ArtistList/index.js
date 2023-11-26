@@ -10,7 +10,7 @@ const ArtistList = ({ artist, HandleFile }) => {
     <div
       className={styles.wrapper}
       onClick={() => {
-        HandleFile();
+        HandleFile(artist);
         // updateLastPlayed(track);
         // localStorage.setItem("lastplayed", JSON.stringify(track));
       }}
@@ -18,7 +18,7 @@ const ArtistList = ({ artist, HandleFile }) => {
       <div className={styles.info}>
         <div className={styles.titleArtist}>
           
-          <p className={styles.artist}>{artist}</p>
+          <p className={styles.artist}>{artist.name}</p>
         </div>
       </div>
       <div>

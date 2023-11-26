@@ -8,6 +8,7 @@ const {
   GET_BY_FIELD,
   ADD,
   DELETE_BY_ID,
+  DELETE_ALL,
   UPDATE_BY_ID,
 } = require("./constants");
 function createWindow() {
@@ -110,6 +111,16 @@ ipcMain.handle(UPDATE_BY_ID, async (event, modelName, id, updatedData) => {
 ipcMain.handle(DELETE_BY_ID, async (event, modelName, id) => {
   try {
     await dbfunctions.deleteById(modelName, id);
+    return { success: true };
+  } catch (error) {
+    console.error(`Error deleting ${modelName.name} by ID:`, error.message);
+    throw error;
+  }
+});
+
+ipcMain.handle(DELETE_ALL, async (event, modelName) => {
+  try {
+    await dbfunctions.deleteAll(modelName);
     return { success: true };
   } catch (error) {
     console.error(`Error deleting ${modelName.name} by ID:`, error.message);

@@ -38,7 +38,7 @@
             position: relative;
             width:80%;
             aspect-ratio: 1/1;
-            box-shadow: 0 8px 32px 0 rgba(255, 9, 212, 0.37);
+            // box-shadow: 0 8px 32px 0 rgba(255, 9, 212, 0.37);
             &:before, &:after {
                 content: '';
                 position: absolute;
@@ -78,7 +78,7 @@
         .picture {
             width: 80%;
             aspect-ratio: 1/1;
-            box-shadow: 0 8px 32px 0 rgba(255, 9, 212, 0.37);
+            // box-shadow: 0 8px 32px 0 rgba(255, 9, 212, 0.37);
 
             img {
                 width: 100%;

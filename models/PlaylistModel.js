@@ -12,10 +12,16 @@ const Playlist = sequelize.define("Playlist", {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,
   },
   CoverArt: {
     type: DataTypes.STRING,
   },
+  isFavorite:{
+    type:DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  }
 });
 Playlist.sync()
 // Define a many-to-many relationship with MusicMetadata

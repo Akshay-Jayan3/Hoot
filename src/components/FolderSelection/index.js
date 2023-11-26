@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import MusicPlayer from "../AudioPlayer/index";
 import styles from "./styles.module.scss"; 
 import { useNavigate } from "react-router-dom";
 import { MainContext } from "../../context/MainContext";
@@ -10,7 +9,7 @@ import { cacheEntities } from "../../cacheStore/cacheEntities";
 var jsmediatags = window.jsmediatags;
 
 const FolderSelection = () => {
-  const { updateFolder, updateMetadata ,updateAlbums,updateArtists} = useContext(MainContext);
+  const { updateFolder} = useContext(MainContext);
   const navigate = useNavigate();
 
   const selectFolder = async () => {
@@ -28,8 +27,6 @@ const FolderSelection = () => {
             return;
           }
           let metadata = [];
-          let albums=[]
-          let artists=[]
           let fileCount = 0;
           let imgUrl;
           const musicFiles = files.filter((file) => {
@@ -72,14 +69,32 @@ const FolderSelection = () => {
                     }
                     fileCount++;
                     if (fileCount === musicFiles.length) {
-                      updateMetadata(metadata);
-                      cachemanager.addEntity(cacheEntities.SONGS,metadata).then((res)=>(console.log(res)))
-                      updateAlbums(metadata.map((item)=>({name:item.album,coverArt:item.picture})))
-                      updateArtists(metadata.map((item)=>(item.artist)))
-                      localStorage.setItem(
-                        "AllSongs",
-                        JSON.stringify(metadata)
-                      );
+                      Promise.all([
+                        cachemanager.addEntity(cacheEntities.SONGS, metadata)
+                          .then((res) => console.log(res))
+                          .catch((error) => console.error(error)),
+                      
+                        cachemanager.addEntity(cacheEntities.ALBUMS, metadata.map((item) => ({ name: item.album, CoverArt: item.picture })))
+                          .then((res) => console.log(res))
+                          .catch((error) => console.error(error)),
+                      
+                        cachemanager.addEntity(cacheEntities.ARTISTS, metadata.map((item) => ({name:item.artist})))
+                          .then((res) => console.log(res))
+                          .catch((error) => console.error(error)),
+                      ])
+                        .then(() => {
+                          console.log('All cache operations completed successfully.');
+                        })
+                        .catch((error) => {
+                          console.error('Error in one or more cache operations:', error);
+                        });
+                      
+                      // updateAlbums(metadata.map((item)=>({name:item.album,coverArt:item.picture})))
+                      // updateArtists(metadata.map((item)=>(item.artist)))
+                      // localStorage.setItem(
+                      //   "AllSongs",
+                      //   JSON.stringify(metadata)
+                      // );
                     }
                   },
                   onError: function (error) {
