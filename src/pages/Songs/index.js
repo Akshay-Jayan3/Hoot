@@ -6,26 +6,27 @@ import Search from "../../components/Search";
 import AudioPlayer from "../../components/AudioPlayer";
 import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
+import LoadingScreen from "../../components/Loader";
 const Songs = () => {
-  const { nowplaying ,updateNowPlaying} = useContext(MainContext);
+  const { nowplaying, updateNowPlaying } = useContext(MainContext);
   const [metadData, setMetadData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const fetchMetaData = async () => {
       try {
         const res = await cachemanager.getAllEntities(cacheEntities.SONGS);
         setMetadData(res.data);
-        setLoading(false);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
     fetchMetaData();
   }, []);
 
-  const toggleFavorite = (event, trackId, track,nowplaying) => {
+  const toggleFavorite = (event, trackId, track, nowplaying) => {
     event.stopPropagation();
     cachemanager
       .updateEntityById(cacheEntities.SONGS, trackId, {
@@ -33,8 +34,8 @@ const Songs = () => {
         isFavorite: !track.isFavorite,
       })
       .then(() => {
-        if(nowplaying){
-          updateNowPlaying({...track,isFavorite:!track.isFavorite});
+        if (nowplaying) {
+          updateNowPlaying({ ...track, isFavorite: !track.isFavorite });
         }
         setMetadData((prevTracks) =>
           prevTracks.map((prevTrack) =>
@@ -48,38 +49,39 @@ const Songs = () => {
   };
 
   return (
-    <div className="Songspage">
-      <div className="mainsection">
-        <Search />
-        <Header
-          heading={"Music For You"}
-          description={"Listen to your favourite songs"}
-        />
+    <>
+    {isLoading && <LoadingScreen message={"Loading ..."}/>}
+      <div className="Songspage">
+        <div className="mainsection">
+          <Search />
+          <Header
+            heading={"Music For You"}
+            description={"Listen to your favourite songs"}
+          />
 
-        <div className="songs-container">
-          {loading ? (
-            <p>Loading...</p>
-          ) : metadData && metadData.length > 0 ? (
-            <TrackList
-              tracks={metadData}
-              type={"track"}
+          <div className="songs-container">
+            {metadData && metadData.length > 0 ? (
+              <TrackList
+                tracks={metadData}
+                type={"track"}
+                toggleFavorite={toggleFavorite}
+              />
+            ) : (
+              <p>No songs found</p>
+            )}
+          </div>
+        </div>
+        <div className="currentMusic">
+          <div className="musicCard">
+            <AudioPlayer
+              selectedMusicFile={nowplaying}
+              AllSongs={metadData}
               toggleFavorite={toggleFavorite}
             />
-          ) : (
-            <p>No songs</p>
-          )}
+          </div>
         </div>
       </div>
-      <div className="currentMusic">
-        <div className="musicCard">
-          <AudioPlayer
-            selectedMusicFile={nowplaying}
-            AllSongs={metadData}
-            toggleFavorite={toggleFavorite}
-          />
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 

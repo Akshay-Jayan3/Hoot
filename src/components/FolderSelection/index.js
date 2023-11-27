@@ -5,12 +5,18 @@ import { MainContext } from "../../context/MainContext";
 import FolderOpenOutlinedIcon from "@mui/icons-material/FolderOpenOutlined";
 import * as cachemanager from '../../cacheStore/index'
 import { cacheEntities } from "../../cacheStore/cacheEntities";
+import { toast } from 'react-toastify';
 
 var jsmediatags = window.jsmediatags;
 
 const FolderSelection = () => {
   const { updateFolder} = useContext(MainContext);
   const navigate = useNavigate();
+  const notify = () => {
+    toast.success('Folder selected successfully!', {
+      position: toast.POSITION.TOP_RIGHT,
+      autoClose: 3000,
+    })};
 
   const selectFolder = async () => {
     try {
@@ -83,6 +89,7 @@ const FolderSelection = () => {
                           .catch((error) => console.error(error)),
                       ])
                         .then(() => {
+                          notify()
                           console.log('All cache operations completed successfully.');
                         })
                         .catch((error) => {

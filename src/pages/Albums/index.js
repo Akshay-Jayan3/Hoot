@@ -1,4 +1,4 @@
-import React, { useContext, useState ,useEffect} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Header from "../../components/Header";
 import { MainContext } from "../../context/MainContext";
 import TrackList from "../../components/TrackList";
@@ -7,66 +7,83 @@ import AudioPlayer from "../../components/AudioPlayer";
 import AlbumList from "../../components/AlbumList";
 import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
-
+import LoadingScreen from "../../components/Loader";
 
 const Albums = () => {
-  const [metaData,setMetaData] =useState(null)
-  const [albums,setAlbums]=useState(null)
-  const {nowplaying} = useContext(MainContext)
-  const [showAlbums,setShowAlbums]=useState(false)
-  const [selectedAlbum,setSelectedAlbum]=useState([])
-  
+  const [metaData, setMetaData] = useState(null);
+  const [albums, setAlbums] = useState(null);
+  const { nowplaying } = useContext(MainContext);
+  const [showAlbums, setShowAlbums] = useState(false);
+  const [selectedAlbum, setSelectedAlbum] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    cachemanager.getAllEntities(cacheEntities.SONGS).then((res) => {
-      if (res) {
-        setMetaData(res.data);
-      }
-    });
-    cachemanager.getAllEntities(cacheEntities.ALBUMS).then((res) => {
-      if (res) {
-        setAlbums(res.data);
-      }
-    });
-  }, [])
-  
-  const filteredSongs = selectedAlbum
-      ? metaData?.filter((song) => song.album === selectedAlbum.name)
-      : metaData;
-  
+    const promises = [
+      cachemanager.getAllEntities(cacheEntities.SONGS),
+      cachemanager.getAllEntities(cacheEntities.ALBUMS),
+    ];
+    Promise.all(promises)
+      .then(([songsRes, albumsRes]) => {
+        setIsLoading(false);
+        if (songsRes) {
+          setMetaData(songsRes.data);
+        }
 
-  const HandleSelectAlbum=()=>{
-    setShowAlbums(!showAlbums)
-  }
+        if (albumsRes) {
+          setAlbums(albumsRes.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
+  const filteredSongs = selectedAlbum
+    ? metaData?.filter((song) => song.album === selectedAlbum.name)
+    : metaData;
+
+  const HandleSelectAlbum = () => {
+    setShowAlbums(!showAlbums);
+  };
 
   return (
-    <div className="Songspage">
-      <div className="mainsection">
-        <Search showback={showAlbums} HandleBack={HandleSelectAlbum} />
-        <Header
-          heading={"Music For You"}
-          description={"Listen to your favourite songs"}
-        />
+    <>
+      {isLoading && <LoadingScreen message={"Loading ..."}/>}
+      <div className="Songspage">
+        <div className="mainsection">
+          <Search showback={showAlbums} HandleBack={HandleSelectAlbum} />
+          <Header
+            heading={"Music For You"}
+            description={"Listen to your favourite songs"}
+          />
 
-        <div className="songs-container">
-          {!showAlbums ? albums && albums?.length > 0 ? (
-            <AlbumList albums={albums} HandleFile={HandleSelectAlbum} setSelectedAlbum={setSelectedAlbum} count={filteredSongs.length} type={"Album"}/>
-          ) : (
-            <p>no artists</p>
-          ):filteredSongs && filteredSongs?.length > 0 ? (
-            <TrackList tracks={filteredSongs} type={'track'} />
-          ) : (
-            <p>no songss</p>
-          )}
-          
+          <div className="songs-container">
+            {!showAlbums ? (
+              albums && albums?.length > 0 ? (
+                <AlbumList
+                  albums={albums}
+                  HandleFile={HandleSelectAlbum}
+                  setSelectedAlbum={setSelectedAlbum}
+                  count={filteredSongs.length}
+                  type={"Album"}
+                />
+              ) : (
+                <p>Loading...</p>
+              )
+            ) : filteredSongs && filteredSongs?.length > 0 ? (
+              <TrackList tracks={filteredSongs} type={"track"} />
+            ) : (
+              <p>no songss</p>
+            )}
+          </div>
+        </div>
+        <div className="currentMusic">
+          <div className="musicCard">
+            <AudioPlayer selectedMusicFile={nowplaying} AllSongs={metaData} />
+          </div>
         </div>
       </div>
-      <div className="currentMusic">
-        <div className="musicCard">
-          <AudioPlayer selectedMusicFile={nowplaying} AllSongs={metaData}/>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 

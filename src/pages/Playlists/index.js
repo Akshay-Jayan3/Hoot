@@ -9,9 +9,11 @@ import ControlPointOutlinedIcon from "@mui/icons-material/ControlPointOutlined";
 import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
 import AddPlaylistModal from "../../components/AddplaylistModal";
+import LoadingScreen from "../../components/Loader";
 
 const Playlists = () => {
   const [metaData, setMetaData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [albums, setAlbums] = useState([
     { name: "playlist 1" },
     { name: "playlist 1" },
@@ -36,11 +38,6 @@ const Playlists = () => {
         setMetaData(res.data);
       }
     });
-    // cachemanager.getAllEntities(cacheEntities.ALBUMS).then((res) => {
-    //   if (res) {
-    //     setAlbums(res.data);
-    //   }
-    // });
   }, []);
 
   // const filteredSongs = selectedAlbum
@@ -52,44 +49,47 @@ const Playlists = () => {
   };
 
   return (
-    <div className="Songspage">
-      <div className="mainsection">
-        <Search  showback={showPlaylist} HandleBack={HandleSelectPlaylist}/>
-        <Header
-          heading={"Music For You"}
-          description={"Listen to your favourite songs"}
-        />
+    <>
+    {isLoading && <LoadingScreen message={"Loading ..."} />}
+      <div className="Songspage">
+        <div className="mainsection">
+          <Search showback={showPlaylist} HandleBack={HandleSelectPlaylist} />
+          <Header
+            heading={"Music For You"}
+            description={"Listen to your favourite songs"}
+          />
 
-        <div className="songs-container">
-          {showModal ? (
-            <AddPlaylistModal closeModal={closeModal} />
-          ):!showPlaylist ? (
-            albums && albums?.length > 0 ? (
-              <>
-                <button className="Addplaylist" onClick={openModal}>
-                  <ControlPointOutlinedIcon fontSize="small" />
-                  Add New Playlist
-                </button>
-                <AlbumList
-                  albums={albums}
-                  HandleFile={HandleSelectPlaylist}
-                  setSelectedAlbum={setSelectedAlbum}
-                />
-              </>
+          <div className="songs-container">
+            {showModal ? (
+              <AddPlaylistModal closeModal={closeModal} />
+            ) : !showPlaylist ? (
+              albums && albums?.length > 0 ? (
+                <>
+                  <button className="Addplaylist" onClick={openModal}>
+                    <ControlPointOutlinedIcon fontSize="small" />
+                    Add New Playlist
+                  </button>
+                  <AlbumList
+                    albums={albums}
+                    HandleFile={HandleSelectPlaylist}
+                    setSelectedAlbum={setSelectedAlbum}
+                  />
+                </>
+              ) : (
+                !showModal && <p>no playlist found</p>
+              )
             ) : (
-              !showModal && <p>no playlist found</p>
-            )
-          ) :
-            <PlaylistSongs/>
-          }
+              <PlaylistSongs />
+            )}
+          </div>
+        </div>
+        <div className="currentMusic">
+          <div className="musicCard">
+            <AudioPlayer selectedMusicFile={nowplaying} AllSongs={metaData} />
+          </div>
         </div>
       </div>
-      <div className="currentMusic">
-        <div className="musicCard">
-          <AudioPlayer selectedMusicFile={nowplaying} AllSongs={metaData} />
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 

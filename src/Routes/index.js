@@ -1,4 +1,5 @@
 import React, { lazy, Suspense } from "react";
+import LoadingScreen from "../components/Loader";
 import {
   BrowserRouter as Router,
   Routes,
@@ -7,7 +8,6 @@ import {
 import Layout from "../Layout";
 import ProtectedRoute from "./ProtectedRoute";
 
-const Home = lazy(() => import("../pages/Home"));
 const Songs = lazy(() => import("../pages/Songs"));
 const Albums = lazy(() => import("../pages/Albums"));
 const Artists = lazy(() => import("../pages/Artists"));
@@ -18,19 +18,11 @@ const Settings = lazy(() => import("../pages/Setting"));
 const AppRouter = () => {
   return (
     <Router>
-      <Suspense fallback={"loading"}>
+      <Suspense fallback={<LoadingScreen message={"Loading ..."}/>}>
         <Layout>
           <Routes>
             <Route
               path="/"
-              element={
-                <ProtectedRoute>
-                  <Home />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/songs"
               element={
                 <ProtectedRoute>
                   <Songs />
