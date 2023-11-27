@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import styles from "./styles.module.scss";
 import { Howl } from "howler";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
@@ -10,9 +10,10 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import { MainContext } from "../../context/MainContext";
 
-const AudioPlayer = ({ selectedMusicFile, AllSongs ,toggleFavorite}) => {
-  const { lastPlayed, updateLastPlayed, isPlaying, setIsPlaying } =
+const AudioPlayer = ({ selectedMusicFile, AllSongs, toggleFavorite }) => {
+  const { lastPlayed, updateLastPlayed, isPlaying, setIsPlaying,updateNowPlaying } =
     useContext(MainContext);
+  const isInitialMount = useRef(true);
   const [currentSong, setCurrentSong] = useState(null);
   const [sound, setSound] = useState(null);
   const [duration, setDuration] = useState(null);
@@ -29,10 +30,23 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs ,toggleFavorite}) => {
     } else {
       setCurrentSong(lastPlayed);
     }
+
+    if (!isInitialMount.current) {
+      updateLastPlayed(selectedMusicFile);
+      localStorage.setItem("lastplayed", JSON.stringify(selectedMusicFile));
+    }
+
+    // Set isInitialMount to false after the initial mount
+    isInitialMount.current = false;
   }, [selectedMusicFile, lastPlayed]);
 
   useEffect(() => {
     if (currentSong) {
+      // Stop the existing sound if it exists
+      if (sound) {
+        sound.stop();
+      }
+
       const newSound = new Howl({
         src: [currentSong.path],
         onplay: () => {
@@ -44,12 +58,16 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs ,toggleFavorite}) => {
         onload: () => {
           setDuration(newSound.duration());
           setSeekPosition(0);
+          newSound.play();
+       
         },
         onend: () => {
           setIsPlaying(false);
+          playNextSong();
         },
         html5: true,
       });
+
       setSound(newSound);
     }
     return () => {
@@ -69,20 +87,18 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs ,toggleFavorite}) => {
   }, [currentSong]);
 
   const togglePlayback = () => {
-    if (isPlaying) {
-      sound.pause();
-    } else {
-      if (!sound.playing()) {
-        // Check if the sound is not already playing
-        sound.play();
-      } else if (currentSong.title !== selectedMusicFile.title) {
-        // Check if the current song is different from the selected song
+    if (!isPlaying) {
+      if (!sound.playing() || currentSong.title !== selectedMusicFile.title) {
+        // Check if the sound is not already playing or the current song is different
         sound.pause();
-        setCurrentSong(selectedMusicFile); // Update the current song
+        updateNowPlaying(selectedMusicFile); // Update the current song
         sound.play();
       }
+    } else {
+      sound.pause();
     }
   };
+  
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -95,29 +111,40 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs ,toggleFavorite}) => {
 
   const playNextSong = () => {
     sound.pause();
+    if (AllSongs.length === 0) {
+      console.error("No songs available in the playlist.");
+      return;
+    }
     const currentIndex = AllSongs.findIndex(
       (song) => song.title === currentSong.title
     );
     const nextIndex = (currentIndex + 1) % AllSongs.length;
     const nextSong = AllSongs[nextIndex];
-    setCurrentSong(nextSong);
+    updateNowPlaying(nextSong);
     updateLastPlayed(nextSong);
     localStorage.setItem("lastplayed", JSON.stringify(nextSong));
   };
   const playPreviousSong = () => {
     sound.pause();
-    const currentIndex = AllSongs.findIndex(
-      (song) => song.title === currentSong.title
-    );
-    const PreviousIndex = (currentIndex - 1) % AllSongs.length;
-    let PreviousSong = "";
-    if (PreviousIndex !== 0) {
-      PreviousSong = AllSongs[PreviousIndex];
+  
+    if (AllSongs.length === 0) {
+      console.error("No songs available in the playlist.");
+      return;
     }
-    setCurrentSong(PreviousSong);
-    updateLastPlayed(PreviousSong);
-    localStorage.setItem("lastplayed", JSON.stringify(PreviousSong));
+  
+    const currentIndex = AllSongs.findIndex((song) => song.title === currentSong.title);
+    const previousIndex = (currentIndex - 1 + AllSongs.length) % AllSongs.length;
+    const previousSong = AllSongs[previousIndex];
+    
+    if (previousSong) {
+      updateNowPlaying(previousSong);
+      updateLastPlayed(previousSong);
+      localStorage.setItem("lastplayed", JSON.stringify(previousSong));
+    } else {
+      console.error("No previous song available.");
+    }
   };
+  
 
   const handleSeekChange = (e) => {
     const newSeekPosition = parseFloat(e.target.value);
@@ -140,8 +167,12 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs ,toggleFavorite}) => {
             <img src={currentSong?.picture} />
           </div>
           <div className={styles.metadata}>
-            <h3>{truncateText(currentSong?.title, 30)}</h3>
-            <p>{truncateText(currentSong?.artist, 30)}</p>
+            <h3 title={currentSong?.title}>
+              {truncateText(currentSong?.title, 30)}
+            </h3>
+            <p title={currentSong?.artist}>
+              {truncateText(currentSong?.artist, 30)}
+            </p>
           </div>
           <div className={styles.time}>
             <p>{currentTime.toFixed(2)}</p>
@@ -161,7 +192,14 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs ,toggleFavorite}) => {
           <div className={styles.controls}>
             <div>
               <button
-                onClick={(e) => toggleFavorite(e, selectedMusicFile.id, selectedMusicFile,true)}
+                onClick={(e) =>
+                  toggleFavorite(
+                    e,
+                    selectedMusicFile.id,
+                    selectedMusicFile,
+                    true
+                  )
+                }
                 className={`${styles.favouriteBtn} ${
                   selectedMusicFile?.isFavorite ? styles.favorite : ""
                 }`}

@@ -6,8 +6,8 @@ import { MainContext } from "../../context/MainContext";
 import { Audio } from "react-loader-spinner";
 
 const Track = ({ track, toggleFavorite }) => {
-  const { updateLastPlayed, updateNowPlaying } = useContext(MainContext);
-  const [selectedSong, setSelectedSong] = useState("");
+  const { updateLastPlayed, updateNowPlaying, nowplaying,isPlaying } =
+    useContext(MainContext);
 
   function truncateText(text, maxLength) {
     if (text?.length > maxLength) {
@@ -22,13 +22,12 @@ const Track = ({ track, toggleFavorite }) => {
       onClick={() => {
         updateNowPlaying(track);
         updateLastPlayed(track);
-        setSelectedSong(track);
         localStorage.setItem("lastplayed", JSON.stringify(track));
       }}
     >
       <div className={styles.info}>
         <div className={styles.thumbnail}>
-          {selectedSong === track ? (
+          {nowplaying.id === track.id && isPlaying ? (
             <Audio
               height="20"
               width="20"
@@ -43,10 +42,10 @@ const Track = ({ track, toggleFavorite }) => {
           )}
         </div>
         <div className={styles.titleArtist}>
-          <p className={selectedSong === track ? styles.selected : styles.title}>
+          <p style={{ color: nowplaying.id === track.id  ? "#ff09d4" : "" }} title={track?.title}>
             {truncateText(track?.title, 30)}
           </p>
-          <p className={styles.artist}>{truncateText(track?.artist, 20)}</p>
+          <p className={styles.artist} title={track?.artist}>{truncateText(track?.artist, 20)}</p>
         </div>
       </div>
       <div>
@@ -55,9 +54,7 @@ const Track = ({ track, toggleFavorite }) => {
       <div>
         <button
           onClick={(e) => toggleFavorite(e, track.id, track)}
-          className={`${styles.favouriteBtn} ${
-            track.isFavorite ? styles.favorite : ""
-          }`}
+          className={`${styles.favouriteBtn}`}
         >
           {track.isFavorite ? (
             <FavoriteIcon style={{ color: "red" }} />
