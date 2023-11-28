@@ -16,13 +16,13 @@ const LoadingScreen = ({ message, setting }) => {
           wrapperStyle={{}}
           wrapperClass="MagnifyingGlass-wrapper"
           glassColor="#465285"
-          color="#ff09d4"
+          color="#FF4081"
         />
       ) : (
         <Bars
           height="60"
           width="60"
-          color="#ff09d4"
+          color="#FF4081"
           ariaLabel="bars-loading"
           wrapperStyle={{}}
           wrapperClass=""
