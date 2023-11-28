@@ -4,6 +4,7 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { MainContext } from "../../context/MainContext";
 import { Audio } from "react-loader-spinner";
+import ScrollingText from "../ScrollingText";
 
 const Track = ({ track, toggleFavorite }) => {
   const { updateLastPlayed, updateNowPlaying, nowplaying,isPlaying } =
@@ -42,9 +43,7 @@ const Track = ({ track, toggleFavorite }) => {
           )}
         </div>
         <div className={styles.titleArtist}>
-          <p style={{ color: nowplaying.id === track.id  ? "#ff09d4" : "" }} title={track?.title}>
-            {truncateText(track?.title, 30)}
-          </p>
+          <ScrollingText text={track?.title} scroll={nowplaying.id === track.id && isPlaying}/>
           <p className={styles.artist} title={track?.artist}>{truncateText(track?.artist, 20)}</p>
         </div>
       </div>

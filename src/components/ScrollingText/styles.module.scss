@@ -1,0 +1,22 @@
+.scrollingTextContainer {
+    overflow: hidden;
+    width: 100%;
+  }
+  
+  .scrollingText {
+    white-space: nowrap;
+    display: inline-block;
+   
+  }
+  .animate{
+    animation: scrollAnimation 15s linear infinite;
+  }
+  
+  @keyframes scrollAnimation {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(-100%); /* Adjust based on the content and container width */
+    }
+  }
