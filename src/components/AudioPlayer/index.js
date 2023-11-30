@@ -9,6 +9,7 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import { MainContext } from "../../context/MainContext";
+import musicNote from "../../assects/musical-note (2).png"
 
 const AudioPlayer = ({ selectedMusicFile, AllSongs, toggleFavorite }) => {
   const { lastPlayed, updateLastPlayed, isPlaying, setIsPlaying,updateNowPlaying } =
@@ -232,7 +233,10 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs, toggleFavorite }) => {
           </div>
         </div>
       ) : (
-        <p>Start playing your first song</p>
+        <div className={styles.musicNote}>
+          <img src={musicNote} />
+          <p>Start playing your first song</p>
+        </div>
       )}
     </div>
   );

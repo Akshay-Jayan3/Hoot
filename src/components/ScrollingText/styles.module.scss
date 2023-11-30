@@ -6,9 +6,10 @@
   .scrollingText {
     white-space: nowrap;
     display: inline-block;
-   
+    
   }
   .animate{
+    color:#ff09d4 ;
     animation: scrollAnimation 15s linear infinite;
   }
   

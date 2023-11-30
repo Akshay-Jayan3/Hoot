@@ -9,7 +9,7 @@ import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddPlaylistModal from "../AddplaylistModal";
-const PlaylistSongs = () => {
+const PlaylistSongs = ({selectedPlaylist}) => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [tracks, setTracks] = useState([
     { title: "Orinary Person" },
@@ -33,8 +33,8 @@ const PlaylistSongs = () => {
           <div className={styles.wrapper}>
             <div className={styles.details}>
               <div className={styles.content}>
-                <p className={styles.name}>Playlist 1</p>
-                <p className={styles.count}>created on 21/12/2023</p>
+                <p className={styles.name}>{selectedPlaylist.name}</p>
+                <p className={styles.count}>created on {new Date(selectedPlaylist.createdAt).toLocaleDateString('en-GB')}</p>
               </div>
               <div className={styles.edit}>
                 <button onClick={openModal}><EditOutlinedIcon/></button>

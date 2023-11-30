@@ -14,12 +14,7 @@ import LoadingScreen from "../../components/Loader";
 const Playlists = () => {
   const [metaData, setMetaData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [albums, setAlbums] = useState([
-    { name: "playlist 1" },
-    { name: "playlist 1" },
-    { name: "playlist 1" },
-    { name: "playlist 1" },
-  ]);
+  const [playlists, setPlaylist] = useState([]);
   const { nowplaying } = useContext(MainContext);
   const [showPlaylist, setShowPlaylist] = useState(false);
   const [selectedAlbum, setSelectedAlbum] = useState([]);
@@ -38,6 +33,11 @@ const Playlists = () => {
         setMetaData(res.data);
       }
     });
+    cachemanager.getAllEntities(cacheEntities.PLAYLISTS).then((res) => {
+      if (res) {
+        setPlaylist(res.data);
+      }
+    });
   }, []);
 
   // const filteredSongs = selectedAlbum
@@ -47,6 +47,7 @@ const Playlists = () => {
   const HandleSelectPlaylist = () => {
     setShowPlaylist(!showPlaylist);
   };
+  
 
   return (
     <>
@@ -61,16 +62,16 @@ const Playlists = () => {
 
           <div className="songs-container">
             {showModal ? (
-              <AddPlaylistModal closeModal={closeModal} />
+              <AddPlaylistModal closeModal={closeModal} setPlaylist={setPlaylist}/>
             ) : !showPlaylist ? (
-              albums && albums?.length > 0 ? (
+              playlists && playlists?.length > 0 ? (
                 <>
                   <button className="Addplaylist" onClick={openModal}>
                     <ControlPointOutlinedIcon fontSize="small" />
                     Add New Playlist
                   </button>
                   <AlbumList
-                    albums={albums}
+                    albums={playlists}
                     HandleFile={HandleSelectPlaylist}
                     setSelectedAlbum={setSelectedAlbum}
                   />
@@ -79,7 +80,7 @@ const Playlists = () => {
                 !showModal && <p>no playlist found</p>
               )
             ) : (
-              <PlaylistSongs />
+              <PlaylistSongs selectedPlaylist={selectedAlbum}/>
             )}
           </div>
         </div>

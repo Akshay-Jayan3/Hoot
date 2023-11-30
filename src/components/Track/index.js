@@ -43,7 +43,7 @@ const Track = ({ track, toggleFavorite }) => {
           )}
         </div>
         <div className={styles.titleArtist}>
-          <ScrollingText text={track?.title} scroll={nowplaying.id === track.id && isPlaying}/>
+          <ScrollingText text={track?.title} scroll={nowplaying.id === track.id}/>
           <p className={styles.artist} title={track?.artist}>{truncateText(track?.artist, 20)}</p>
         </div>
       </div>
