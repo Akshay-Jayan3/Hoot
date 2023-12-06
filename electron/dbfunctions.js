@@ -30,7 +30,8 @@ async function add(modelName, data) {
 
     const addedSongs = await model.bulkCreate(data, { ignoreDuplicates: true });
     console.log(`Added ${addedSongs.length} songs to the database.`);
-    return addedSongs;
+     const addedData = addedSongs.map(song => song.get({ plain: true }));
+    return addedData;
   } catch (error) {
     console.error(`Error adding entity for ${modelName}:`, error.message);
     throw error;
@@ -111,7 +112,7 @@ const getAllPlaylists = async (modelName, modelName2) => {
 
     // Fetch all playlists with associated songs
     const playlists = await PlaylistModel.findAll({
-      attributes: ['id', 'name'],
+      attributes: ['id', 'name','createdAt'],
       include: [{
         model: MusicMetadata,
         through: { attributes: [] },

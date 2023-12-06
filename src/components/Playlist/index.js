@@ -39,7 +39,7 @@ const PlaylistSongs = ({ selectedPlaylist ,tracks}) => {
   return (
     <div className={styles.container}>
       {showModal ? (
-        <AddPlaylistModal closeModal={closeModal} />
+        <AddPlaylistModal closeModal={closeModal} playlistDetails={selectedPlaylist}/>
       ) : (
         <>
           <div className={styles.wrapper}>
