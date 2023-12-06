@@ -7,10 +7,15 @@ import AudioPlayer from "../../components/AudioPlayer";
 import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
 import LoadingScreen from "../../components/Loader";
+import { useLocation} from 'react-router-dom';
+
 const Songs = () => {
   const { nowplaying, updateNowPlaying } = useContext(MainContext);
   const [metadData, setMetadData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { state } = useLocation();
+  const { playlistDetails } = state || {};
+
   useEffect(() => {
     const fetchMetaData = async () => {
       try {
@@ -48,6 +53,14 @@ const Songs = () => {
       .catch((error) => console.error("Error editing:", error));
   };
 
+  const AddtoPlaylist=(e,playlistId,songId)=>{
+    e.stopPropagation();
+    cachemanager.addsongsToplaylist(cacheEntities.PLAYLISTS,cacheEntities.SONGS,playlistId,songId).then((res)=>{
+      console.log(res)
+    })
+
+  }
+
   return (
     <>
     {isLoading && <LoadingScreen message={"Loading ..."}/>}
@@ -65,6 +78,8 @@ const Songs = () => {
                 tracks={metadData}
                 type={"track"}
                 toggleFavorite={toggleFavorite}
+                AddtoPlaylist={AddtoPlaylist}
+                playlistDetails={playlistDetails}
               />
             ) : (
               <p>No songs found</p>

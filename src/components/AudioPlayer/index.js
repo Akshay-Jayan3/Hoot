@@ -1,157 +1,35 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useEffect, useContext, useRef } from "react";
 import styles from "./styles.module.scss";
-import { Howl } from "howler";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import SkipPreviousRoundedIcon from "@mui/icons-material/SkipPreviousRounded";
 import SkipNextRoundedIcon from "@mui/icons-material/SkipNextRounded";
 import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUpRounded";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import RepeatOneOutlinedIcon from "@mui/icons-material/RepeatOneOutlined";
+import ShuffleOutlinedIcon from "@mui/icons-material/ShuffleOutlined";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
-import { MainContext } from "../../context/MainContext";
-import musicNote from "../../assects/musical-note (2).png"
+import { AudioContext } from "../../context/AudioContext";
+import musicNote from "../../assects/musical-note (2).png";
 
-const AudioPlayer = ({ selectedMusicFile, AllSongs, toggleFavorite }) => {
-  const { lastPlayed, updateLastPlayed, isPlaying, setIsPlaying,updateNowPlaying } =
-    useContext(MainContext);
-  const isInitialMount = useRef(true);
-  const [currentSong, setCurrentSong] = useState(null);
-  const [sound, setSound] = useState(null);
-  const [duration, setDuration] = useState(null);
-  const [seekPosition, setSeekPosition] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [time, setTime] = useState({
-    min: 0,
-    sec: 0,
-  });
 
-  useEffect(() => {
-    if (selectedMusicFile) {
-      setCurrentSong(selectedMusicFile);
-    } else {
-      setCurrentSong(lastPlayed);
-    }
 
-    if (!isInitialMount.current) {
-      updateLastPlayed(selectedMusicFile);
-      localStorage.setItem("lastplayed", JSON.stringify(selectedMusicFile));
-    }
-
-    // Set isInitialMount to false after the initial mount
-    isInitialMount.current = false;
-  }, [selectedMusicFile, lastPlayed]);
-
-  useEffect(() => {
-    if (currentSong) {
-      // Stop the existing sound if it exists
-      if (sound) {
-        sound.stop();
-      }
-
-      const newSound = new Howl({
-        src: [currentSong.path],
-        onplay: () => {
-          setIsPlaying(true);
-        },
-        onpause: () => {
-          setIsPlaying(false);
-        },
-        onload: () => {
-          setDuration(newSound.duration());
-          setSeekPosition(0);
-          newSound.play();
-       
-        },
-        onend: () => {
-          setIsPlaying(false);
-          playNextSong();
-        },
-        html5: true,
-      });
-
-      setSound(newSound);
-    }
-    return () => {
-      sound?.unload();
-    };
-  }, [currentSong]);
-
-  useEffect(() => {
-    if (duration) {
-      const min = Math.floor(duration / 60);
-      const secRemain = Math.floor(duration % 60);
-      setTime({
-        min: min,
-        sec: secRemain,
-      });
-    }
-  }, [currentSong]);
-
-  const togglePlayback = () => {
-    if (!isPlaying) {
-      if (!sound.playing() || currentSong.title !== selectedMusicFile.title) {
-        // Check if the sound is not already playing or the current song is different
-        sound.pause();
-        updateNowPlaying(selectedMusicFile); // Update the current song
-        sound.play();
-      }
-    } else {
-      sound.pause();
-    }
-  };
-  
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (sound && isPlaying) {
-        setCurrentTime(sound.seek());
-      }
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [sound, isPlaying]);
-
-  const playNextSong = () => {
-    sound.pause();
-    if (AllSongs.length === 0) {
-      console.error("No songs available in the playlist.");
-      return;
-    }
-    const currentIndex = AllSongs.findIndex(
-      (song) => song.title === currentSong.title
-    );
-    const nextIndex = (currentIndex + 1) % AllSongs.length;
-    const nextSong = AllSongs[nextIndex];
-    updateNowPlaying(nextSong);
-    updateLastPlayed(nextSong);
-    localStorage.setItem("lastplayed", JSON.stringify(nextSong));
-  };
-  const playPreviousSong = () => {
-    sound.pause();
-  
-    if (AllSongs.length === 0) {
-      console.error("No songs available in the playlist.");
-      return;
-    }
-  
-    const currentIndex = AllSongs.findIndex((song) => song.title === currentSong.title);
-    const previousIndex = (currentIndex - 1 + AllSongs.length) % AllSongs.length;
-    const previousSong = AllSongs[previousIndex];
-    
-    if (previousSong) {
-      updateNowPlaying(previousSong);
-      updateLastPlayed(previousSong);
-      localStorage.setItem("lastplayed", JSON.stringify(previousSong));
-    } else {
-      console.error("No previous song available.");
-    }
-  };
-  
-
-  const handleSeekChange = (e) => {
-    const newSeekPosition = parseFloat(e.target.value);
-    setSeekPosition(newSeekPosition);
-    sound.seek(newSeekPosition);
-  };
+const AudioPlayer = ({ selectedMusicFile, AllSongs }) => {
+  const {
+    isPlaying,
+    currentSong,
+    seekPosition,
+    currentTime,
+    time,
+    duration,
+    isRepeat,
+    isShuffle,
+    setCurrentSong,
+    playNextSong,
+    playPreviousSong,
+    toggleShuffle,
+    toggleRepeat,
+    togglePlayback,
+    handleSeekChange,
+  } = useContext(AudioContext);
 
   function truncateText(text, maxLength) {
     if (text?.length > maxLength) {
@@ -159,6 +37,14 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs, toggleFavorite }) => {
     }
     return text;
   }
+
+
+  useEffect(() => {
+    if (selectedMusicFile) {
+      setCurrentSong(selectedMusicFile);
+    }
+  }, [selectedMusicFile]);
+
   return (
     <div className={styles.container}>
       {currentSong ? (
@@ -193,27 +79,21 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs, toggleFavorite }) => {
           <div className={styles.controls}>
             <div>
               <button
-                onClick={(e) =>
-                  toggleFavorite(
-                    e,
-                    selectedMusicFile.id,
-                    selectedMusicFile,
-                    true
-                  )
-                }
-                className={`${styles.favouriteBtn} ${
-                  selectedMusicFile?.isFavorite ? styles.favorite : ""
+                onClick={toggleRepeat}
+                className={`${styles.otherBtn} 
                 }`}
               >
-                {selectedMusicFile?.isFavorite ? (
-                  <FavoriteIcon style={{ color: "red" }} />
-                ) : (
-                  <FavoriteBorderOutlinedIcon style={{ color: "#fff" }} />
-                )}
+                <RepeatOneOutlinedIcon
+                  style={{ color: isRepeat ? "#ff09d4" : "#fff" }}
+                  // fontSize="small"
+                />
               </button>
             </div>
             <div className={styles.playebackwrapper}>
-              <button onClick={playPreviousSong} className={styles.skip}>
+              <button
+                onClick={() => playPreviousSong(AllSongs)}
+                className={styles.skip}
+              >
                 <SkipPreviousRoundedIcon fontSize="large" />
               </button>
               <button onClick={togglePlayback} className={styles.playpause}>
@@ -223,12 +103,20 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs, toggleFavorite }) => {
                   <PlayArrowRoundedIcon fontSize="large" />
                 )}
               </button>
-              <button onClick={playNextSong} className={styles.skip}>
+              <button
+                onClick={() => playNextSong(AllSongs)}
+                className={styles.skip}
+              >
                 <SkipNextRoundedIcon fontSize="large" />
               </button>
             </div>
-            <div>
-              <VolumeUpRoundedIcon />
+            <div className={styles.otherBtn}>
+              <button onClick={toggleShuffle} className={`${styles.otherBtn}`}>
+                <ShuffleOutlinedIcon
+                  fontSize="small"
+                  style={{ color: isShuffle ? "#ff09d4" : "#fff" }}
+                />
+              </button>
             </div>
           </div>
         </div>

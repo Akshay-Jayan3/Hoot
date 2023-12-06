@@ -33,9 +33,62 @@ const MusicMetadata = sequelize.define('MusicMetadata', {
   
 });
 
+const Playlist = sequelize.define("Playlist", {
+  id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  CoverArt: {
+    type: DataTypes.STRING,
+  },
+  isFavorite:{
+    type:DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  }
+});
 
-MusicMetadata.sync();
+const PlaylistMusicMetadata = sequelize.define('PlaylistMusicMetadata', {
+  id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  playlistId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references:{
+        model:Playlist,
+        key:'id',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+    }
+  },
+  MusicMetadatumId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references:{
+        model:MusicMetadata,
+        key:"id"
+    }
+  },
+});
+PlaylistMusicMetadata.sync()
+MusicMetadata.sync()
+Playlist.sync()
+
+MusicMetadata.belongsToMany(Playlist, { through: PlaylistMusicMetadata });
+Playlist.belongsToMany(MusicMetadata, { through: PlaylistMusicMetadata});
 
 
 
-module.exports = MusicMetadata;
+module.exports = {MusicMetadata,Playlist};
+

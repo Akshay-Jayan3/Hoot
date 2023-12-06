@@ -9,12 +9,24 @@ import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddPlaylistModal from "../AddplaylistModal";
-const PlaylistSongs = ({selectedPlaylist}) => {
+import { useNavigate } from "react-router-dom";
+const PlaylistSongs = ({ selectedPlaylist ,tracks}) => {
   const [isPlaying, setIsPlaying] = useState(true);
-  const [tracks, setTracks] = useState([
-    { title: "Orinary Person" },
-    { title: "Orinary Person" },
-  ]);
+
+  
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/", {
+      state: {
+        playlistDetails: {
+          playlistId: selectedPlaylist.id,
+          PlaylistName: selectedPlaylist.name,
+        },
+      },
+    });
+  };
+
   const [showModal, setShowModal] = useState(false);
   const openModal = () => {
     setShowModal(true);
@@ -27,34 +39,31 @@ const PlaylistSongs = ({selectedPlaylist}) => {
   return (
     <div className={styles.container}>
       {showModal ? (
-        <AddPlaylistModal closeModal={closeModal}/>
+        <AddPlaylistModal closeModal={closeModal} />
       ) : (
         <>
           <div className={styles.wrapper}>
             <div className={styles.details}>
               <div className={styles.content}>
                 <p className={styles.name}>{selectedPlaylist.name}</p>
-                <p className={styles.count}>created on {new Date(selectedPlaylist.createdAt).toLocaleDateString('en-GB')}</p>
+                <p className={styles.count}>
+                  created on{" "}
+                  {new Date(selectedPlaylist.createdAt).toLocaleDateString(
+                    "en-GB"
+                  )}
+                </p>
               </div>
               <div className={styles.edit}>
-                <button onClick={openModal}><EditOutlinedIcon/></button>
+                <button onClick={openModal}>
+                  <EditOutlinedIcon />
+                </button>
               </div>
             </div>
             <div className={styles.info}>
               <div className={styles.btns}>
-                <div className={styles.addSong}>
-                  <button>
-                    <AddCircleOutlineOutlinedIcon />
-                  </button>
-                </div>
-                <div className={styles.delete}>
-                  <button>
-                    <DeleteOutlineOutlinedIcon />
-                  </button>
-                </div>
-                <div className={styles.favourite}>
-                  <button>
-                    <FavoriteBorderOutlinedIcon />
+                <div>
+                  <button className={styles.btn} onClick={handleClick}>
+                    Add songs <AddCircleOutlineOutlinedIcon fontSize="small" />
                   </button>
                 </div>
               </div>
@@ -72,7 +81,7 @@ const PlaylistSongs = ({selectedPlaylist}) => {
             </div>
           </div>
 
-          <TrackList tracks={tracks} type={"track"} />
+          <TrackList tracks={selectedPlaylist.MusicMetadata} type={"track"} />
         </>
       )}
     </div>

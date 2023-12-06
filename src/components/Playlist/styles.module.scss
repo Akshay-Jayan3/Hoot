@@ -73,15 +73,27 @@
                 display: flex;
                 gap: 0.5rem;
 
-                button {
-                    background-color: transparent;
-                    color: #fff;
-                    border: none;
-
+                .btn {
+                    display: flex;
+                    align-items: center;
+                    background: rgba(255, 255, 255, 0.1);
+                    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+                    backdrop-filter: blur(18px);
+                    -webkit-backdrop-filter: blur(18px);
+                    font-size: 12px;
+                    border: 1px solid rgba(255, 255, 255, 0.18);
+                    padding-inline: 1em;
+                    padding-block: 0.5em;
+                    border-radius: 10px;
+                    color:#fff;
+                    gap: 0.5rem;
+                    transition: all 0.3s ease;
                     &:hover {
-                        cursor: pointer;
+                      opacity: 0.8;
+                      cursor: pointer;
+                      transform: scale(1.05);
                     }
-                }
+                  }
 
             }
 

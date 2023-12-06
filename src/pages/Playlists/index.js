@@ -10,10 +10,11 @@ import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
 import AddPlaylistModal from "../../components/AddplaylistModal";
 import LoadingScreen from "../../components/Loader";
+import { useLocation } from "react-router-dom";
 
 const Playlists = () => {
   const [metaData, setMetaData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [playlists, setPlaylist] = useState([]);
   const { nowplaying } = useContext(MainContext);
   const [showPlaylist, setShowPlaylist] = useState(false);
@@ -28,30 +29,47 @@ const Playlists = () => {
   };
 
   useEffect(() => {
-    cachemanager.getAllEntities(cacheEntities.SONGS).then((res) => {
-      if (res) {
-        setMetaData(res.data);
-      }
-    });
-    cachemanager.getAllEntities(cacheEntities.PLAYLISTS).then((res) => {
-      if (res) {
-        setPlaylist(res.data);
-      }
-    });
+    const promises = [
+      cachemanager.getAllEntities(cacheEntities.SONGS),
+      cachemanager.getSongsFromplaylist(cacheEntities.PLAYLISTS,cacheEntities.SONGS),
+    ];
+    Promise.all(promises)
+      .then(([songsRes, playlistRes]) => {
+        setIsLoading(false);
+        if (songsRes) {
+          setMetaData(songsRes.data);
+        }
+
+        if (playlistRes) {
+          setPlaylist(playlistRes.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   }, []);
 
-  // const filteredSongs = selectedAlbum
-  //   ? metaData?.filter((song) => song.album === selectedAlbum.name)
-  //   : metaData;
 
   const HandleSelectPlaylist = () => {
     setShowPlaylist(!showPlaylist);
   };
-  
+
+  const deletePlaylist = (event, PlaylistId) => {
+    event.stopPropagation();
+    cachemanager
+      .deleteEntityById(cacheEntities.PLAYLISTS, PlaylistId)
+      .then((res) => {
+        console.log(res);
+        setPlaylist((prevTracks) =>
+          prevTracks.filter((prevTrack) => prevTrack.id !== PlaylistId)
+        );
+      })
+      .catch((error) => console.error("Error deleting playlist:", error));
+  };
 
   return (
     <>
-    {isLoading && <LoadingScreen message={"Loading ..."} />}
+      {isLoading && <LoadingScreen message={"Loading ..."} />}
       <div className="Songspage">
         <div className="mainsection">
           <Search showback={showPlaylist} HandleBack={HandleSelectPlaylist} />
@@ -62,7 +80,10 @@ const Playlists = () => {
 
           <div className="songs-container">
             {showModal ? (
-              <AddPlaylistModal closeModal={closeModal} setPlaylist={setPlaylist}/>
+              <AddPlaylistModal
+                closeModal={closeModal}
+                setPlaylist={setPlaylist}
+              />
             ) : !showPlaylist ? (
               playlists && playlists?.length > 0 ? (
                 <>
@@ -74,10 +95,16 @@ const Playlists = () => {
                     albums={playlists}
                     HandleFile={HandleSelectPlaylist}
                     setSelectedAlbum={setSelectedAlbum}
+                    HandleAction={deletePlaylist}
                   />
                 </>
               ) : (
-                !showModal && <p>no playlist found</p>
+                !showModal && (
+                  <button className="Addplaylist" onClick={openModal}>
+                    <ControlPointOutlinedIcon fontSize="small" />
+                    Add New Playlist
+                  </button>
+                )
               )
             ) : (
               <PlaylistSongs selectedPlaylist={selectedAlbum}/>

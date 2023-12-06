@@ -1,13 +1,14 @@
 import React, { useContext, useState } from "react";
 import styles from "./styles.module.scss";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import PlaylistAddCircleOutlinedIcon from "@mui/icons-material/PlaylistAddCircleOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { MainContext } from "../../context/MainContext";
 import { Audio } from "react-loader-spinner";
 import ScrollingText from "../ScrollingText";
 
-const Track = ({ track, toggleFavorite }) => {
-  const { updateLastPlayed, updateNowPlaying, nowplaying,isPlaying } =
+const Track = ({ track, toggleFavorite, playlistDetails, AddtoPlaylist }) => {
+  const { updateLastPlayed, updateNowPlaying, nowplaying, isPlaying } =
     useContext(MainContext);
 
   function truncateText(text, maxLength) {
@@ -43,12 +44,14 @@ const Track = ({ track, toggleFavorite }) => {
           )}
         </div>
         <div className={styles.titleArtist}>
-          <ScrollingText text={track?.title} scroll={nowplaying.id === track.id}/>
-          <p className={styles.artist} title={track?.artist}>{truncateText(track?.artist, 20)}</p>
+          <ScrollingText
+            text={track?.title}
+            scroll={nowplaying.id === track.id}
+          />
+          <p className={styles.artist} title={track?.artist}>
+            {truncateText(track?.artist, 50)}
+          </p>
         </div>
-      </div>
-      <div>
-        <p>{truncateText(track?.album, 10)}</p>
       </div>
       <div>
         <button
@@ -58,11 +61,20 @@ const Track = ({ track, toggleFavorite }) => {
           {track.isFavorite ? (
             <FavoriteIcon style={{ color: "red" }} />
           ) : (
-            <FavoriteBorderOutlinedIcon style={{ color: "#fff" }} />
+            <FavoriteBorderOutlinedIcon />
           )}
         </button>
       </div>
-      {/* <div>more</div> */}
+      {playlistDetails && (
+        <div>
+          <button
+            onClick={(e) => AddtoPlaylist(e,playlistDetails?.playlistId, track.id)}
+            className={`${styles.addPlaylist}`}
+          >
+            <PlaylistAddCircleOutlinedIcon />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

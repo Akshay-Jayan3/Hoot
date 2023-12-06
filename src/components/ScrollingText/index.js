@@ -25,7 +25,7 @@ const ScrollingText = ({ text, scroll }) => {
 
   return (
     <div className={styles.scrollingTextContainer}>
-      <div className={`${styles.scrollingText} ${scroll ? styles.animate : ''}`} style={{ transform: `translateX(-${scrollPosition}%)`}}>
+      <div title ={text} className={`${styles.scrollingText} ${scroll && styles.animate }`}style={{ transform: scroll ? `translateX(-${scrollPosition}%)` : 'translateX(0%)' }}>
         {scroll ? text : truncateText(text,30)}
       </div>
     </div>

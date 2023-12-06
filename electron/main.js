@@ -10,6 +10,8 @@ const {
   DELETE_BY_ID,
   DELETE_ALL,
   UPDATE_BY_ID,
+  ADD_SONG_TO_PLAYLIST,
+  GET_SONGS_FROM_PLAYLIST
 } = require("./constants");
 function createWindow() {
   const win = new BrowserWindow({
@@ -76,6 +78,18 @@ ipcMain.handle(GET_BY_FIELD, async (event, modelName, field, value) => {
   }
 });
 
+ipcMain.handle(GET_SONGS_FROM_PLAYLIST, async (event, modelName, modelName2) => {
+  try {
+    const songs = await dbfunctions.getAllPlaylists(modelName, modelName2);
+    console.log(songs)
+    return songs; // Returning the result directly
+  } catch (error) {
+    console.error(`Error getting ${modelName.name} by field:`, error.message);
+    throw error;
+  }
+});
+
+
 ipcMain.handle(ADD, async (event, modelName, data) => {
   try {
     const addedEntity = await dbfunctions.add(modelName, data);
@@ -83,6 +97,20 @@ ipcMain.handle(ADD, async (event, modelName, data) => {
       status: 'S',
       data: addedEntity,
       message: 'Entity added successfully',
+    };
+  } catch (error) {
+    console.error(`Error adding ${modelName.name}:`, error);
+    throw error;
+  }
+});
+
+ipcMain.handle(ADD_SONG_TO_PLAYLIST, async (event, modelName,modelName2 ,playlistId,songId) => {
+  try {
+    const addedEntity = await dbfunctions.addSongToPlaylist(modelName, modelName2 ,playlistId,songId);
+    return {
+      status: 'S',
+      data: {song:addedEntity.song,playlist:addedEntity.playlist},
+      message: `Song "${addedEntity.song.title}" added to playlist "${addedEntity.playlist.name}".`,
     };
   } catch (error) {
     console.error(`Error adding ${modelName.name}:`, error);

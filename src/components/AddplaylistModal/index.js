@@ -14,7 +14,7 @@ const AddPlaylistModal = ({ showModal, closeModal, setPlaylist }) => {
       .then((res) => {
         setPlaylistName("");
         closeModal();
-        setPlaylist((prevTracks) =>[...prevTracks,{ name: playlistName }])
+        setPlaylist((prevTracks) =>[...prevTracks,{ id: res.data.id ,name: res.data.name }])
       })
       .catch((error) => closeModal());
   };

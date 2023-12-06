@@ -25,7 +25,7 @@
     .wrapper {
         display: flex;
         align-items: center;
-        justify-content: space-around;
+        justify-content: space-between;
         height: 100%;
         width: 100%;
         flex-direction: column;
@@ -52,7 +52,7 @@
 
         .start {
             position: relative;
-            width:80%;
+            width:70%;
             aspect-ratio: 1/1;
             // box-shadow: 0 8px 32px 0 rgba(255, 9, 212, 0.37);
             &:before, &:after {
@@ -92,7 +92,7 @@
             }
         }
         .picture {
-            width: 80%;
+            width: 70%;
             aspect-ratio: 1/1;
             // box-shadow: 0 8px 32px 0 rgba(255, 9, 212, 0.37);
 
@@ -107,7 +107,8 @@
             display: flex;
             align-items: center;
             flex-direction: column;
-            gap: 8px;
+            white-space: nowrap;
+            overflow: hidden;
             p{
                 color:#ff09d4;
             }
@@ -121,9 +122,10 @@
             justify-content: space-around;
             gap: 8px;
             
-            .favouriteBtn {
+            .otherBtn {
                 background: transparent;
                 border: none;
+                color: #fff;
                 cursor: pointer;
                 transition: transform 0.3s ease-in-out;
             
@@ -132,10 +134,8 @@
                   cursor: pointer;
                 }
               }
-            
-              .favorite {
-                transform: scale(1.1);
-              }
+
+              
 
             .playebackwrapper {
                 padding-inline: 8px;
@@ -143,8 +143,8 @@
                 gap: 8px;
 
                 .playpause {
-                    width: 60px;
-                    height: 60px;
+                    width: 65px;
+                    height: 65px;
                     border-radius: 50%;
                     border: none;
                     display: flex;
