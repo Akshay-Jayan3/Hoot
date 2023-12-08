@@ -5,6 +5,7 @@ import { Howl } from "howler";
 export const AudioContext = createContext({
     isPlaying:null,
     currentSong:null,
+    AllSongs:null,
     seekPosition:null,
     currentTime:null,
     time:null,
@@ -12,6 +13,7 @@ export const AudioContext = createContext({
     isRepeat:null,
     isShuffle:null,
     setCurrentSong:()=>{},
+    setAllSongs:()=>{},
     playNextSong:()=>{},
     playPreviousSong:()=>{},
     toggleShuffle:()=>{},
@@ -25,6 +27,7 @@ export const AudioProvider = ({ children }) => {
     useContext(MainContext);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSong, setCurrentSong] = useState(null);
+  const [AllSongs, setAllSongs] = useState(null);
   const [sound, setSound] = useState(null);
   const [duration, setDuration] = useState(null);
   const [seekPosition, setSeekPosition] = useState(0);
@@ -32,9 +35,10 @@ export const AudioProvider = ({ children }) => {
   const [isShuffle, setIsShuffle] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
   const [time, setTime] = useState({
-    min: 0,
-    sec: 0,
+    min: '00',
+    sec: '00',
   });
+  console.log(sound?.seek())
 
   const togglePlayback = () => {
     if (!isPlaying) {
@@ -53,10 +57,10 @@ export const AudioProvider = ({ children }) => {
     return newArray;
   }
 
-  const playNextSong = (AllSongs) => {
-    sound.pause();
+  const playNextSong = () => {
+    sound?.pause();
 
-    if (AllSongs.length === 0) {
+    if (AllSongs?.length === 0) {
       console.error("No songs available in the playlist.");
       return;
     }
@@ -72,10 +76,10 @@ export const AudioProvider = ({ children }) => {
       nextSong = shuffledSongs[(currentIndex + 1) % shuffledSongs.length];
     } else {
       // Shuffle is not enabled, select the next song in order
-      const currentIndex = AllSongs.findIndex(
+      const currentIndex = AllSongs?.findIndex(
         (song) => song.id === currentSong.id
       );
-      nextSong = AllSongs[(currentIndex + 1) % AllSongs.length];
+      nextSong = AllSongs[(currentIndex + 1) % AllSongs?.length];
     }
 
     updateNowPlaying(nextSong);
@@ -91,10 +95,10 @@ export const AudioProvider = ({ children }) => {
     setIsRepeat(!isRepeat);
   };
 
-  const playPreviousSong = (AllSongs) => {
+  const playPreviousSong = () => {
     sound.pause();
 
-    if (AllSongs.length === 0) {
+    if (AllSongs?.length === 0) {
       console.error("No songs available in the playlist.");
       return;
     }
@@ -113,11 +117,11 @@ export const AudioProvider = ({ children }) => {
         ];
     } else {
       // Shuffle is not enabled, select the previous song in order
-      const currentIndex = AllSongs.findIndex(
+      const currentIndex = AllSongs?.findIndex(
         (song) => song.id === currentSong.id
       );
       previousSong =
-        AllSongs[(currentIndex - 1 + AllSongs.length) % AllSongs.length];
+        AllSongs[(currentIndex - 1 + AllSongs?.length) % AllSongs?.length];
     }
 
     updateNowPlaying(previousSong);
@@ -195,10 +199,11 @@ export const AudioProvider = ({ children }) => {
     const interval = setInterval(() => {
       if (sound && isPlaying) {
         setCurrentTime(sound.seek());
+        setSeekPosition(sound.seek())
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [sound, isPlaying]);
+  }, [sound, isPlaying,seekPosition]);
 
   useEffect(() => {
     if (currentSong) {
@@ -240,14 +245,14 @@ export const AudioProvider = ({ children }) => {
 
   useEffect(() => {
     if (duration) {
-      const min = Math.floor(duration / 60);
+      const min = "0"+ Math.floor(duration / 60);
       const secRemain = Math.floor(duration % 60);
       setTime({
         min: min,
         sec: secRemain,
       });
     }
-  }, [currentSong]);
+  }, [currentSong,duration]);
 
   return (
     <AudioContext.Provider
@@ -256,6 +261,7 @@ export const AudioProvider = ({ children }) => {
         setIsPlaying,
         currentSong,
         setCurrentSong,
+        setAllSongs,
         seekPosition,
         currentTime,
         time,

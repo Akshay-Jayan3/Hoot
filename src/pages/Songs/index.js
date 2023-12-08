@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import Header from "../../components/Header";
 import { MainContext } from "../../context/MainContext";
+import { AudioContext } from "../../context/AudioContext";
 import TrackList from "../../components/TrackList";
 import Search from "../../components/Search";
 import AudioPlayer from "../../components/AudioPlayer";
@@ -10,17 +11,21 @@ import LoadingScreen from "../../components/Loader";
 import { useLocation} from 'react-router-dom';
 
 const Songs = () => {
-  const { nowplaying, updateNowPlaying } = useContext(MainContext);
+  const { updateNowPlaying } = useContext(MainContext);
+  const { setAllSongs } = useContext(AudioContext);
   const [metadData, setMetadData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { state } = useLocation();
   const { playlistDetails } = state || {};
+  const [searchString, setSearchString] = useState('')
+  const [filteredData, setFilteredData] = useState([])
 
   useEffect(() => {
     const fetchMetaData = async () => {
       try {
         const res = await cachemanager.getAllEntities(cacheEntities.SONGS);
         setMetadData(res.data);
+        setAllSongs(res.data)
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -53,6 +58,18 @@ const Songs = () => {
       .catch((error) => console.error("Error editing:", error));
   };
 
+  const performSearch = (value) => {
+    setSearchString(value)
+    setFilteredData(
+      metadData.filter((item) =>
+        item?.title?.toLowerCase().includes(value.toLowerCase())
+      )
+    );
+  };
+
+
+
+
   const AddtoPlaylist=(e,playlistId,songId)=>{
     e.stopPropagation();
     cachemanager.addsongsToplaylist(cacheEntities.PLAYLISTS,cacheEntities.SONGS,playlistId,songId).then((res)=>{
@@ -66,7 +83,7 @@ const Songs = () => {
     {isLoading && <LoadingScreen message={"Loading ..."}/>}
       <div className="Songspage">
         <div className="mainsection">
-          <Search />
+          <Search  onChange={performSearch} value={searchString} placeholder={"Search your favourite Songs"}/>
           <Header
             heading={"Music For You"}
             description={"Listen to your favourite songs"}
@@ -75,7 +92,7 @@ const Songs = () => {
           <div className="songs-container">
             {metadData && metadData.length > 0 ? (
               <TrackList
-                tracks={metadData}
+                tracks={searchString && searchString !== '' ? filteredData : metadData}
                 type={"track"}
                 toggleFavorite={toggleFavorite}
                 AddtoPlaylist={AddtoPlaylist}
@@ -89,7 +106,6 @@ const Songs = () => {
         <div className="currentMusic">
           <div className="musicCard">
             <AudioPlayer
-              selectedMusicFile={nowplaying}
               AllSongs={metadData}
               toggleFavorite={toggleFavorite}
             />

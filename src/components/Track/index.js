@@ -20,7 +20,7 @@ const Track = ({ track, toggleFavorite, playlistDetails, AddtoPlaylist }) => {
 
   return (
     <div
-      className={styles.wrapper}
+      className={`${styles.wrapper} ${nowplaying.id === track.id && styles.animateborder}`}
       onClick={() => {
         updateNowPlaying(track);
         updateLastPlayed(track);

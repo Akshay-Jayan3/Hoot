@@ -8,11 +8,12 @@ import RepeatOneOutlinedIcon from "@mui/icons-material/RepeatOneOutlined";
 import ShuffleOutlinedIcon from "@mui/icons-material/ShuffleOutlined";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import { AudioContext } from "../../context/AudioContext";
+import { MainContext } from "../../context/MainContext";
 import musicNote from "../../assects/musical-note (2).png";
 
 
 
-const AudioPlayer = ({ selectedMusicFile, AllSongs }) => {
+const AudioPlayer = () => {
   const {
     isPlaying,
     currentSong,
@@ -31,6 +32,8 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs }) => {
     handleSeekChange,
   } = useContext(AudioContext);
 
+  const { nowplaying } = useContext(MainContext);
+
   function truncateText(text, maxLength) {
     if (text?.length > maxLength) {
       return text.slice(0, maxLength) + "...";
@@ -40,10 +43,10 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs }) => {
 
 
   useEffect(() => {
-    if (selectedMusicFile) {
-      setCurrentSong(selectedMusicFile);
+    if (nowplaying) {
+      setCurrentSong(nowplaying);
     }
-  }, [selectedMusicFile]);
+  }, [nowplaying]);
 
   return (
     <div className={styles.container}>
@@ -91,7 +94,7 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs }) => {
             </div>
             <div className={styles.playebackwrapper}>
               <button
-                onClick={() => playPreviousSong(AllSongs)}
+                onClick={() => playPreviousSong()}
                 className={styles.skip}
               >
                 <SkipPreviousRoundedIcon fontSize="large" />
@@ -104,7 +107,7 @@ const AudioPlayer = ({ selectedMusicFile, AllSongs }) => {
                 )}
               </button>
               <button
-                onClick={() => playNextSong(AllSongs)}
+                onClick={() => playNextSong()}
                 className={styles.skip}
               >
                 <SkipNextRoundedIcon fontSize="large" />
