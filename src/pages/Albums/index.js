@@ -16,6 +16,8 @@ const Albums = () => {
   const [showAlbums, setShowAlbums] = useState(false);
   const [selectedAlbum, setSelectedAlbum] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchString, setSearchString] = useState('')
+  const [filteredData, setFilteredData] = useState([])
 
   useEffect(() => {
     const promises = [
@@ -46,12 +48,26 @@ const Albums = () => {
     setShowAlbums(!showAlbums);
   };
 
+  const performSearch = (value) => {
+    setSearchString(value);
+    setFilteredData(
+      showAlbums && filteredSongs
+        ? filteredSongs.filter((item) =>
+            item?.title?.toLowerCase().includes(value.toLowerCase())
+          )
+        : albums.filter((item) =>
+            item?.name?.toLowerCase().includes(value.toLowerCase())
+          )
+    );
+  };
+
+
   return (
     <>
       {isLoading && <LoadingScreen message={"Loading ..."}/>}
       <div className="Songspage">
         <div className="mainsection">
-          <Search showback={showAlbums} HandleBack={HandleSelectAlbum} />
+          <Search showback={showAlbums} HandleBack={HandleSelectAlbum}  onChange={performSearch} value={searchString} placeholder={"Search your favourite Songs"}/>
           <Header
             heading={"Music For You"}
             description={"Listen to your favourite songs"}
@@ -59,21 +75,16 @@ const Albums = () => {
 
           <div className="songs-container">
             {!showAlbums ? (
-              albums && albums?.length > 0 ? (
+              albums && albums?.length > 0 && (
                 <AlbumList
-                  albums={albums}
+                  albums={searchString && searchString !== '' ? filteredData : albums}
                   HandleFile={HandleSelectAlbum}
                   setSelectedAlbum={setSelectedAlbum}
-                  count={filteredSongs.length}
                   type={"Album"}
                 />
-              ) : (
-                <p>Loading...</p>
               )
-            ) : filteredSongs && filteredSongs?.length > 0 ? (
+            ) : filteredSongs && filteredSongs?.length > 0 && (
               <TrackList tracks={filteredSongs} type={"track"} />
-            ) : (
-              <p>no songss</p>
             )}
           </div>
         </div>
