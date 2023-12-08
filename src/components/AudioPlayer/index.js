@@ -40,6 +40,9 @@ const AudioPlayer = () => {
     }
     return text;
   }
+  const getBackgroundSize = () => {
+    return { backgroundSize: `${(currentTime * 100) / duration}% 100%` };
+  };
 
 
   useEffect(() => {
@@ -73,6 +76,7 @@ const AudioPlayer = () => {
               step={0.01}
               value={seekPosition}
               onChange={handleSeekChange}
+              style={getBackgroundSize()}
             />
             <p>
               {time.min}:{time.sec}

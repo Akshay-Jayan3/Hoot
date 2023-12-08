@@ -214,6 +214,7 @@ export const AudioProvider = ({ children }) => {
 
       const newSound = new Howl({
         src: [currentSong.path],
+        autoplay: true,
         onplay: () => {
           setIsPlaying(true);
         },
@@ -223,7 +224,6 @@ export const AudioProvider = ({ children }) => {
         onload: () => {
           setDuration(newSound.duration());
           setSeekPosition(0);
-          newSound.play();
         },
         onend: () => {
           setIsPlaying(false);
