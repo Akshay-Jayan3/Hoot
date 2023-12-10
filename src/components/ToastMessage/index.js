@@ -14,7 +14,6 @@ const CustomToast = ({ message, onClose }) => {
   return (
     <div className={styles.customToast}>
       <p>{message}</p>
-      <button onClick={onClose}><CancelOutlinedIcon/></button>
     </div>
   );
 };

@@ -9,6 +9,7 @@ import SettingsSuggestOutlinedIcon from "@mui/icons-material/SettingsSuggestOutl
 import Header from "../../components/Header";
 import LoadingScreen from "../../components/Loader";
 import CustomToast from "../../components/ToastMessage";
+import { useTheme } from "../../context/ThemeContext";
 
 var jsmediatags = window.jsmediatags;
 
@@ -17,6 +18,7 @@ const Settings = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [showToast, setShowToast] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   const handleShowToast = () => {
     setShowToast(true);
@@ -110,7 +112,7 @@ const Settings = () => {
                       ])
                         .then(() => {
                           setIsLoading(false);
-                          handleShowToast()
+                          handleShowToast();
                           console.log(
                             "All cache operations completed successfully."
                           );
@@ -135,14 +137,28 @@ const Settings = () => {
       }
     } catch (error) {
       console.error(error);
-      console.log("Oops! Something went wrong while scanning songs. Please try again.");
+      console.log(
+        "Oops! Something went wrong while scanning songs. Please try again."
+      );
     }
   };
 
   return (
     <>
-      {isLoading && <LoadingScreen message={"Discovering your music collection. Just a few more moments!"} setting={true}/>}
-      {showToast && <CustomToast message="Songs scanned successfully !" onClose={handleCloseToast} />}
+      {isLoading && (
+        <LoadingScreen
+          message={
+            "Discovering your music collection. Just a few more moments!"
+          }
+          setting={true}
+        />
+      )}
+      {showToast && (
+        <CustomToast
+          message="Songs scanned successfully !"
+          onClose={handleCloseToast}
+        />
+      )}
       <>
         <div className="page">
           <Header
@@ -162,8 +178,26 @@ const Settings = () => {
                 make them accessible for you.
               </p>
               <button className="selectButton" onClick={selectFolder}>
-                Select Folder <FolderOpenOutlinedIcon />
+                Select Folder <FolderOpenOutlinedIcon fontSize="small" />
               </button>
+            </div>
+            <div className="setting-type">
+              <SettingsSuggestOutlinedIcon />
+              <h2>Theme</h2>
+            </div>
+            <div className="setting">
+              <p>Customize your view, your way !</p>
+              <div className="theme">
+                <p>Enable dark mode</p>
+                <button
+                  className={`theme-toggle-btn ${
+                    theme?.themeMode === "dark" ? "dark" : ""
+                  }`}
+                  onClick={toggleTheme}
+                >
+                  <div className="toggle-indicator"></div>
+                </button>
+              </div>
             </div>
           </div>
         </div>

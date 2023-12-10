@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import TrackList from "../TrackList";
 import styles from "./styles.module.scss";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -7,29 +7,28 @@ import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import AddPlaylistModal from "../AddplaylistModal";
 import { useNavigate } from "react-router-dom";
+import { MainContext } from "../../context/MainContext";
+import { AudioContext } from "../../context/AudioContext";
+import CustomToast from "../ToastMessage";
 import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
-const PlaylistSongs = ({ selectedPlaylist ,AddtoPlaylist}) => {
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [songs,setSongs]=useState(null)
+const PlaylistSongs = ({
+  selectedPlaylist,
+  AddtoPlaylist,
+  songs,
+  showToast,
+  handleCloseToast,
+  RemoveFromPlaylist,
+}) => {
+  const { updateNowPlaying, setAllSongs } = useContext(MainContext);
+  const { isPlaying, setIsPlaying } = useContext(AudioContext);
 
-  useEffect(() => {
-    setSongs(selectedPlaylist.MusicMetadata)
-  
-  }, [selectedPlaylist])
+  const HandlePlayback = () => {
+    setIsPlaying(!isPlaying);
+    updateNowPlaying(songs[0]);
+    setAllSongs(songs);
+  };
 
-  const RemoveFromPlaylist=(e,playlistId,songId)=>{
-    e.stopPropagation();
-    cachemanager.removeSongfromPlaylist(cacheEntities.PLAYLISTS,cacheEntities.SONGS,playlistId,songId).then((res)=>{
-      setSongs((prevTracks) =>
-          prevTracks.filter((prevTrack) => prevTrack.id !== playlistId)
-        );
-    })
-
-  }
-  
-
-  
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -53,54 +52,73 @@ const PlaylistSongs = ({ selectedPlaylist ,AddtoPlaylist}) => {
   };
 
   return (
-    <div className={styles.container}>
-      {showModal ? (
-        <AddPlaylistModal closeModal={closeModal} playlistDetails={selectedPlaylist}/>
-      ) : (
-        <>
-          <div className={styles.wrapper}>
-            <div className={styles.details}>
-              <div className={styles.content}>
-                <p className={styles.name}>{selectedPlaylist.name}</p>
-                <p className={styles.count}>
-                  created on{" "}
-                  {new Date(selectedPlaylist.createdAt).toLocaleDateString(
-                    "en-GB"
-                  )}
-                </p>
-              </div>
-              <div className={styles.edit}>
-                <button onClick={openModal}>
-                  <EditOutlinedIcon />
-                </button>
-              </div>
-            </div>
-            <div className={styles.info}>
-              <div className={styles.btns}>
-                <div>
-                  <button className={styles.btn} onClick={handleClick}>
-                    Add songs <AddCircleOutlineOutlinedIcon fontSize="small" />
+    <>
+      {showToast && (
+        <CustomToast
+          message="Removed from playlist"
+          onClose={handleCloseToast}
+        />
+      )}
+      <div className={styles.container}>
+        {showModal ? (
+          <AddPlaylistModal
+            closeModal={closeModal}
+            playlistDetails={selectedPlaylist}
+          />
+        ) : (
+          <>
+            <div className={styles.wrapper}>
+              <div className={styles.details}>
+                <div className={styles.content}>
+                  <p className={styles.name}>{selectedPlaylist.name}</p>
+                  <p className={styles.count}>
+                    created on{" "}
+                    {new Date(selectedPlaylist.createdAt).toLocaleDateString(
+                      "en-GB"
+                    )}
+                  </p>
+                </div>
+                <div className={styles.edit}>
+                  <button onClick={openModal}>
+                    <EditOutlinedIcon />
                   </button>
                 </div>
               </div>
+              <div className={styles.info}>
+                <div className={styles.btns}>
+                  <div>
+                    <button className={styles.btn} onClick={handleClick}>
+                      Add songs{" "}
+                      <AddCircleOutlineOutlinedIcon fontSize="small" />
+                    </button>
+                  </div>
+                </div>
 
-              <div className={styles.Btn}>
-                {" "}
-                <button className={styles.playpause}>
-                  {isPlaying ? (
-                    <PauseRoundedIcon />
-                  ) : (
-                    <PlayArrowRoundedIcon fontSize="large" />
-                  )}
-                </button>
+                <div className={styles.Btn}>
+                  {" "}
+                  <button className={styles.playpause} onClick={HandlePlayback}>
+                    {isPlaying ? (
+                      <PauseRoundedIcon />
+                    ) : (
+                      <PlayArrowRoundedIcon fontSize="large" />
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
 
-          <TrackList tracks={songs} type={"track"}  selectedPlaylist={selectedPlaylist} AddtoPlaylist={AddtoPlaylist} RemoveFromPlaylist={RemoveFromPlaylist}/>
-        </>
-      )}
-    </div>
+            <TrackList
+              tracks={songs}
+              type={"track"}
+              selectedPlaylist={selectedPlaylist}
+              AddtoPlaylist={AddtoPlaylist}
+              RemoveFromPlaylist={RemoveFromPlaylist}
+              count={songs?.length}
+            />
+          </>
+        )}
+      </div>
+    </>
   );
 };
 

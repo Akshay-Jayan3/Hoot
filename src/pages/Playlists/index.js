@@ -19,8 +19,17 @@ const Playlists = () => {
   const [showPlaylist, setShowPlaylist] = useState(false);
   const [selectedPlaylist, setSelectedPlaylist] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [searchString, setSearchString] = useState('')
-  const [filteredData, setFilteredData] = useState([])
+  const [searchString, setSearchString] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
+  const [showToast, setShowToast] = useState(false);
+
+  const handleShowToast = () => {
+    setShowToast(true);
+  };
+
+  const handleCloseToast = () => {
+    setShowToast(false);
+  };
   const openModal = () => {
     setShowModal(true);
   };
@@ -32,7 +41,10 @@ const Playlists = () => {
   useEffect(() => {
     const fetchMetaData = async () => {
       try {
-        const res = await cachemanager.getSongsFromplaylist(cacheEntities.PLAYLISTS,cacheEntities.SONGS);
+        const res = await cachemanager.getSongsFromplaylist(
+          cacheEntities.PLAYLISTS,
+          cacheEntities.SONGS
+        );
         setPlaylist(res.data);
         setIsLoading(false);
       } catch (error) {
@@ -44,22 +56,27 @@ const Playlists = () => {
     fetchMetaData();
   }, []);
 
+  useEffect(() => {
+    setSongs(selectedPlaylist.MusicMetadata);
+  }, [selectedPlaylist]);
 
   const performSearch = (value) => {
-    setSearchString(value)
+    setSearchString(value);
     setFilteredData(
-      playlists.filter((item) =>
-        item?.name?.toLowerCase().includes(value.toLowerCase())
-      )
+      showPlaylist && songs
+        ? songs.filter((item) =>
+            item?.title?.toLowerCase().includes(value.toLowerCase())
+          )
+        : playlists.filter((item) =>
+            item?.name?.toLowerCase().includes(value.toLowerCase())
+          )
     );
   };
-
 
   const HandleSelectPlaylist = () => {
     setShowPlaylist(!showPlaylist);
   };
 
-  
   const deletePlaylist = (event, PlaylistId) => {
     event.stopPropagation();
     cachemanager
@@ -71,13 +88,39 @@ const Playlists = () => {
       })
       .catch((error) => console.error("Error deleting playlist:", error));
   };
+  const RemoveFromPlaylist = (e, playlistId, songId) => {
+    e.stopPropagation();
+    cachemanager
+      .removeSongfromPlaylist(
+        cacheEntities.PLAYLISTS,
+        cacheEntities.SONGS,
+        playlistId,
+        songId
+      )
+      .then((res) => {
+        handleShowToast();
+        setSongs((prevTracks) =>
+          prevTracks.filter((prevTrack) => prevTrack.id !== songId)
+        );
+      });
+  };
 
   return (
     <>
       {isLoading && <LoadingScreen message={"Loading ..."} />}
       <div className="Songspage">
         <div className="mainsection">
-          <Search showback={showPlaylist} HandleBack={HandleSelectPlaylist} onChange={performSearch} value={searchString} placeholder={"Search your favourite Playlists"} />
+          <Search
+            showback={showPlaylist}
+            HandleBack={HandleSelectPlaylist}
+            onChange={performSearch}
+            value={searchString}
+            placeholder={
+              showPlaylist
+                ? "Search your favourite Songs"
+                : "Search your favourite Playlists"
+            }
+          />
           <Header
             heading={"Music For You"}
             description={"Listen to your favourite songs"}
@@ -97,7 +140,11 @@ const Playlists = () => {
                     Add New Playlist
                   </button>
                   <AlbumList
-                    albums={searchString && searchString !== '' ? filteredData : playlists}
+                    albums={
+                      searchString && searchString !== ""
+                        ? filteredData
+                        : playlists
+                    }
                     HandleFile={HandleSelectPlaylist}
                     HandleSelected={setSelectedPlaylist}
                     HandleAction={deletePlaylist}
@@ -112,13 +159,21 @@ const Playlists = () => {
                 )
               )
             ) : (
-              <PlaylistSongs selectedPlaylist={selectedPlaylist}/>
+              <PlaylistSongs
+                selectedPlaylist={selectedPlaylist}
+                songs={
+                  searchString && searchString !== "" ? filteredData : songs
+                }
+                RemoveFromPlaylist={RemoveFromPlaylist}
+                showToast={showToast}
+                handleCloseToast={handleCloseToast}
+              />
             )}
           </div>
         </div>
         <div className="currentMusic">
           <div className="musicCard">
-            <AudioPlayer/>
+            <AudioPlayer />
           </div>
         </div>
       </div>

@@ -4,7 +4,6 @@
     align-items: center;
     justify-content: center;
     background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     border: 1px solid rgba(255, 255, 255, 0.18);
@@ -56,11 +55,9 @@
                   cursor: pointer;
                 }
             }
-            // gap:4px
             .details{
                 display: flex;
                 flex-direction: column;
-                gap:4px;
                 .count{
                     font-size: 12px;
                 }

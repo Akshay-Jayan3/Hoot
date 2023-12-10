@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useContext} from "react";
 import Header from "../../components/Header";
 import TrackList from "../../components/TrackList";
 import Search from "../../components/Search";
+import { MainContext } from "../../context/MainContext";
 import AudioPlayer from "../../components/AudioPlayer";
 import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
@@ -10,6 +11,7 @@ import LoadingScreen from "../../components/Loader";
 const Artists = () => {
   const [metaData, setMetaData] = useState(null);
   const [artists, setArtists] = useState(null);
+  const {setAllSongs} = useContext(MainContext);
   const [selectedMusicFile, setSelectedMusicFile] = useState(null);
   const [showArtists, setShowArtist] = useState(false);
   const [selectedArtist, setSelectedArtist] = useState([]);
@@ -45,6 +47,7 @@ const Artists = () => {
   const HandleSelectArtist = (artist) => {
     setSelectedArtist(artist);
     setShowArtist(!showArtists);
+    setAllSongs(filteredSongs)
   };
 
   const performSearch = (value) => {

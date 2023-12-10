@@ -12,7 +12,7 @@ import LoadingScreen from "../../components/Loader";
 const Albums = () => {
   const [metaData, setMetaData] = useState(null);
   const [albums, setAlbums] = useState(null);
-  const { nowplaying } = useContext(MainContext);
+  const {setAllSongs} = useContext(MainContext);
   const [showAlbums, setShowAlbums] = useState(false);
   const [selectedAlbum, setSelectedAlbum] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -46,6 +46,8 @@ const Albums = () => {
 
   const HandleSelectAlbum = () => {
     setShowAlbums(!showAlbums);
+    setAllSongs(filteredSongs)
+    
   };
 
   const performSearch = (value) => {
@@ -90,7 +92,7 @@ const Albums = () => {
         </div>
         <div className="currentMusic">
           <div className="musicCard">
-            <AudioPlayer selectedMusicFile={nowplaying} AllSongs={metaData} />
+            <AudioPlayer/>
           </div>
         </div>
       </div>

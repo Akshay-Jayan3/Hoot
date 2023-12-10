@@ -23,11 +23,9 @@ export const AudioContext = createContext({
 });
 
 export const AudioProvider = ({ children }) => {
-  const { updateLastPlayed, updateNowPlaying } =
-    useContext(MainContext);
+  const { updateLastPlayed, updateNowPlaying ,AllSongs} = useContext(MainContext);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSong, setCurrentSong] = useState(null);
-  const [AllSongs, setAllSongs] = useState(null);
   const [sound, setSound] = useState(null);
   const [duration, setDuration] = useState(null);
   const [seekPosition, setSeekPosition] = useState(0);
@@ -38,7 +36,6 @@ export const AudioProvider = ({ children }) => {
     min: '00',
     sec: '00',
   });
-  console.log(sound?.seek())
 
   const togglePlayback = () => {
     if (!isPlaying) {
@@ -268,7 +265,6 @@ export const AudioProvider = ({ children }) => {
         setIsPlaying,
         currentSong,
         setCurrentSong,
-        setAllSongs,
         seekPosition,
         currentTime,
         formatTime,

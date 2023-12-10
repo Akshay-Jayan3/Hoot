@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Header from "../../components/Header";
 import { MainContext } from "../../context/MainContext";
-import { AudioContext } from "../../context/AudioContext";
 import TrackList from "../../components/TrackList";
 import Search from "../../components/Search";
 import AudioPlayer from "../../components/AudioPlayer";
@@ -9,16 +8,25 @@ import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
 import LoadingScreen from "../../components/Loader";
 import { useLocation, useNavigate} from 'react-router-dom';
+import CustomToast from "../../components/ToastMessage";
 
 const Songs = () => {
-  const { updateNowPlaying } = useContext(MainContext);
-  const { setAllSongs } = useContext(AudioContext);
+  const { updateNowPlaying,setAllSongs } = useContext(MainContext);
   const [metadData, setMetadData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { state } = useLocation();
   const { playlistDetails } = state || {};
   const [searchString, setSearchString] = useState('')
   const [filteredData, setFilteredData] = useState([])
+  const [showToast, setShowToast] = useState(false);
+
+  const handleShowToast = () => {
+    setShowToast(true);
+  };
+
+  const handleCloseToast = () => {
+    setShowToast(false);
+  };
   const navigate= useNavigate()
 
   useEffect(() => {
@@ -74,7 +82,7 @@ const Songs = () => {
   const AddtoPlaylist=(e,playlistId,songId)=>{
     e.stopPropagation();
     cachemanager.addsongsToplaylist(cacheEntities.PLAYLISTS,cacheEntities.SONGS,playlistId,songId).then((res)=>{
-      console.log(res)
+      handleShowToast()
     })
 
   }
@@ -82,6 +90,7 @@ const Songs = () => {
   return (
     <>
     {isLoading && <LoadingScreen message={"Loading ..."}/>}
+    {showToast && <CustomToast message="Added to playlist" onClose={handleCloseToast} />}
       <div className="Songspage">
         <div className="mainsection">
           <Search showback={playlistDetails} onChange={performSearch} value={searchString} placeholder={"Search your favourite Songs"} HandleBack={()=>navigate(-1)}/>

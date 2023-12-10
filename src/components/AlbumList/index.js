@@ -6,7 +6,6 @@ const AlbumList = ({
   albums,
   HandleFile,
   HandleSelected,
-  count,
   type,
   HandleAction,
 }) => {
@@ -18,9 +17,9 @@ const AlbumList = ({
               album={album}
               HandleFile={HandleFile}
               HandleSelected={HandleSelected}
-              count={count}
               type={type}
               HandleAction={HandleAction}
+              key={i}
             />
           ))
         : "no songs"}

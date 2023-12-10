@@ -7,19 +7,19 @@ export const MainContext = createContext({
   albums: null,
   artists: null,
   isPlaying:false,
+  AllSongs:null,
   updateFolder: () => {},
   updateAlbums: () => {},
   updateArtists: () => {},
-  updateNowPlaying: () => {}
+  updateNowPlaying: () => {},
+  setAllSongs: () => {}
 });
 
 export const MainContextProvider = ({ children }) => {
   const [folderStored, setfolderStored] = useState(null);
   const [lastPlayed, setLastPlayed] = useState(null);
   const [nowplaying,setNowplaying] = useState('')
-  const [albums, setAlbums] = useState(null);
-  const [artists, setArtists] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [AllSongs, setAllSongs] = useState(null);
   useEffect(() => {
     const storedFolder = localStorage.getItem("selected-folder");
     const lastplayed = localStorage.getItem("lastplayed");
@@ -36,15 +36,11 @@ export const MainContextProvider = ({ children }) => {
   const updateFolder = (newfolder) => {
     setfolderStored(newfolder);
   };
-  const updateAlbums = (album) => {
-    setAlbums(album);
-  };
+ 
   const updateLastPlayed = (lastPlayed) => {
     setLastPlayed(lastPlayed);
   };
-  const updateArtists = (artists) => {
-    setArtists(artists);
-  };
+ 
   const updateNowPlaying = (song) => {
     setNowplaying(song);
   };
@@ -54,16 +50,13 @@ export const MainContextProvider = ({ children }) => {
       value={{
         folderStored,
         lastPlayed,
-        albums,
-        artists,
         nowplaying,
-        isPlaying,
+        AllSongs,
+        setAllSongs,
         updateFolder,
         updateLastPlayed,
-        updateAlbums,
-        updateArtists,
         updateNowPlaying,
-        setIsPlaying
+   
       }}
     >
       {children}

@@ -3,7 +3,7 @@ import Track from "../Track";
 import styles from "./styles.module.scss";
 import ArtistList from "../ArtistList";
 
-const TrackList = ({ tracks,type,toggleFavorite,HandleFile,AddtoPlaylist, RemoveFromPlaylist, playlistDetails,selectedPlaylist}) => {
+const TrackList = ({ tracks,type,toggleFavorite,HandleFile,AddtoPlaylist, RemoveFromPlaylist, playlistDetails,selectedPlaylist,count}) => {
   return (
     <div className={styles.trackContainer}>
       <div className={styles.trackNo}>
@@ -12,7 +12,7 @@ const TrackList = ({ tracks,type,toggleFavorite,HandleFile,AddtoPlaylist, Remove
       {tracks && tracks?.length > 0
         ? tracks?.map((track, i) =>
             type === "track" ? (
-              <Track track={track} key={i} toggleFavorite={toggleFavorite} AddtoPlaylist={AddtoPlaylist} RemoveFromPlaylist={RemoveFromPlaylist} playlistDetails={playlistDetails} selectedPlaylist={selectedPlaylist}/>
+              <Track track={track} key={i} toggleFavorite={toggleFavorite} AddtoPlaylist={AddtoPlaylist} RemoveFromPlaylist={RemoveFromPlaylist} playlistDetails={playlistDetails} selectedPlaylist={selectedPlaylist} count={count}/>
             ) : type === "artist" ? (
               <ArtistList artist={track} key={i} HandleFile={HandleFile} />
             ) : (
