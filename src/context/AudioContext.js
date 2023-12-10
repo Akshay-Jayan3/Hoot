@@ -57,6 +57,13 @@ export const AudioProvider = ({ children }) => {
     return newArray;
   }
 
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = Math.floor(timeInSeconds % 60);
+    const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    return formattedTime;
+  };
+
   const playNextSong = () => {
     sound?.pause();
 
@@ -198,8 +205,8 @@ export const AudioProvider = ({ children }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       if (sound && isPlaying) {
-        setCurrentTime(sound.seek());
-        setSeekPosition(sound.seek())
+        setCurrentTime(sound?.seek());
+        setSeekPosition(sound?.seek())
       }
     }, 1000);
     return () => clearInterval(interval);
@@ -264,6 +271,7 @@ export const AudioProvider = ({ children }) => {
         setAllSongs,
         seekPosition,
         currentTime,
+        formatTime,
         time,
         duration,
         isRepeat,

@@ -7,7 +7,8 @@ const {
   deleteEntity,
   deleteAllentity,
   addsongtoPlaylist,
-  getsongfromPlaylist
+  getsongfromPlaylist,
+  removeSongfromplaylist
 } = window.electron;
 
 const getAllEntities = async (modelName) => {
@@ -108,6 +109,33 @@ const addsongsToplaylist = async (
   }
 };
 
+const removeSongfromPlaylist = async (
+  modelName,
+  modelName2,
+  playlistId,
+  songId
+) => {
+  try {
+    const result = await removeSongfromplaylist(
+      modelName,
+      modelName2,
+      playlistId,
+      songId
+    );
+
+
+    if (result?.status === "S") {
+      console.log("Success:", result?.message);
+      return { success: true, message: result.message ,data:result.data};
+    } else {
+      console.error("Error:", result?.message);
+      throw new Error(result.message);
+    }
+  } catch (error) {
+    console.error(`Error deleting entity for ${modelName}:`, error.message);
+  }
+};
+
 const updateEntityById = async (modelName, id, updatedData) => {
   try {
     const updatedEntity = await updateEntity(modelName, id, updatedData);
@@ -152,5 +180,6 @@ export {
   deleteEntityById,
   deleteALLEntity,
   addsongsToplaylist,
+  removeSongfromPlaylist,
   getSongsFromplaylist
 };

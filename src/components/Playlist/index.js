@@ -1,17 +1,33 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import TrackList from "../TrackList";
 import styles from "./styles.module.scss";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddPlaylistModal from "../AddplaylistModal";
 import { useNavigate } from "react-router-dom";
-const PlaylistSongs = ({ selectedPlaylist ,tracks}) => {
+import * as cachemanager from "../../cacheStore/index";
+import { cacheEntities } from "../../cacheStore/cacheEntities";
+const PlaylistSongs = ({ selectedPlaylist ,AddtoPlaylist}) => {
   const [isPlaying, setIsPlaying] = useState(true);
+  const [songs,setSongs]=useState(null)
+
+  useEffect(() => {
+    setSongs(selectedPlaylist.MusicMetadata)
+  
+  }, [selectedPlaylist])
+
+  const RemoveFromPlaylist=(e,playlistId,songId)=>{
+    e.stopPropagation();
+    cachemanager.removeSongfromPlaylist(cacheEntities.PLAYLISTS,cacheEntities.SONGS,playlistId,songId).then((res)=>{
+      setSongs((prevTracks) =>
+          prevTracks.filter((prevTrack) => prevTrack.id !== playlistId)
+        );
+    })
+
+  }
+  
 
   
   const navigate = useNavigate();
@@ -81,7 +97,7 @@ const PlaylistSongs = ({ selectedPlaylist ,tracks}) => {
             </div>
           </div>
 
-          <TrackList tracks={selectedPlaylist.MusicMetadata} type={"track"} />
+          <TrackList tracks={songs} type={"track"}  selectedPlaylist={selectedPlaylist} AddtoPlaylist={AddtoPlaylist} RemoveFromPlaylist={RemoveFromPlaylist}/>
         </>
       )}
     </div>

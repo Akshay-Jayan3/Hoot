@@ -4,6 +4,7 @@ module.exports.GET_BY_FIELD = "getByField";
 module.exports.GET_SONGS_FROM_PLAYLIST = "getSongsFromPlaylist";
 module.exports.ADD = "add";
 module.exports.ADD_SONG_TO_PLAYLIST = "addSongtoplaylist";
+module.exports.REMOVE_SONG_FROM_PLAYLIST = "removeSongfromplaylist";
 module.exports.UPDATE_BY_ID = "updateById";
 module.exports.DELETE_BY_ID = "deleteById";
 module.exports.DELETE_ALL = "deleteAll";

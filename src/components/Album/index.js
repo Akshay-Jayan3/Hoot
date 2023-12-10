@@ -4,7 +4,7 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import musicicon from "../../assects/musical-note.png"
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
-const Album = ({ album, HandleFile, setSelectedAlbum ,count,type,HandleAction}) => {
+const Album = ({ album, HandleFile, HandleSelected ,type,HandleAction}) => {
   function truncateText(text, maxLength) {
     if (text?.length > maxLength) {
       return text.slice(0, maxLength) + "...";
@@ -17,7 +17,7 @@ const Album = ({ album, HandleFile, setSelectedAlbum ,count,type,HandleAction}) 
       className={styles.wrapper}
       onClick={() => {
         HandleFile();
-        setSelectedAlbum(album);
+        HandleSelected(album);
       }}
     >
       <div className={styles.info}>

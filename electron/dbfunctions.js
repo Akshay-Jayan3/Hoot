@@ -49,15 +49,50 @@ async function updateById(modelName, id, updatedData) {
   return instance.update(updatedData);
 }
 
-async function deleteById(modelName, id) {
-  const model = getModelByName(modelName);
-  const instance = await model.findByPk(id);
-  if (!instance) {
-    throw new Error(`${model.name} not found`);
-  }
+async function deleteById(modelName, playlistId) {
+  try {
+    const model = getModelByName(modelName);
+    const playlist = await model.findByPk(playlistId, {
+      include: [{ model: MusicPlaylist.MusicMetadata }],
+    });
 
-  return instance.destroy();
+    if (!playlist) {
+      throw new Error(`Playlist with ID ${playlistId} not found`);
+    }
+
+    // Remove associations from PlaylistMusicMetadata
+    await MusicPlaylist.PlaylistMusicMetadata.destroy({
+      where: { playlistId: playlist.id },
+    });
+
+    if (playlist.MusicMetadata && playlist.MusicMetadata.length > 0) {
+      await Promise.all(
+        playlist.MusicMetadata.map(async (song) => {
+          try {
+            if (song) {
+              // Attempt to destroy the song
+              await song.destroy();
+            } else {
+              console.error('Song not found.');
+            }
+          } catch (songDeleteError) {
+            console.error('Error deleting song:', songDeleteError.message);
+          }
+        })
+      );
+    }
+
+    // Now, delete the playlist itself
+    await playlist.destroy();
+
+    console.log(`Playlist with ID ${playlistId} deleted successfully.`);
+  } catch (error) {
+    console.error('Error deleting playlist:', error.message);
+  }
 }
+
+
+
 async function deleteAll(modelName) {
   const model = getModelByName(modelName);
 
@@ -100,6 +135,40 @@ const addSongToPlaylist = async (modelName,modelName2, playlistId,songId) => {
     throw error;
   }
 };
+
+const removeSongFromPlaylist = async (modelName, modelName2, playlistId, songId) => {
+  try {
+    const Playlistmodel = getModelByName(modelName);
+    const Songmodel = getModelByName(modelName2);
+    if (!Songmodel || !Playlistmodel) {
+      throw new Error(`Model not found`);
+    }
+
+    const song = await Songmodel.findByPk(songId);
+    const playlist = await Playlistmodel.findByPk(playlistId);
+    console.log(song)
+    console.log(playlist)
+
+    if (song && playlist) {
+      const isSongInPlaylist = await playlist.hasMusicMetadata(song);
+
+      if (isSongInPlaylist) {
+        await playlist.removeMusicMetadata(song ,{ through: { playlistId } });
+        console.log(`Song "${song.title}" removed from playlist "${playlist.name}".`);
+        return { song, playlist };
+      } else {
+        console.log(`Song "${song.title}" is not in playlist "${playlist.name}".`);
+        return null; // Song is not in the playlist
+      }
+    } else {
+      throw new Error('Song or playlist not found.');
+    }
+  } catch (error) {
+    console.error('Error removing song from playlist:', error.message);
+    throw error;
+  }
+};
+
 
 const getAllPlaylists = async (modelName, modelName2) => {
   try {
@@ -157,6 +226,7 @@ module.exports = {
   updateById,
   deleteById,
   addSongToPlaylist,
+  removeSongFromPlaylist,
   getAllPlaylists,
   deleteAll
 };

@@ -11,6 +11,7 @@ const {
   DELETE_ALL,
   UPDATE_BY_ID,
   ADD_SONG_TO_PLAYLIST,
+  REMOVE_SONG_FROM_PLAYLIST,
   GET_SONGS_FROM_PLAYLIST
 } = require("./constants");
 function createWindow() {
@@ -114,6 +115,22 @@ ipcMain.handle(ADD_SONG_TO_PLAYLIST, async (event, modelName,modelName2 ,playlis
     };
   } catch (error) {
     console.error(`Error adding ${modelName.name}:`, error);
+    throw error;
+  }
+});
+
+ipcMain.handle(REMOVE_SONG_FROM_PLAYLIST, async (event, modelName,modelName2 ,playlistId,songId) => {
+  console.log("hello")
+  try {
+    const removedEntity = await dbfunctions.removeSongFromPlaylist(modelName, modelName2 ,playlistId,songId);
+    console.log(removedEntity,)
+    return {
+      status: 'S',
+      data: {song:removedEntity.song,playlist:removedEntity.playlist},
+      message: `Song "${removedEntity.song.title}" remove from  playlist "${removedEntity.playlist.name}".`,
+    };
+  } catch (error) {
+    console.error(`Error deleting ${modelName.name}:`, error);
     throw error;
   }
 });

@@ -9,6 +9,7 @@ const {
   UPDATE_BY_ID,
   SELECT_FOLDER,
   ADD_SONG_TO_PLAYLIST,
+  REMOVE_SONG_FROM_PLAYLIST,
   DELETE_ALL,
   GET_SONGS_FROM_PLAYLIST
 } = require("./constants");
@@ -24,6 +25,7 @@ contextBridge.exposeInMainWorld('electron', {
   deleteAllentity:(modelName) => ipcRenderer.invoke(DELETE_ALL,modelName),
   getsongfromPlaylist:(modelName,modelName2) => ipcRenderer.invoke(GET_SONGS_FROM_PLAYLIST,modelName,modelName2),
   addsongtoPlaylist:(modelName,modelName2,playlistId,songId) => ipcRenderer.invoke(ADD_SONG_TO_PLAYLIST,modelName,modelName2,playlistId,songId),
+  removeSongfromplaylist:(modelName,modelName2,playlistId,songId) => ipcRenderer.invoke(REMOVE_SONG_FROM_PLAYLIST,modelName,modelName2,playlistId,songId),
   fs: require('fs'),
   path:require('path')
 });

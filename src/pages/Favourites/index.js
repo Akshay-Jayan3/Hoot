@@ -11,8 +11,10 @@ const Favourites = () => {
   const { nowplaying, updateNowPlaying } = useContext(MainContext);
   const [metaData, setMetadData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchString, setSearchString] = useState('')
+  const [filteredData, setFilteredData] = useState([])
 
-  console.log(metaData);
+ 
   useEffect(() => {
     cachemanager
       .getAllEntities(cacheEntities.SONGS)
@@ -28,6 +30,14 @@ const Favourites = () => {
   }, []);
 
   const filteredSongs = metaData?.filter((song) => song.isFavorite);
+  const performSearch = (value) => {
+    setSearchString(value)
+    setFilteredData(
+      filteredSongs.filter((item) =>
+        item?.title?.toLowerCase().includes(value.toLowerCase())
+      )
+    );
+  };
 
   const toggleFavorite = (event, trackId, track, nowplaying) => {
     event.stopPropagation();
@@ -56,7 +66,7 @@ const Favourites = () => {
       {isLoading && <LoadingScreen message={"Loading ..."} />}
       <div className="Songspage">
         <div className="mainsection">
-          <Search />
+        <Search  onChange={performSearch} value={searchString} placeholder={"Search your favourite Songs"}/>
           <Header
             heading={"Music For You"}
             description={"Listen to your favourite songs"}
@@ -65,7 +75,7 @@ const Favourites = () => {
           <div className="songs-container">
             {filteredSongs && filteredSongs.length > 0 ? (
               <TrackList
-                tracks={filteredSongs}
+              tracks={searchString && searchString !== '' ? filteredData : filteredSongs}
                 type={"track"}
                 toggleFavorite={toggleFavorite}
               />

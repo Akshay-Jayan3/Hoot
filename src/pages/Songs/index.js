@@ -8,7 +8,7 @@ import AudioPlayer from "../../components/AudioPlayer";
 import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
 import LoadingScreen from "../../components/Loader";
-import { useLocation} from 'react-router-dom';
+import { useLocation, useNavigate} from 'react-router-dom';
 
 const Songs = () => {
   const { updateNowPlaying } = useContext(MainContext);
@@ -19,6 +19,7 @@ const Songs = () => {
   const { playlistDetails } = state || {};
   const [searchString, setSearchString] = useState('')
   const [filteredData, setFilteredData] = useState([])
+  const navigate= useNavigate()
 
   useEffect(() => {
     const fetchMetaData = async () => {
@@ -83,7 +84,7 @@ const Songs = () => {
     {isLoading && <LoadingScreen message={"Loading ..."}/>}
       <div className="Songspage">
         <div className="mainsection">
-          <Search  onChange={performSearch} value={searchString} placeholder={"Search your favourite Songs"}/>
+          <Search showback={playlistDetails} onChange={performSearch} value={searchString} placeholder={"Search your favourite Songs"} HandleBack={()=>navigate(-1)}/>
           <Header
             heading={"Music For You"}
             description={"Listen to your favourite songs"}

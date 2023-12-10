@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styles from './styles.module.scss';
 
-const ScrollingText = ({ text, scroll }) => {
+const ScrollingText = ({ scroll ,children}) => {
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  function truncateText(text, maxLength) {
-    if (text?.length > maxLength) {
-      return text.slice(0, maxLength) + "...";
-    }
-    return text;
-  }
- 
   useEffect(() => {
     let scrollInterval;
 
@@ -25,8 +18,8 @@ const ScrollingText = ({ text, scroll }) => {
 
   return (
     <div className={styles.scrollingTextContainer}>
-      <div title ={text} className={`${styles.scrollingText} ${scroll && styles.animate }`}style={{ transform: scroll ? `translateX(-${scrollPosition}%)` : 'translateX(0%)' }}>
-        {scroll ? text : truncateText(text,30)}
+      <div className={`${styles.scrollingText} ${scroll && styles.animate }`}style={{ transform: scroll ? `translateX(-${scrollPosition}%)` : 'translateX(0%)' }}>
+        {children}
       </div>
     </div>
   );

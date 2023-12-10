@@ -90,5 +90,5 @@ Playlist.belongsToMany(MusicMetadata, { through: PlaylistMusicMetadata});
 
 
 
-module.exports = {MusicMetadata,Playlist};
+module.exports = {MusicMetadata,Playlist,PlaylistMusicMetadata};
 

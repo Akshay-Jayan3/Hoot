@@ -9,15 +9,16 @@
     
   }
   .animate{
-    color:#ff09d4 ;
-    animation: scrollAnimation 10s linear infinite;
+    animation: scrollAnimation 15s linear infinite;
   }
   
+  
   @keyframes scrollAnimation {
-    from {
+    0% {
       transform: translateX(100%);
     }
-    to {
-      transform: translateX(0%); /* Adjust based on the content and container width */
+    100% {
+      transform: translateX(-100%);
     }
   }
+  

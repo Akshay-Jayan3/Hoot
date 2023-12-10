@@ -5,7 +5,7 @@ import Album from "../Album";
 const AlbumList = ({
   albums,
   HandleFile,
-  setSelectedAlbum,
+  HandleSelected,
   count,
   type,
   HandleAction,
@@ -17,7 +17,7 @@ const AlbumList = ({
             <Album
               album={album}
               HandleFile={HandleFile}
-              setSelectedAlbum={setSelectedAlbum}
+              HandleSelected={HandleSelected}
               count={count}
               type={type}
               HandleAction={HandleAction}

@@ -1,22 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./styles.module.scss";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
 
-const AddPlaylistModal = ({ showModal, closeModal, setPlaylist }) => {
+const AddPlaylistModal = ({
+  showModal,
+  closeModal,
+  setPlaylist,
+  playlistDetails,
+}) => {
   const [playlistName, setPlaylistName] = useState("");
+
+  useEffect(() => {
+    if (playlistDetails && playlistDetails.name) {
+      setPlaylistName(playlistDetails.name);
+    }
+  }, [playlistDetails]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    cachemanager
-      .addEntity(cacheEntities.PLAYLISTS, [{ name: playlistName }])
-      .then((res) => {
-        setPlaylistName("");
-        closeModal();
-        setPlaylist((prevTracks) =>[...prevTracks,{ id: res.data.id ,name: res.data.name }])
-      })
-      .catch((error) => closeModal());
+    if (playlistDetails) {
+      cachemanager
+        .updateEntityById(cacheEntities.PLAYLISTS, playlistDetails.id,
+          { name: playlistName })
+        .then((res) => {
+          console.log(res.data)
+          setPlaylistName("");
+          closeModal();
+          setPlaylist((prevTracks) =>
+            prevTracks.map((prevTrack) =>
+              prevTrack.id === playlistDetails.id
+                ? { ...prevTrack, name: res.data.name }
+                : prevTrack
+            )
+          );
+          setPlaylist((prevTracks) => [
+            ...prevTracks,
+            { id: res.data.id, name: res.data.name },
+          ]);
+        })
+        .catch((error) => closeModal());
+    } else {
+      cachemanager
+        .addEntity(cacheEntities.PLAYLISTS, [{ name: playlistName }])
+        .then((res) => {
+          setPlaylistName("");
+          closeModal();
+          setPlaylist((prevTracks) => [
+            ...prevTracks,
+            { id: res.data[0].id, name: res.data[0].name },
+          ]);
+        })
+        .catch((error) => closeModal());
+    }
   };
 
   return (

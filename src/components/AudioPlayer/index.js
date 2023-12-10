@@ -29,6 +29,7 @@ const AudioPlayer = () => {
     toggleShuffle,
     toggleRepeat,
     togglePlayback,
+    formatTime,
     handleSeekChange,
   } = useContext(AudioContext);
 
@@ -67,8 +68,7 @@ const AudioPlayer = () => {
               {truncateText(currentSong?.artist, 30)}
             </p>
           </div>
-          <div className={styles.time}>
-            <p>{currentTime.toFixed(2)}</p>
+          <div className={styles.timeControls}>
             <input
               type="range"
               min={0}
@@ -78,9 +78,12 @@ const AudioPlayer = () => {
               onChange={handleSeekChange}
               style={getBackgroundSize()}
             />
-            <p>
-              {time.min}:{time.sec}
-            </p>
+            <div  className={styles.time}>
+              <p>{formatTime(currentTime)}</p>
+              <p>
+                {time.min}:{time.sec}
+              </p>
+            </div>
           </div>
 
           <div className={styles.controls}>
@@ -110,10 +113,7 @@ const AudioPlayer = () => {
                   <PlayArrowRoundedIcon fontSize="large" />
                 )}
               </button>
-              <button
-                onClick={() => playNextSong()}
-                className={styles.skip}
-              >
+              <button onClick={() => playNextSong()} className={styles.skip}>
                 <SkipNextRoundedIcon fontSize="large" />
               </button>
             </div>
@@ -130,7 +130,7 @@ const AudioPlayer = () => {
       ) : (
         <div className={styles.musicNote}>
           <img src={musicNote} />
-          <p>Start playing your first song</p>
+          <h3>Start playing your first song</h3>
         </div>
       )}
     </div>

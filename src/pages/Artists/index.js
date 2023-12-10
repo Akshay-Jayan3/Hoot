@@ -14,6 +14,8 @@ const Artists = () => {
   const [showArtists, setShowArtist] = useState(false);
   const [selectedArtist, setSelectedArtist] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchString, setSearchString] = useState('')
+  const [filteredData, setFilteredData] = useState([])
 
   useEffect(() => {
     const promises = [
@@ -45,15 +47,25 @@ const Artists = () => {
     setShowArtist(!showArtists);
   };
 
+  const performSearch = (value) => {
+    setSearchString(value);
+    setFilteredData(
+      showArtists && filteredSongs
+        ? filteredSongs.filter((item) =>
+            item?.title?.toLowerCase().includes(value.toLowerCase())
+          )
+        : artists.filter((item) =>
+            item?.name?.toLowerCase().includes(value.toLowerCase())
+          )
+    );
+  };
+
   return (
     <>
       {isLoading && <LoadingScreen message={"Loading ..."}/>}
       <div className="Songspage">
         <div className="mainsection">
-          <Search
-            showback={showArtists}
-            HandleBack={() => setShowArtist(!showArtists)}
-          />
+        <Search showback={showArtists} HandleBack={HandleSelectArtist}  onChange={performSearch} value={searchString} placeholder={showArtists ? "Search your favourite Songs":"Search your favourite Artists"}/>
           <Header
             heading={"Music For You"}
             description={"Listen to your favourite songs"}
@@ -63,7 +75,7 @@ const Artists = () => {
             {!showArtists ? (
               artists && artists?.length > 0 ? (
                 <TrackList
-                  tracks={artists}
+                  tracks={searchString && searchString !== '' ? filteredData : artists}
                   HandleFile={HandleSelectArtist}
                   type={"artist"}
                 />
@@ -71,7 +83,7 @@ const Artists = () => {
                 <p>no artists</p>
               )
             ) : filteredSongs && filteredSongs?.length > 0 ? (
-              <TrackList tracks={filteredSongs} type={"track"} />
+              <TrackList tracks={searchString && searchString !== '' ? filteredData : filteredSongs} type={"track"} />
             ) : (
               <p>no songs</p>
             )}

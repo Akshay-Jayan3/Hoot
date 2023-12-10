@@ -67,7 +67,7 @@ const Albums = () => {
       {isLoading && <LoadingScreen message={"Loading ..."}/>}
       <div className="Songspage">
         <div className="mainsection">
-          <Search showback={showAlbums} HandleBack={HandleSelectAlbum}  onChange={performSearch} value={searchString} placeholder={"Search your favourite Songs"}/>
+          <Search showback={showAlbums} HandleBack={HandleSelectAlbum}  onChange={performSearch} value={searchString} placeholder={showAlbums ? "Search your favourite Songs":"Search your favourite Albums"}/>
           <Header
             heading={"Music For You"}
             description={"Listen to your favourite songs"}
@@ -79,12 +79,12 @@ const Albums = () => {
                 <AlbumList
                   albums={searchString && searchString !== '' ? filteredData : albums}
                   HandleFile={HandleSelectAlbum}
-                  setSelectedAlbum={setSelectedAlbum}
+                  HandleSelected={setSelectedAlbum}
                   type={"Album"}
                 />
               )
             ) : filteredSongs && filteredSongs?.length > 0 && (
-              <TrackList tracks={filteredSongs} type={"track"} />
+              <TrackList tracks={searchString && searchString !== '' ? filteredData : filteredSongs} type={"track"} />
             )}
           </div>
         </div>
