@@ -71,8 +71,8 @@ const Albums = () => {
         <div className="mainsection">
           <Search showback={showAlbums} HandleBack={HandleSelectAlbum}  onChange={performSearch} value={searchString} placeholder={showAlbums ? "Search your favourite Songs":"Search your favourite Albums"}/>
           <Header
-            heading={"Music For You"}
-            description={"Listen to your favourite songs"}
+            heading={"Albums Extravaganza"}
+            description={"Dive into a world of musical stories with your favourite curated albums"}
           />
 
           <div className="songs-container">

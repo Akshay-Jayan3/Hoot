@@ -95,8 +95,8 @@ const Songs = () => {
         <div className="mainsection">
           <Search showback={playlistDetails} onChange={performSearch} value={searchString} placeholder={"Search your favourite Songs"} HandleBack={()=>navigate(-1)}/>
           <Header
-            heading={"Music For You"}
-            description={"Listen to your favourite songs"}
+            heading={"Vibes Unleashed"}
+            description={"Discover and immerse yourself in your favorite tunes"}
           />
 
           <div className="songs-container">

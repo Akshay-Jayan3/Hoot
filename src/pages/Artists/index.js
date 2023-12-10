@@ -70,8 +70,8 @@ const Artists = () => {
         <div className="mainsection">
         <Search showback={showArtists} HandleBack={HandleSelectArtist}  onChange={performSearch} value={searchString} placeholder={showArtists ? "Search your favourite Songs":"Search your favourite Artists"}/>
           <Header
-            heading={"Music For You"}
-            description={"Listen to your favourite songs"}
+            heading={"Discover the Maestros"}
+            description={"Dive into the world of musical genius with your favorite artists"}
           />
 
           <div className="songs-container">

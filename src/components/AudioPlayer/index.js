@@ -61,9 +61,9 @@ const AudioPlayer = () => {
             <img src={currentSong?.picture} />
           </div>
           <div className={styles.metadata}>
-            <h3 title={currentSong?.title}>
+            <h4 title={currentSong?.title}>
               {truncateText(currentSong?.title, 30)}
-            </h3>
+            </h4>
             <p title={currentSong?.artist}>
               {truncateText(currentSong?.artist, 30)}
             </p>

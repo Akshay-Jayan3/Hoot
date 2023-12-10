@@ -4,7 +4,6 @@ import { MainContext } from "../../context/MainContext";
 import FolderOpenOutlinedIcon from "@mui/icons-material/FolderOpenOutlined";
 import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
-import { toast } from "react-toastify";
 import SettingsSuggestOutlinedIcon from "@mui/icons-material/SettingsSuggestOutlined";
 import Header from "../../components/Header";
 import LoadingScreen from "../../components/Loader";

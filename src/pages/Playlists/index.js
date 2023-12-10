@@ -122,8 +122,8 @@ const Playlists = () => {
             }
           />
           <Header
-            heading={"Music For You"}
-            description={"Listen to your favourite songs"}
+            heading={"Rhythmic Playgrounds"}
+            description={"Immerse yourself in handpicked playlists for every mood"}
           />
 
           <div className="songs-container">

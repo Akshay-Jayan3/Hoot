@@ -68,8 +68,8 @@ const Favourites = () => {
         <div className="mainsection">
         <Search  onChange={performSearch} value={searchString} placeholder={"Search your favourite Songs"}/>
           <Header
-            heading={"Music For You"}
-            description={"Listen to your favourite songs"}
+            heading={"Heartbeats Collection"}
+            description={"Your personal sanctuary of beloved songs"}
           />
 
           <div className="songs-container">
