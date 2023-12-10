@@ -13,13 +13,14 @@ import LoadingScreen from "../../components/Loader";
 import { useLocation } from "react-router-dom";
 
 const Playlists = () => {
-  const [metaData, setMetaData] = useState(null);
+  const [songs, setSongs] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [playlists, setPlaylist] = useState([]);
-  const { nowplaying } = useContext(MainContext);
   const [showPlaylist, setShowPlaylist] = useState(false);
-  const [selectedAlbum, setSelectedAlbum] = useState([]);
+  const [selectedPlaylist, setSelectedPlaylist] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [searchString, setSearchString] = useState('')
+  const [filteredData, setFilteredData] = useState([])
   const openModal = () => {
     setShowModal(true);
   };
@@ -29,37 +30,41 @@ const Playlists = () => {
   };
 
   useEffect(() => {
-    const promises = [
-      cachemanager.getAllEntities(cacheEntities.SONGS),
-      cachemanager.getSongsFromplaylist(cacheEntities.PLAYLISTS,cacheEntities.SONGS),
-    ];
-    Promise.all(promises)
-      .then(([songsRes, playlistRes]) => {
+    const fetchMetaData = async () => {
+      try {
+        const res = await cachemanager.getSongsFromplaylist(cacheEntities.PLAYLISTS,cacheEntities.SONGS);
+        setPlaylist(res.data);
         setIsLoading(false);
-        if (songsRes) {
-          setMetaData(songsRes.data);
-        }
-
-        if (playlistRes) {
-          setPlaylist(playlistRes.data);
-        }
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching data:", error);
-      });
+        setIsLoading(false);
+      }
+    };
+
+    fetchMetaData();
   }, []);
+
+
+  const performSearch = (value) => {
+    setSearchString(value)
+    setFilteredData(
+      playlists.filter((item) =>
+        item?.name?.toLowerCase().includes(value.toLowerCase())
+      )
+    );
+  };
 
 
   const HandleSelectPlaylist = () => {
     setShowPlaylist(!showPlaylist);
   };
 
+  
   const deletePlaylist = (event, PlaylistId) => {
     event.stopPropagation();
     cachemanager
       .deleteEntityById(cacheEntities.PLAYLISTS, PlaylistId)
       .then((res) => {
-        console.log(res);
         setPlaylist((prevTracks) =>
           prevTracks.filter((prevTrack) => prevTrack.id !== PlaylistId)
         );
@@ -72,7 +77,7 @@ const Playlists = () => {
       {isLoading && <LoadingScreen message={"Loading ..."} />}
       <div className="Songspage">
         <div className="mainsection">
-          <Search showback={showPlaylist} HandleBack={HandleSelectPlaylist} />
+          <Search showback={showPlaylist} HandleBack={HandleSelectPlaylist} onChange={performSearch} value={searchString} placeholder={"Search your favourite Playlists"} />
           <Header
             heading={"Music For You"}
             description={"Listen to your favourite songs"}
@@ -92,9 +97,9 @@ const Playlists = () => {
                     Add New Playlist
                   </button>
                   <AlbumList
-                    albums={playlists}
+                    albums={searchString && searchString !== '' ? filteredData : playlists}
                     HandleFile={HandleSelectPlaylist}
-                    setSelectedAlbum={setSelectedAlbum}
+                    HandleSelected={setSelectedPlaylist}
                     HandleAction={deletePlaylist}
                   />
                 </>
@@ -107,13 +112,13 @@ const Playlists = () => {
                 )
               )
             ) : (
-              <PlaylistSongs selectedPlaylist={selectedAlbum}/>
+              <PlaylistSongs selectedPlaylist={selectedPlaylist}/>
             )}
           </div>
         </div>
         <div className="currentMusic">
           <div className="musicCard">
-            <AudioPlayer selectedMusicFile={nowplaying} AllSongs={metaData} />
+            <AudioPlayer/>
           </div>
         </div>
       </div>
