@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import LoadingScreen from "../components/Loader";
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Routes,
   Route,
 } from "react-router-dom";
@@ -17,7 +17,7 @@ const Settings = lazy(() => import("../pages/Setting"));
 
 const AppRouter = () => {
   return (
-    <Router>
+    <Router basename="/">
       <Suspense fallback={<LoadingScreen message={"Loading ..."}/>}>
         <Layout>
           <Routes>

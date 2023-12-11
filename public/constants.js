@@ -9,3 +9,5 @@ module.exports.UPDATE_BY_ID = "updateById";
 module.exports.DELETE_BY_ID = "deleteById";
 module.exports.DELETE_ALL = "deleteAll";
 module.exports.SELECT_FOLDER = "select-folder";
+module.exports.APP_CACHE_DIR = "C:/AirtunemusicAppData";
+module.exports.DB_PATH = "C:/AirtunemusicAppData/music.sqlite";

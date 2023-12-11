@@ -31,7 +31,7 @@ function createWindow() {
     win.loadURL("http://localhost:3000"); // When in development mode
     win.webContents.openDevTools();
   } else {
-    win.loadFile(path.join(__dirname, "../build/index.html")); // Load the production build
+    win.loadURL(`file://${path.join(__dirname, "../build/index.html")}`); // Load the production build
   }
 }
 

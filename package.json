@@ -1,7 +1,10 @@
 {
   "name": "musicapp",
-  "version": "0.1.0",
-  "main": "electron/main.js",
+  "version": "0.0.1",
+  "homepage": "./",
+  "main": "./public/electron.js",
+  "author": "Akshay Jayan",
+  "description": "Immerse yourself in a world of sound with our sleek and intuitive music player. Elevate your audio experience with a modern design, customizable themes, and a host of features that make navigating and enjoying your music collection a delight.",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -18,6 +21,7 @@
     "react": "^18.2.0",
     "react-audio-player": "^0.17.0",
     "react-dom": "^18.2.0",
+    "react-loader-spinner": "^6.1.0",
     "react-router-dom": "^6.17.0",
     "react-scripts": "5.0.1",
     "sass": "^1.69.4",
@@ -32,8 +36,10 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "react": "react-scripts start"
-   
+    "react": "react-scripts start",
+    "electron:package:mac": "yarn build && electron-builder -m -c.extraMetadata.main=build/electron.js",
+    "electron:package:win": "yarn build && electron-builder -w -c.extraMetadata.main=build/electron.js",
+    "electron:package:linux": "yarn build && electron-builder -l -c.extraMetadata.main=build/electron.js"
   },
   "eslintConfig": {
     "extends": [
@@ -43,11 +49,13 @@
   },
   "browserslist": {
     "production": [
+      "last 1 electron version",
       ">0.2%",
       "not dead",
       "not op_mini all"
     ],
     "development": [
+      "last 1 electron version",
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
@@ -56,6 +64,29 @@
   "devDependencies": {
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
-    "electron": "^27.0.2"
+    "electron": "^27.0.2",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.Airtune.music",
+    "productName": "Airtune music",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "App"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "deb"
+    }
   }
 }
