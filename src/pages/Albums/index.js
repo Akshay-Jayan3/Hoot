@@ -8,9 +8,11 @@ import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
 import LoadingScreen from "../../components/Loader";
 import ListView from "../../components/ListView";
+import { MainContext } from "../../context/MainContext";
 
 const Albums = () => {
   const [metaData, setMetaData] = useState(null);
+  const { updateNowPlaying } = useContext(MainContext);
   const [albums, setAlbums] = useState(null);
   const { setAllSongs } = useContext(MainContext);
   const [showAlbums, setShowAlbums] = useState(false);
@@ -112,7 +114,7 @@ const Albums = () => {
               ? albums &&
                 albums?.length > 0 && (
                   <GridView
-                  items={
+                    items={
                       searchString && searchString !== ""
                         ? filteredData
                         : albums

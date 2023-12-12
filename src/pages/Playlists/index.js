@@ -9,9 +9,11 @@ import { cacheEntities } from "../../cacheStore/cacheEntities";
 import AddPlaylistModal from "../../components/AddplaylistModal";
 import LoadingScreen from "../../components/Loader";
 import GridView from "../../components/GridView";
+import { MainContext } from "../../context/MainContext";
 
 const Playlists = () => {
   const [songs, setSongs] = useState(null);
+  const { updateNowPlaying } = useContext(MainContext);
   const [isLoading, setIsLoading] = useState(true);
   const [playlists, setPlaylist] = useState([]);
   const [showPlaylist, setShowPlaylist] = useState(false);
