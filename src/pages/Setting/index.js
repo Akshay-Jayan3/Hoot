@@ -18,8 +18,10 @@ const Settings = () => {
   const navigate = useNavigate();
   const [showToast, setShowToast] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const [message,setMessage] = useState("")
 
-  const handleShowToast = () => {
+  const handleShowToast = (message) => {
+    setMessage(message)
     setShowToast(true);
   };
 
@@ -111,7 +113,7 @@ const Settings = () => {
                       ])
                         .then(() => {
                           setIsLoading(false);
-                          handleShowToast();
+                          handleShowToast("Songs scanned successfully !");
                           navigate("/");
                           console.log(
                             "All cache operations completed successfully."
@@ -128,6 +130,8 @@ const Settings = () => {
                   },
                   onError: function (error) {
                     console.log(":(", error.type, error.info);
+                    setIsLoading(false);
+                    
                   },
                 });
               }
@@ -140,6 +144,7 @@ const Settings = () => {
       console.log(
         "Oops! Something went wrong while scanning songs. Please try again."
       );
+      handleShowToast("Oops! Something went wrong while scanning songs. Please try again.");
     }
   };
 
@@ -155,7 +160,7 @@ const Settings = () => {
       )}
       {showToast && (
         <CustomToast
-          message="Songs scanned successfully !"
+          message={message}
           onClose={handleCloseToast}
         />
       )}
