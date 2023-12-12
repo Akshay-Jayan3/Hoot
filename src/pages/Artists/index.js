@@ -7,7 +7,7 @@ import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
 import LoadingScreen from "../../components/Loader";
 import ListView from "../../components/ListView";
-import { MainContext } from "../../context/MainContext";
+
 
 const Artists = () => {
   const [metaData, setMetaData] = useState(null);
