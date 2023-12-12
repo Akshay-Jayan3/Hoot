@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import styles from "./styles.module.scss";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
+import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { MainContext } from "../../context/MainContext";
 import { AudioContext } from "../../context/AudioContext";
@@ -20,7 +20,7 @@ const Track = ({
   const { updateLastPlayed, updateNowPlaying, nowplaying } =
     useContext(MainContext);
   const { isPlaying } = useContext(AudioContext);
-  
+
   function truncateText(text, maxLength) {
     if (text?.length > maxLength) {
       return text.slice(0, maxLength) + "...";

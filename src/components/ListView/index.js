@@ -3,7 +3,7 @@ import Track from "../Track";
 import styles from "./styles.module.scss";
 import ArtistList from "../ArtistList";
 
-const TrackList = ({ tracks,type,toggleFavorite,HandleFile,AddtoPlaylist, RemoveFromPlaylist, playlistDetails,selectedPlaylist,count}) => {
+const ListView = ({ tracks,type,toggleFavorite,HandleFile,AddtoPlaylist, RemoveFromPlaylist, playlistDetails,selectedPlaylist,count}) => {
   return (
     <div className={styles.trackContainer}>
       <div className={styles.trackNo}>
@@ -19,9 +19,9 @@ const TrackList = ({ tracks,type,toggleFavorite,HandleFile,AddtoPlaylist, Remove
               <></>
             )
           )
-        : "no songs"}
+        : "no records found"}
     </div>
   );
 };
 
-export default TrackList;
+export default ListView;

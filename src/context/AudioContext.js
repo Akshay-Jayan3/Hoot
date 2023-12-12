@@ -1,29 +1,36 @@
-import React, { createContext, useState, useContext,useEffect, useRef } from "react"
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  useRef,
+} from "react";
 import { MainContext } from "./MainContext";
 import { Howl } from "howler";
 
 export const AudioContext = createContext({
-    isPlaying:null,
-    currentSong:null,
-    AllSongs:null,
-    seekPosition:null,
-    currentTime:null,
-    time:null,
-    duration:null,
-    isRepeat:null,
-    isShuffle:null,
-    setCurrentSong:()=>{},
-    setAllSongs:()=>{},
-    playNextSong:()=>{},
-    playPreviousSong:()=>{},
-    toggleShuffle:()=>{},
-    toggleRepeat:()=>{},
-    togglePlayback:()=>{},
-    handleSeekChange:()=>{},
+  isPlaying: null,
+  currentSong: null,
+  AllSongs: null,
+  seekPosition: null,
+  currentTime: null,
+  time: null,
+  duration: null,
+  isRepeat: null,
+  isShuffle: null,
+  setCurrentSong: () => {},
+  setAllSongs: () => {},
+  playNextSong: () => {},
+  playPreviousSong: () => {},
+  toggleShuffle: () => {},
+  toggleRepeat: () => {},
+  togglePlayback: () => {},
+  handleSeekChange: () => {},
 });
 
 export const AudioProvider = ({ children }) => {
-  const { updateLastPlayed, updateNowPlaying ,AllSongs} = useContext(MainContext);
+  const { updateLastPlayed, updateNowPlaying, AllSongs } =
+    useContext(MainContext);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSong, setCurrentSong] = useState(null);
   const [sound, setSound] = useState(null);
@@ -33,8 +40,8 @@ export const AudioProvider = ({ children }) => {
   const [isShuffle, setIsShuffle] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
   const [time, setTime] = useState({
-    min: '00',
-    sec: '00',
+    min: "00",
+    sec: "00",
   });
 
   const togglePlayback = () => {
@@ -57,7 +64,9 @@ export const AudioProvider = ({ children }) => {
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
     const seconds = Math.floor(timeInSeconds % 60);
-    const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    const formattedTime = `${String(minutes).padStart(2, "0")}:${String(
+      seconds
+    ).padStart(2, "0")}`;
     return formattedTime;
   };
 
@@ -203,11 +212,11 @@ export const AudioProvider = ({ children }) => {
     const interval = setInterval(() => {
       if (sound && isPlaying) {
         setCurrentTime(sound?.seek());
-        setSeekPosition(sound?.seek())
+        setSeekPosition(sound?.seek());
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [sound, isPlaying,seekPosition]);
+  }, [sound, isPlaying, seekPosition]);
 
   useEffect(() => {
     if (currentSong) {
@@ -249,14 +258,14 @@ export const AudioProvider = ({ children }) => {
 
   useEffect(() => {
     if (duration) {
-      const min = "0"+ Math.floor(duration / 60);
+      const min = "0" + Math.floor(duration / 60);
       const secRemain = Math.floor(duration % 60);
       setTime({
         min: min,
         sec: secRemain,
       });
     }
-  }, [currentSong,duration]);
+  }, [currentSong, duration]);
 
   return (
     <AudioContext.Provider
@@ -279,4 +288,3 @@ export const AudioProvider = ({ children }) => {
     </AudioContext.Provider>
   );
 };
-

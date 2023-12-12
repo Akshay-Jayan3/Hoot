@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./styles.module.scss";
-import Album from "../Album";
+import Album from "../GridItem";
 
-const AlbumList = ({
-  albums,
+const GridView = ({
+  items,
   HandleFile,
   HandleSelected,
   type,
@@ -11,10 +11,10 @@ const AlbumList = ({
 }) => {
   return (
     <div className={styles.AlbumContainer}>
-      {albums && albums?.length > 0
-        ? albums?.map((album, i) => (
+      {items && items?.length > 0
+        ? items?.map((item, i) => (
             <Album
-              album={album}
+              item={item}
               HandleFile={HandleFile}
               HandleSelected={HandleSelected}
               type={type}
@@ -22,9 +22,9 @@ const AlbumList = ({
               key={i}
             />
           ))
-        : "no songs"}
+        : "no records found"}
     </div>
   );
 };
 
-export default AlbumList;
+export default GridView;

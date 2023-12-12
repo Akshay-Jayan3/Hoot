@@ -22,10 +22,11 @@ const AddPlaylistModal = ({
     e.preventDefault();
     if (playlistDetails) {
       cachemanager
-        .updateEntityById(cacheEntities.PLAYLISTS, playlistDetails.id,
-          { name: playlistName })
+        .updateEntityById(cacheEntities.PLAYLISTS, playlistDetails.id, {
+          name: playlistName,
+        })
         .then((res) => {
-          console.log(res.data)
+          console.log(res.data);
           setPlaylistName("");
           closeModal();
           setPlaylist((prevTracks) =>

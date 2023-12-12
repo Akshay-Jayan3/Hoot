@@ -8,7 +8,7 @@ const {
   deleteAllentity,
   addsongtoPlaylist,
   getsongfromPlaylist,
-  removeSongfromplaylist
+  removeSongfromplaylist,
 } = window.electron;
 
 const getAllEntities = async (modelName) => {
@@ -53,17 +53,14 @@ const getEntityByField = async (modelName, value) => {
 
 const getSongsFromplaylist = async (modelName, modelName2) => {
   try {
-    const entity = await getsongfromPlaylist(modelName,modelName2);
+    const entity = await getsongfromPlaylist(modelName, modelName2);
     return {
       status: "s",
       data: entity,
       message: "Songs retrieved from db successfully",
     };
   } catch (error) {
-    console.error(
-      `Error getting entity for ${modelName}}:`,
-      error.message
-    );
+    console.error(`Error getting entity for ${modelName}}:`, error.message);
   }
 };
 
@@ -73,7 +70,7 @@ const addEntity = async (modelName, data) => {
 
     if (result.status === "S") {
       console.log("Success:", result.message);
-      return { success: true, message: result.message ,data:result.data};
+      return { success: true, message: result.message, data: result.data };
     } else {
       console.error("Error:", result.message);
       throw new Error(result.message);
@@ -99,7 +96,7 @@ const addsongsToplaylist = async (
 
     if (result.status === "S") {
       console.log("Success:", result.message);
-      return { success: true, message: result.message ,data:result.data};
+      return { success: true, message: result.message, data: result.data };
     } else {
       console.error("Error:", result.message);
       throw new Error(result.message);
@@ -123,10 +120,9 @@ const removeSongfromPlaylist = async (
       songId
     );
 
-
     if (result?.status === "S") {
       console.log("Success:", result?.message);
-      return { success: true, message: result.message ,data:result.data};
+      return { success: true, message: result.message, data: result.data };
     } else {
       console.error("Error:", result?.message);
       throw new Error(result.message);
@@ -181,5 +177,5 @@ export {
   deleteALLEntity,
   addsongsToplaylist,
   removeSongfromPlaylist,
-  getSongsFromplaylist
+  getSongsFromplaylist,
 };

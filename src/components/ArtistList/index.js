@@ -4,27 +4,21 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import { MainContext } from "../../context/MainContext";
 
 const ArtistList = ({ artist, HandleFile }) => {
-
-
   return (
     <div
       className={styles.wrapper}
       onClick={() => {
         HandleFile(artist);
-        // updateLastPlayed(track);
-        // localStorage.setItem("lastplayed", JSON.stringify(track));
       }}
     >
       <div className={styles.info}>
         <div className={styles.titleArtist}>
-          
           <p className={styles.artist}>{artist.name}</p>
         </div>
       </div>
       <div>
         <FavoriteBorderOutlinedIcon />
       </div>
-      {/* <div>more</div> */}
     </div>
   );
 };

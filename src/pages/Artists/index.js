@@ -1,23 +1,22 @@
-import React, { useState, useEffect ,useContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Header from "../../components/Header";
-import TrackList from "../../components/TrackList";
 import Search from "../../components/Search";
 import { MainContext } from "../../context/MainContext";
 import AudioPlayer from "../../components/AudioPlayer";
 import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
 import LoadingScreen from "../../components/Loader";
+import ListView from "../../components/ListView";
 
 const Artists = () => {
   const [metaData, setMetaData] = useState(null);
   const [artists, setArtists] = useState(null);
-  const {setAllSongs} = useContext(MainContext);
-  const [selectedMusicFile, setSelectedMusicFile] = useState(null);
+  const { setAllSongs } = useContext(MainContext);
   const [showArtists, setShowArtist] = useState(false);
   const [selectedArtist, setSelectedArtist] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchString, setSearchString] = useState('')
-  const [filteredData, setFilteredData] = useState([])
+  const [searchString, setSearchString] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
     const promises = [
@@ -47,7 +46,7 @@ const Artists = () => {
   const HandleSelectArtist = (artist) => {
     setSelectedArtist(artist);
     setShowArtist(!showArtists);
-    setAllSongs(filteredSongs)
+    setAllSongs(filteredSongs);
   };
 
   const performSearch = (value) => {
@@ -63,42 +62,78 @@ const Artists = () => {
     );
   };
 
+  const toggleFavorite = (event, trackId, track, nowplaying) => {
+    event.stopPropagation();
+    cachemanager
+      .updateEntityById(cacheEntities.SONGS, trackId, {
+        ...track,
+        isFavorite: !track.isFavorite,
+      })
+      .then(() => {
+        if (nowplaying) {
+          updateNowPlaying({ ...track, isFavorite: !track.isFavorite });
+        }
+        setMetaData((prevTracks) =>
+          prevTracks.map((prevTrack) =>
+            prevTrack.id === trackId
+              ? { ...prevTrack, isFavorite: !prevTrack.isFavorite }
+              : prevTrack
+          )
+        );
+      })
+      .catch((error) => console.error("Error editing:", error));
+  };
+
   return (
     <>
-      {isLoading && <LoadingScreen message={"Loading ..."}/>}
+      {isLoading && <LoadingScreen message={"Loading ..."} />}
       <div className="Songspage">
         <div className="mainsection">
-        <Search showback={showArtists} HandleBack={HandleSelectArtist}  onChange={performSearch} value={searchString} placeholder={showArtists ? "Search your favourite Songs":"Search your favourite Artists"}/>
+          <Search
+            showback={showArtists}
+            HandleBack={HandleSelectArtist}
+            onChange={performSearch}
+            value={searchString}
+            placeholder={
+              showArtists
+                ? "Search your favourite Songs"
+                : "Search your favourite Artists"
+            }
+          />
           <Header
             heading={"Discover the Maestros"}
-            description={"Dive into the world of musical genius with your favorite artists"}
+            description={
+              "Dive into the world of musical genius with your favorite artists"
+            }
           />
 
           <div className="songs-container">
             {!showArtists ? (
-              artists && artists?.length > 0 ? (
-                <TrackList
-                  tracks={searchString && searchString !== '' ? filteredData : artists}
+              artists && artists?.length > 0 && (
+                <ListView
+                  tracks={
+                    searchString && searchString !== "" ? filteredData : artists
+                  }
                   HandleFile={HandleSelectArtist}
                   type={"artist"}
                 />
-              ) : (
-                <p>no artists</p>
-              )
-            ) : filteredSongs && filteredSongs?.length > 0 ? (
-              <TrackList tracks={searchString && searchString !== '' ? filteredData : filteredSongs} type={"track"} />
-            ) : (
-              <p>no songs</p>
+              ) 
+            ) : filteredSongs && filteredSongs?.length > 0 && (
+              <ListView
+                tracks={
+                  searchString && searchString !== ""
+                    ? filteredData
+                    : filteredSongs
+                }
+                type={"track"}
+                toggleFavorite={toggleFavorite}
+              />
             )}
           </div>
         </div>
         <div className="currentMusic">
           <div className="musicCard">
-            <AudioPlayer
-              selectedMusicFile={selectedMusicFile}
-              AllSongs={metaData}
-              setSelectedMusicFile={setSelectedMusicFile}
-            />
+            <AudioPlayer />
           </div>
         </div>
       </div>

@@ -1,27 +1,26 @@
 import React, { useContext, useEffect, useState } from "react";
 import Header from "../../components/Header";
 import { MainContext } from "../../context/MainContext";
-import TrackList from "../../components/TrackList";
 import Search from "../../components/Search";
 import AudioPlayer from "../../components/AudioPlayer";
 import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
 import LoadingScreen from "../../components/Loader";
+import ListView from "../../components/ListView";
 const Favourites = () => {
-  const { nowplaying, updateNowPlaying } = useContext(MainContext);
-  const [metaData, setMetadData] = useState(null);
+  const { updateNowPlaying } = useContext(MainContext);
+  const [metaData, setMetaData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchString, setSearchString] = useState('')
-  const [filteredData, setFilteredData] = useState([])
+  const [searchString, setSearchString] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
 
- 
   useEffect(() => {
     cachemanager
       .getAllEntities(cacheEntities.SONGS)
       .then((res) => {
         setIsLoading(false);
         if (res) {
-          setMetadData(res.data);
+          setMetaData(res.data);
         }
       })
       .catch((error) => {
@@ -31,7 +30,7 @@ const Favourites = () => {
 
   const filteredSongs = metaData?.filter((song) => song.isFavorite);
   const performSearch = (value) => {
-    setSearchString(value)
+    setSearchString(value);
     setFilteredData(
       filteredSongs.filter((item) =>
         item?.title?.toLowerCase().includes(value.toLowerCase())
@@ -50,7 +49,7 @@ const Favourites = () => {
         if (nowplaying) {
           updateNowPlaying({ ...track, isFavorite: !track.isFavorite });
         }
-        setMetadData((prevTracks) =>
+        setMetaData((prevTracks) =>
           prevTracks.map((prevTrack) =>
             prevTrack.id === trackId
               ? { ...prevTrack, isFavorite: !prevTrack.isFavorite }
@@ -66,7 +65,11 @@ const Favourites = () => {
       {isLoading && <LoadingScreen message={"Loading ..."} />}
       <div className="Songspage">
         <div className="mainsection">
-        <Search  onChange={performSearch} value={searchString} placeholder={"Search your favourite Songs"}/>
+          <Search
+            onChange={performSearch}
+            value={searchString}
+            placeholder={"Search your favourite Songs"}
+          />
           <Header
             heading={"Heartbeats Collection"}
             description={"Your personal sanctuary of beloved songs"}
@@ -74,8 +77,12 @@ const Favourites = () => {
 
           <div className="songs-container">
             {filteredSongs && filteredSongs.length > 0 ? (
-              <TrackList
-              tracks={searchString && searchString !== '' ? filteredData : filteredSongs}
+              <ListView
+                tracks={
+                  searchString && searchString !== ""
+                    ? filteredData
+                    : filteredSongs
+                }
                 type={"track"}
                 toggleFavorite={toggleFavorite}
               />
@@ -86,10 +93,7 @@ const Favourites = () => {
         </div>
         <div className="currentMusic">
           <div className="musicCard">
-            <AudioPlayer
-              selectedMusicFile={nowplaying}
-              AllSongs={filteredSongs}
-            />
+            <AudioPlayer />
           </div>
         </div>
       </div>

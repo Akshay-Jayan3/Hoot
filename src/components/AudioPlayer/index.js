@@ -11,8 +11,6 @@ import { AudioContext } from "../../context/AudioContext";
 import { MainContext } from "../../context/MainContext";
 import musicNote from "../../assects/musical-note (2).png";
 
-
-
 const AudioPlayer = () => {
   const {
     isPlaying,
@@ -44,7 +42,6 @@ const AudioPlayer = () => {
   const getBackgroundSize = () => {
     return { backgroundSize: `${(currentTime * 100) / duration}% 100%` };
   };
-
 
   useEffect(() => {
     if (nowplaying) {
@@ -78,7 +75,7 @@ const AudioPlayer = () => {
               onChange={handleSeekChange}
               style={getBackgroundSize()}
             />
-            <div  className={styles.time}>
+            <div className={styles.time}>
               <p>{formatTime(currentTime)}</p>
               <p>
                 {time.min}:{time.sec}

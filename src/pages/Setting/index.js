@@ -112,6 +112,7 @@ const Settings = () => {
                         .then(() => {
                           setIsLoading(false);
                           handleShowToast();
+                          navigate("/");
                           console.log(
                             "All cache operations completed successfully."
                           );

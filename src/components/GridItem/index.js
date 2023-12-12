@@ -4,7 +4,7 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import musicicon from "../../assects/musical-note.png"
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
-const Album = ({ album, HandleFile, HandleSelected ,type,HandleAction ,count}) => {
+const GridItem = ({ item, HandleFile, HandleSelected ,type,HandleAction }) => {
   function truncateText(text, maxLength) {
     if (text?.length > maxLength) {
       return text.slice(0, maxLength) + "...";
@@ -17,16 +17,16 @@ const Album = ({ album, HandleFile, HandleSelected ,type,HandleAction ,count}) =
       className={styles.wrapper}
       onClick={() => {
         HandleFile();
-        HandleSelected(album);
+        HandleSelected(item);
       }}
     >
       <div className={styles.info}>
         <div className={styles.picture}>
-          <img src={type === "Album" && album.CoverArt ? album.CoverArt:musicicon} />
+          <img src={type === "Album" && item.CoverArt ? item.CoverArt:musicicon} />
         </div>
         <div className={styles.detailsWrapper}>
           <div className={styles.details}>
-            <p className={styles.artist}>{truncateText(album.name, 20)}</p>
+            <p className={styles.artist}>{truncateText(item.name, 20)}</p>
           </div>
 
           <div>
@@ -40,4 +40,4 @@ const Album = ({ album, HandleFile, HandleSelected ,type,HandleAction ,count}) =
   );
 };
 
-export default Album;
+export default GridItem;

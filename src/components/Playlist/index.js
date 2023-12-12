@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
-import TrackList from "../TrackList";
+import React, { useState, useContext } from "react";
 import styles from "./styles.module.scss";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
@@ -10,8 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { MainContext } from "../../context/MainContext";
 import { AudioContext } from "../../context/AudioContext";
 import CustomToast from "../ToastMessage";
-import * as cachemanager from "../../cacheStore/index";
-import { cacheEntities } from "../../cacheStore/cacheEntities";
+import ListView from "../ListView";
+
 const PlaylistSongs = ({
   selectedPlaylist,
   AddtoPlaylist,
@@ -19,6 +18,7 @@ const PlaylistSongs = ({
   showToast,
   handleCloseToast,
   RemoveFromPlaylist,
+  toggleFavorite,
 }) => {
   const { updateNowPlaying, setAllSongs } = useContext(MainContext);
   const { isPlaying, setIsPlaying } = useContext(AudioContext);
@@ -107,13 +107,13 @@ const PlaylistSongs = ({
               </div>
             </div>
 
-            <TrackList
+            <ListView
               tracks={songs}
               type={"track"}
               selectedPlaylist={selectedPlaylist}
               AddtoPlaylist={AddtoPlaylist}
               RemoveFromPlaylist={RemoveFromPlaylist}
-              count={songs?.length}
+              toggleFavorite={toggleFavorite}
             />
           </>
         )}

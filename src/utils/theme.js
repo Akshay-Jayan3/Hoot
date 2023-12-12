@@ -1,6 +1,6 @@
 // theme.js
 export const lightTheme = {
-    background: '#020651',
+    background: '#021b6e',
     textColor: '#fff',
     themeMode:'light'
     // other light theme variables...

@@ -1,23 +1,23 @@
 import React, { useContext, useState, useEffect } from "react";
 import Header from "../../components/Header";
 import { MainContext } from "../../context/MainContext";
-import TrackList from "../../components/TrackList";
 import Search from "../../components/Search";
 import AudioPlayer from "../../components/AudioPlayer";
-import AlbumList from "../../components/AlbumList";
+import GridView from "../../components//GridView";
 import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
 import LoadingScreen from "../../components/Loader";
+import ListView from "../../components/ListView";
 
 const Albums = () => {
   const [metaData, setMetaData] = useState(null);
   const [albums, setAlbums] = useState(null);
-  const {setAllSongs} = useContext(MainContext);
+  const { setAllSongs } = useContext(MainContext);
   const [showAlbums, setShowAlbums] = useState(false);
   const [selectedAlbum, setSelectedAlbum] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchString, setSearchString] = useState('')
-  const [filteredData, setFilteredData] = useState([])
+  const [searchString, setSearchString] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
     const promises = [
@@ -46,8 +46,7 @@ const Albums = () => {
 
   const HandleSelectAlbum = () => {
     setShowAlbums(!showAlbums);
-    setAllSongs(filteredSongs)
-    
+    setAllSongs(filteredSongs);
   };
 
   const performSearch = (value) => {
@@ -63,36 +62,83 @@ const Albums = () => {
     );
   };
 
+  const toggleFavorite = (event, trackId, track, nowplaying) => {
+    event.stopPropagation();
+    cachemanager
+      .updateEntityById(cacheEntities.SONGS, trackId, {
+        ...track,
+        isFavorite: !track.isFavorite,
+      })
+      .then(() => {
+        if (nowplaying) {
+          updateNowPlaying({ ...track, isFavorite: !track.isFavorite });
+        }
+        setMetaData((prevTracks) =>
+          prevTracks.map((prevTrack) =>
+            prevTrack.id === trackId
+              ? { ...prevTrack, isFavorite: !prevTrack.isFavorite }
+              : prevTrack
+          )
+        );
+      })
+      .catch((error) => console.error("Error editing:", error));
+  };
 
   return (
     <>
-      {isLoading && <LoadingScreen message={"Loading ..."}/>}
+      {isLoading && <LoadingScreen message={"Loading ..."} />}
       <div className="Songspage">
         <div className="mainsection">
-          <Search showback={showAlbums} HandleBack={HandleSelectAlbum}  onChange={performSearch} value={searchString} placeholder={showAlbums ? "Search your favourite Songs":"Search your favourite Albums"}/>
+          <Search
+            showback={showAlbums}
+            HandleBack={HandleSelectAlbum}
+            onChange={performSearch}
+            value={searchString}
+            placeholder={
+              showAlbums
+                ? "Search your favourite Songs"
+                : "Search your favourite Albums"
+            }
+          />
           <Header
             heading={"Albums Extravaganza"}
-            description={"Dive into a world of musical stories with your favourite curated albums"}
+            description={
+              "Dive into a world of musical stories with your favourite curated albums"
+            }
           />
 
           <div className="songs-container">
-            {!showAlbums ? (
-              albums && albums?.length > 0 && (
-                <AlbumList
-                  albums={searchString && searchString !== '' ? filteredData : albums}
-                  HandleFile={HandleSelectAlbum}
-                  HandleSelected={setSelectedAlbum}
-                  type={"Album"}
-                />
-              )
-            ) : filteredSongs && filteredSongs?.length > 0 && (
-              <TrackList tracks={searchString && searchString !== '' ? filteredData : filteredSongs} type={"track"} />
-            )}
+            {!showAlbums
+              ? albums &&
+                albums?.length > 0 && (
+                  <GridView
+                  items={
+                      searchString && searchString !== ""
+                        ? filteredData
+                        : albums
+                    }
+                    HandleFile={HandleSelectAlbum}
+                    HandleSelected={setSelectedAlbum}
+                    type={"Album"}
+                  />
+                )
+              : filteredSongs &&
+                filteredSongs?.length > 0 && (
+                  <ListView
+                    tracks={
+                      searchString && searchString !== ""
+                        ? filteredData
+                        : filteredSongs
+                    }
+                    type={"track"}
+                    toggleFavorite={toggleFavorite}
+                  />
+                )}
           </div>
         </div>
         <div className="currentMusic">
           <div className="musicCard">
-            <AudioPlayer/>
+            <AudioPlayer />
           </div>
         </div>
       </div>

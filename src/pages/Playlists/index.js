@@ -1,16 +1,14 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
-import { MainContext } from "../../context/MainContext";
 import Search from "../../components/Search";
 import AudioPlayer from "../../components/AudioPlayer";
-import AlbumList from "../../components/AlbumList";
 import PlaylistSongs from "../../components/Playlist";
 import ControlPointOutlinedIcon from "@mui/icons-material/ControlPointOutlined";
 import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
 import AddPlaylistModal from "../../components/AddplaylistModal";
 import LoadingScreen from "../../components/Loader";
-import { useLocation } from "react-router-dom";
+import GridView from "../../components/GridView";
 
 const Playlists = () => {
   const [songs, setSongs] = useState(null);
@@ -104,6 +102,27 @@ const Playlists = () => {
         );
       });
   };
+  const toggleFavorite = (event, trackId, track, nowplaying) => {
+    event.stopPropagation();
+    cachemanager
+      .updateEntityById(cacheEntities.SONGS, trackId, {
+        ...track,
+        isFavorite: !track.isFavorite,
+      })
+      .then(() => {
+        if (nowplaying) {
+          updateNowPlaying({ ...track, isFavorite: !track.isFavorite });
+        }
+        setSongs((prevTracks) =>
+          prevTracks.map((prevTrack) =>
+            prevTrack.id === trackId
+              ? { ...prevTrack, isFavorite: !prevTrack.isFavorite }
+              : prevTrack
+          )
+        );
+      })
+      .catch((error) => console.error("Error editing:", error));
+  };
 
   return (
     <>
@@ -123,7 +142,9 @@ const Playlists = () => {
           />
           <Header
             heading={"Rhythmic Playgrounds"}
-            description={"Immerse yourself in handpicked playlists for every mood"}
+            description={
+              "Immerse yourself in handpicked playlists for every mood"
+            }
           />
 
           <div className="songs-container">
@@ -139,8 +160,8 @@ const Playlists = () => {
                     <ControlPointOutlinedIcon fontSize="small" />
                     Add New Playlist
                   </button>
-                  <AlbumList
-                    albums={
+                  <GridView
+                    items={
                       searchString && searchString !== ""
                         ? filteredData
                         : playlists
@@ -167,6 +188,7 @@ const Playlists = () => {
                 RemoveFromPlaylist={RemoveFromPlaylist}
                 showToast={showToast}
                 handleCloseToast={handleCloseToast}
+                toggleFavorite={toggleFavorite}
               />
             )}
           </div>
