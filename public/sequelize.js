@@ -1,19 +1,35 @@
+const { app } = require('electron');
 const { Sequelize } = require('sequelize');
 const path = require('path');
-const fs = require('fs');
-const consts = require('./constants');
-const DBSOURCE = consts.DB_PATH;
+const fs = require('fs').promises;
+const DB_FILENAME = 'AirtuneMusic.sqlite';
+const appName = require('../package.json').name;
+const DB_PATH = path.join(app.getPath('userData'), appName, DB_FILENAME);
 
-const dirPath =consts.APP_CACHE_DIR;
 
-if (!fs.existsSync(dirPath)) {
-  fs.mkdirSync(dirPath);
-} 
+async function createDir() {
+  try {
+    await fs.mkdir(DB_PATH, { recursive: true });
+  } catch (error) {
+    console.error('Error creating directory:', error);
+  }
+}
 
+createDir();
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: DBSOURCE,
+  storage: DB_PATH,
 });
+
+// Handle database connection errors
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection to the database has been established successfully.');
+  })
+  .catch((error) => {
+    console.error('Unable to connect to the database:', error);
+  });
 
 module.exports = sequelize;

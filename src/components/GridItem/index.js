@@ -30,7 +30,7 @@ const GridItem = ({ item, HandleFile, HandleSelected ,type,HandleAction }) => {
           </div>
 
           <div>
-            <button onClick ={(e)=>HandleAction(e,album.id)} className={styles.btn}>{type === "Album" ? <FavoriteBorderOutlinedIcon />:<DeleteOutlineOutlinedIcon/>}</button>
+            <button onClick ={(e)=>HandleAction(e,item.id)} className={styles.btn}>{type === "Album" ? <FavoriteBorderOutlinedIcon />:<DeleteOutlineOutlinedIcon/>}</button>
           </div>
         </div>
       </div>
