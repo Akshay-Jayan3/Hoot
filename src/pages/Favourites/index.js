@@ -76,17 +76,15 @@ const Favourites = () => {
           />
 
           <div className="songs-container">
-            {filteredSongs && filteredSongs.length > 0 && (
-              <ListView
-                tracks={
-                  searchString && searchString !== ""
-                    ? filteredData
-                    : filteredSongs
-                }
-                type={"track"}
-                toggleFavorite={toggleFavorite}
-              />
-            )}
+            <ListView
+              tracks={
+                searchString && searchString !== ""
+                  ? filteredData
+                  : filteredSongs
+              }
+              type={"track"}
+              toggleFavorite={toggleFavorite}
+            />
           </div>
         </div>
         <div className="currentMusic">

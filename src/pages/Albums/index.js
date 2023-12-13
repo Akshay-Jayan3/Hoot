@@ -9,7 +9,6 @@ import { cacheEntities } from "../../cacheStore/cacheEntities";
 import LoadingScreen from "../../components/Loader";
 import ListView from "../../components/ListView";
 
-
 const Albums = () => {
   const [metaData, setMetaData] = useState(null);
   const { updateNowPlaying } = useContext(MainContext);
@@ -110,32 +109,26 @@ const Albums = () => {
           />
 
           <div className="songs-container">
-            {!showAlbums
-              ? albums &&
-                albums?.length > 0 && (
-                  <GridView
-                    items={
-                      searchString && searchString !== ""
-                        ? filteredData
-                        : albums
-                    }
-                    HandleFile={HandleSelectAlbum}
-                    HandleSelected={setSelectedAlbum}
-                    type={"Album"}
-                  />
-                )
-              : filteredSongs &&
-                filteredSongs?.length > 0 && (
-                  <ListView
-                    tracks={
-                      searchString && searchString !== ""
-                        ? filteredData
-                        : filteredSongs
-                    }
-                    type={"track"}
-                    toggleFavorite={toggleFavorite}
-                  />
-                )}
+            {!showAlbums ? (
+              <GridView
+                items={
+                  searchString && searchString !== "" ? filteredData : albums
+                }
+                HandleFile={HandleSelectAlbum}
+                HandleSelected={setSelectedAlbum}
+                type={"Album"}
+              />
+            ) : (
+              <ListView
+                tracks={
+                  searchString && searchString !== ""
+                    ? filteredData
+                    : filteredSongs
+                }
+                type={"track"}
+                toggleFavorite={toggleFavorite}
+              />
+            )}
           </div>
         </div>
         <div className="currentMusic">

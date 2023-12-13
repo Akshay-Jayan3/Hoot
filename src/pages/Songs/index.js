@@ -19,7 +19,7 @@ const Songs = () => {
   const [searchString, setSearchString] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [showToast, setShowToast] = useState(false);
-  const [message,setMessage] = useState('')
+  const [message, setMessage] = useState("");
 
   const handleShowToast = (message) => {
     setMessage(message);
@@ -96,7 +96,11 @@ const Songs = () => {
     <>
       {isLoading && <LoadingScreen message={"Loading ..."} />}
       {showToast && (
-        <CustomToast message={message} onClose={handleCloseToast} bottom={true}/>
+        <CustomToast
+          message={message}
+          onClose={handleCloseToast}
+          bottom={true}
+        />
       )}
       <div className="Songspage">
         <div className="mainsection">
@@ -113,17 +117,15 @@ const Songs = () => {
           />
 
           <div className="songs-container">
-            {metadData && metadData.length > 0 && (
-              <ListView
-                tracks={
-                  searchString && searchString !== "" ? filteredData : metadData
-                }
-                type={"track"}
-                toggleFavorite={toggleFavorite}
-                AddtoPlaylist={AddtoPlaylist}
-                playlistDetails={playlistDetails}
-              />
-            )}
+            <ListView
+              tracks={
+                searchString && searchString !== "" ? filteredData : metadData
+              }
+              type={"track"}
+              toggleFavorite={toggleFavorite}
+              AddtoPlaylist={AddtoPlaylist}
+              playlistDetails={playlistDetails}
+            />
           </div>
         </div>
         <div className="currentMusic">

@@ -8,7 +8,6 @@ import { cacheEntities } from "../../cacheStore/cacheEntities";
 import LoadingScreen from "../../components/Loader";
 import ListView from "../../components/ListView";
 
-
 const Artists = () => {
   const [metaData, setMetaData] = useState(null);
   const { updateNowPlaying } = useContext(MainContext);
@@ -111,16 +110,14 @@ const Artists = () => {
 
           <div className="songs-container">
             {!showArtists ? (
-              artists && artists?.length > 0 && (
-                <ListView
-                  tracks={
-                    searchString && searchString !== "" ? filteredData : artists
-                  }
-                  HandleFile={HandleSelectArtist}
-                  type={"artist"}
-                />
-              ) 
-            ) : filteredSongs && filteredSongs?.length > 0 && (
+              <ListView
+                tracks={
+                  searchString && searchString !== "" ? filteredData : artists
+                }
+                HandleFile={HandleSelectArtist}
+                type={"artist"}
+              />
+            ) : (
               <ListView
                 tracks={
                   searchString && searchString !== ""
