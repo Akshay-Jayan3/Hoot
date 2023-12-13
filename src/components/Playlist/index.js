@@ -57,6 +57,7 @@ const PlaylistSongs = ({
         <CustomToast
           message="Removed from playlist"
           onClose={handleCloseToast}
+          bottom={true}
         />
       )}
       <div className={styles.container}>

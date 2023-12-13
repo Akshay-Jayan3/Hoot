@@ -76,7 +76,7 @@ const Favourites = () => {
           />
 
           <div className="songs-container">
-            {filteredSongs && filteredSongs.length > 0 ? (
+            {filteredSongs && filteredSongs.length > 0 && (
               <ListView
                 tracks={
                   searchString && searchString !== ""
@@ -86,8 +86,6 @@ const Favourites = () => {
                 type={"track"}
                 toggleFavorite={toggleFavorite}
               />
-            ) : (
-              <p>no songs</p>
             )}
           </div>
         </div>

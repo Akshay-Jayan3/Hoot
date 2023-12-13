@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import styles from "./styles.module.scss";
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
-const CustomToast = ({ message, onClose }) => {
+const CustomToast = ({ message, onClose, right, bottom }) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       onClose();
@@ -12,7 +11,16 @@ const CustomToast = ({ message, onClose }) => {
   }, [onClose]);
 
   return (
-    <div className={styles.customToast}>
+    <div
+      className={styles.customToast}
+      style={{
+        top:right && "20px",
+        right: right && "20px",
+        bottom: bottom && "20px",
+        left: bottom && "50%",
+        transform: bottom && "translate(-50%, 0)"
+      }}
+    >
       <p>{message}</p>
     </div>
   );

@@ -2,9 +2,9 @@
 
 .customToast {
     position: fixed;
-    bottom: 10px;
-    left: 50%;
-    transform: translate(-50%, 0);
+    // bottom: 10px;
+    // left: 50%;
+    // transform: translate(-50%, 0);
     z-index: 1000;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(18px);
@@ -18,7 +18,7 @@
     gap:0.5rem;
     animation: slideIn 0.5s ease, shake 0.3s ease 0.5s;
     p{
-      font-size: 12px;
+      font-size: 14px;
     }
   }
   

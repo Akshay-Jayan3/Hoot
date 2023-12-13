@@ -20,6 +20,7 @@ const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage: DB_PATH,
 });
+sequelize.sync();
 
 // Handle database connection errors
 sequelize

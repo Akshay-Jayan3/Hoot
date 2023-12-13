@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Header from "../../components/Header";
 import { MainContext } from "../../context/MainContext";
-import TrackList from "../../components/ListView";
 import Search from "../../components/Search";
 import AudioPlayer from "../../components/AudioPlayer";
 import * as cachemanager from "../../cacheStore/index";
@@ -20,8 +19,10 @@ const Songs = () => {
   const [searchString, setSearchString] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [showToast, setShowToast] = useState(false);
+  const [message,setMessage] = useState('')
 
-  const handleShowToast = () => {
+  const handleShowToast = (message) => {
+    setMessage(message);
     setShowToast(true);
   };
 
@@ -87,7 +88,7 @@ const Songs = () => {
         songId
       )
       .then((res) => {
-        handleShowToast();
+        handleShowToast("Added to Playlist");
       });
   };
 
@@ -95,7 +96,7 @@ const Songs = () => {
     <>
       {isLoading && <LoadingScreen message={"Loading ..."} />}
       {showToast && (
-        <CustomToast message="Added to playlist" onClose={handleCloseToast} />
+        <CustomToast message={message} onClose={handleCloseToast} bottom={true}/>
       )}
       <div className="Songspage">
         <div className="mainsection">

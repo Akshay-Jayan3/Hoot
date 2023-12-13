@@ -18,10 +18,10 @@ const Settings = () => {
   const navigate = useNavigate();
   const [showToast, setShowToast] = useState(false);
   const { theme, toggleTheme } = useTheme();
-  const [message,setMessage] = useState("")
+  const [message, setMessage] = useState("");
 
   const handleShowToast = (message) => {
-    setMessage(message)
+    setMessage(message);
     setShowToast(true);
   };
 
@@ -41,6 +41,10 @@ const Settings = () => {
         localStorage.setItem("selected-folder", folderSelected);
         fs.readdir(folderSelected, (err, files) => {
           if (err) {
+            setIsLoading(false);
+            handleShowToast(
+              "Something went wrong .Please Try again after some time"
+            );
             console.error(err);
             return;
           }
@@ -50,101 +54,115 @@ const Settings = () => {
           const musicFiles = files.filter((file) => {
             return /\.(mp3|wav)$/.test(file);
           });
+          if (musicFiles.length > 0) {
+            musicFiles.forEach((fileName) => {
+              const filePath = path.join(folderSelected, fileName);
+              fs.readFile(filePath, (err, data) => {
+                if (err) {
+                  handleShowToast("Error in scanning songs");
+                  setIsLoading(false);
+                  console.log(err);
+                } else {
+                  const file = new File([data], fileName, {
+                    type: "audio/mpeg",
+                  });
+                  jsmediatags.read(file, {
+                    onSuccess: function (tag) {
+                      if (tag.tags) {
+                        if (tag.tags.picture) {
+                          const { data, format } = tag.tags.picture;
 
-          musicFiles.forEach((fileName) => {
-            const filePath = path.join(folderSelected, fileName);
-            fs.readFile(filePath, (err, data) => {
-              if (err) {
-                // Handle file read error if needed
-              } else {
-                const file = new File([data], fileName, { type: "audio/mpeg" });
-                jsmediatags.read(file, {
-                  onSuccess: function (tag) {
-                    if (tag.tags) {
-                      if (tag.tags.picture) {
-                        const { data, format } = tag.tags.picture;
-
-                        if (data) {
-                          let base64String = "";
-                          for (let i = 0; i < data.length; i++) {
-                            base64String += String.fromCharCode(data[i]);
+                          if (data) {
+                            let base64String = "";
+                            for (let i = 0; i < data.length; i++) {
+                              base64String += String.fromCharCode(data[i]);
+                            }
+                            imgUrl = `data:${format};base64,${window.btoa(
+                              base64String
+                            )}`;
                           }
-                          imgUrl = `data:${format};base64,${window.btoa(
-                            base64String
-                          )}`;
                         }
+
+                        const filedata = {
+                          title: tag.tags.title,
+                          album: tag.tags.album,
+                          artist: tag.tags.artist,
+                          picture: imgUrl,
+                          path: `file:///${folderSelected}\\${fileName}`,
+                        };
+                        metadata.push(filedata);
                       }
+                      fileCount++;
+                      if (fileCount === musicFiles.length) {
+                        Promise.all([
+                          cachemanager
+                            .addEntity(cacheEntities.SONGS, metadata)
+                            .then((res) => console.log(res))
+                            .catch((error) => console.error(error)),
 
-                      const filedata = {
-                        title: tag.tags.title,
-                        album: tag.tags.album,
-                        artist: tag.tags.artist,
-                        picture: imgUrl,
-                        path: `file:///${folderSelected}\\${fileName}`,
-                      };
-                      metadata.push(filedata);
-                    }
-                    fileCount++;
-                    if (fileCount === musicFiles.length) {
-                      Promise.all([
-                        cachemanager
-                          .addEntity(cacheEntities.SONGS, metadata)
-                          .then((res) => console.log(res))
-                          .catch((error) => console.error(error)),
+                          cachemanager
+                            .addEntity(
+                              cacheEntities.ALBUMS,
+                              metadata.map((item) => ({
+                                name: item.album,
+                                CoverArt: item.picture,
+                              }))
+                            )
+                            .then((res) => console.log(res))
+                            .catch((error) => console.error(error)),
 
-                        cachemanager
-                          .addEntity(
-                            cacheEntities.ALBUMS,
-                            metadata.map((item) => ({
-                              name: item.album,
-                              CoverArt: item.picture,
-                            }))
-                          )
-                          .then((res) => console.log(res))
-                          .catch((error) => console.error(error)),
-
-                        cachemanager
-                          .addEntity(
-                            cacheEntities.ARTISTS,
-                            metadata.map((item) => ({ name: item.artist }))
-                          )
-                          .then((res) => console.log(res))
-                          .catch((error) => console.error(error)),
-                      ])
-                        .then(() => {
-                          setIsLoading(false);
-                          handleShowToast("Songs scanned successfully !");
-                          navigate("/");
-                          console.log(
-                            "All cache operations completed successfully."
-                          );
-                        })
-                        .catch((error) => {
-                          setIsLoading(false);
-                          console.error(
-                            "Error in one or more cache operations:",
-                            error
-                          );
-                        });
-                    }
-                  },
-                  onError: function (error) {
-                    console.log(":(", error.type, error.info);
-                    setIsLoading(false);
-                    
-                  },
-                });
-              }
+                          cachemanager
+                            .addEntity(
+                              cacheEntities.ARTISTS,
+                              metadata.map((item) => ({ name: item.artist }))
+                            )
+                            .then((res) => console.log(res))
+                            .catch((error) => console.error(error)),
+                        ])
+                          .then(() => {
+                            setIsLoading(false);
+                            handleShowToast("Songs scanned successfully !");
+                            setTimeout(() => {
+                              navigate("/");
+                            }, 1000);
+                            console.log(
+                              "All cache operations completed successfully."
+                            );
+                          })
+                          .catch((error) => {
+                            setIsLoading(false);
+                            console.error(
+                              "Error in one or more cache operations:",
+                              error
+                            );
+                            handleShowToast(
+                              "Something went wrong .Please Try again after some time"
+                            );
+                          });
+                      }
+                    },
+                    onError: function (error) {
+                      console.log(":(", error.type, error.info);
+                      setIsLoading(false);
+                      handleShowToast(
+                        "Something went wrong .Please Try again after some time"
+                      );
+                    },
+                  });
+                }
+              });
             });
-          });
+          } else {
+            setIsLoading(false);
+            handleShowToast("Oops! , no music files found");
+          }
         });
       }
     } catch (error) {
       console.error(error);
-      console.log(
+      handleShowToast(
         "Oops! Something went wrong while scanning songs. Please try again."
       );
-      handleShowToast("Oops! Something went wrong while scanning songs. Please try again.");
     }
   };
 
@@ -162,6 +180,7 @@ const Settings = () => {
         <CustomToast
           message={message}
           onClose={handleCloseToast}
+          right={true}
         />
       )}
       <>
