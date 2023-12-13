@@ -1,5 +1,5 @@
 {
-  "name": "musicapp",
+  "name": "Airtune",
   "version": "0.0.1",
   "homepage": "./",
   "main": "./public/electron.js",
@@ -84,9 +84,19 @@
     },
     "win": {
       "target": "nsis"
+      
+      
     },
     "linux": {
       "target": "deb"
+    },
+    "nsis": {
+      "perMachine": false,
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "Airtune.setup.${ext}",
+      "uninstallDisplayName": "Airtune"
     }
   }
 }

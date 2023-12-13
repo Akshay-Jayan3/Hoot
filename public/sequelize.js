@@ -3,8 +3,7 @@ const { Sequelize } = require('sequelize');
 const path = require('path');
 const fs = require('fs').promises;
 const DB_FILENAME = 'AirtuneMusic.sqlite';
-const appName = require('../package.json').name;
-const DB_PATH = path.join(app.getPath('userData'), appName, DB_FILENAME);
+const DB_PATH = path.join(app.getPath('userData'), "CacheDB", DB_FILENAME);
 
 
 async function createDir() {
