@@ -7,7 +7,7 @@ const DB_PATH = path.join(app.getPath('userData'), "CacheDB", DB_FILENAME);
 
 async function deleteOldDatabase() {
   try {
-    const oldDatabasePath = path.join(app.getPath('userData'), 'CacheDB', 'AirtuneMusic.sqlite');
+    const oldDatabasePath = DB_PATH;
     await fs.access(oldDatabasePath);
     await fs.unlink(oldDatabasePath);
   } catch (error) {
