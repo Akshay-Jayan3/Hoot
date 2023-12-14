@@ -1,11 +1,32 @@
 .AlbumContainer{
     width:100%;
     display: grid;
+    position: relative;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     grid-gap: 16px;
-    margin-top: 56px;
-   .trackNo{
+    margin-top: 32px;
+    .notfound {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 16px;
+        }
+    }
+    
+}
+.itemNo {
     display: flex;
     align-self: flex-start;
-   }
+
+    p {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 14px;
+    }
 }

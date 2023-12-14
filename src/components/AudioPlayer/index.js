@@ -55,7 +55,7 @@ const AudioPlayer = () => {
         <div className={styles.wrapper}>
           <h1>Now Playing</h1>
           <div className={isPlaying ? styles.start : styles.picture}>
-            <img src={currentSong?.picture} />
+            <img src={currentSong?.picture} alt="cover art"/>
           </div>
           <div className={styles.metadata}>
             <h4 title={currentSong?.title}>
@@ -126,7 +126,7 @@ const AudioPlayer = () => {
         </div>
       ) : (
         <div className={styles.musicNote}>
-          <img src={musicNote} />
+          <img src={musicNote} alt="no covert art"/>
           <h3>Start playing your first song</h3>
         </div>
       )}

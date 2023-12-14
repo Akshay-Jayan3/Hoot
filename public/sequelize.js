@@ -5,9 +5,18 @@ const fs = require('fs').promises;
 const DB_FILENAME = 'AirtuneMusic.sqlite';
 const DB_PATH = path.join(app.getPath('userData'), "CacheDB", DB_FILENAME);
 
-
+async function deleteOldDatabase() {
+  try {
+    const oldDatabasePath = path.join(app.getPath('userData'), 'CacheDB', 'AirtuneMusic.sqlite');
+    await fs.access(oldDatabasePath);
+    await fs.unlink(oldDatabasePath);
+  } catch (error) {
+    console.error('Error deleting directory:', error);
+  }
+}
 async function createDir() {
   try {
+    await deleteOldDatabase();
     await fs.mkdir(DB_PATH, { recursive: true });
   } catch (error) {
     console.error('Error creating directory:', error);

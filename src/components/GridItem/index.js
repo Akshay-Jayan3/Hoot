@@ -22,7 +22,7 @@ const GridItem = ({ item, HandleFile, HandleSelected ,type,HandleAction }) => {
     >
       <div className={styles.info}>
         <div className={styles.picture}>
-          <img src={type === "Album" && item.CoverArt ? item.CoverArt:musicicon} />
+          <img src={type === "Album" && item.CoverArt ? item.CoverArt:musicicon} alt="album art"/>
         </div>
         <div className={styles.detailsWrapper}>
           <div className={styles.details}>

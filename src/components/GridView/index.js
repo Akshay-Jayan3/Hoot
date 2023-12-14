@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./styles.module.scss";
 import Album from "../GridItem";
+import norecord from "../../assects/nofile.png";
 
 const GridView = ({
   items,
@@ -10,9 +11,15 @@ const GridView = ({
   HandleAction,
 }) => {
   return (
-    <div className={styles.AlbumContainer}>
-      {items && items?.length > 0
-        ? items?.map((item, i) => (
+    <>
+      {items?.length > 0 && (
+        <div className={styles.itemNo}>
+          <p>{items && items?.length} albums found</p>
+        </div>
+      )}
+      <div className={styles.AlbumContainer}>
+        {items && items?.length > 0 ? (
+          items?.map((item, i) => (
             <Album
               item={item}
               HandleFile={HandleFile}
@@ -22,8 +29,14 @@ const GridView = ({
               key={i}
             />
           ))
-        : "no records found"}
-    </div>
+        ) : (
+          <div className={styles.notfound}>
+            <img src={norecord} alt="no file found" />
+            <p>no records found</p>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

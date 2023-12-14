@@ -52,7 +52,7 @@ const Track = ({
               wrapperClass
             />
           ) : (
-            <img src={track.picture} />
+            <img src={track.picture} alt="cover art"/>
           )}
         </div>
         <div className={styles.titleArtist}>
