@@ -2,7 +2,6 @@ import React, { lazy, Suspense } from "react";
 import LoadingScreen from "../components/Loader";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
-import Layout from "../Layout";
 
 const Songs = lazy(() => import("../pages/Songs"));
 const Albums = lazy(() => import("../pages/Albums"));
@@ -16,7 +15,7 @@ const AppRouter = () => {
   return (
     <Router basename="/">
       <Suspense fallback={<LoadingScreen message={"Loading ..."} />}>
-        <Layout>
+       
           <Routes>
             <Route path="/start" element={<Start />} />
             <Route
@@ -62,12 +61,12 @@ const AppRouter = () => {
             <Route
               path="/settings"
               element={         
+                
                   <Settings />
               }
             />
             {/* <Route path="*" element={<Error404 />} /> */}
           </Routes>
-        </Layout>
       </Suspense>
     </Router>
   );

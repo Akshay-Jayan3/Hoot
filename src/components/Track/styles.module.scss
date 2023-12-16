@@ -1,3 +1,5 @@
+@import '../../styles/color.scss';
+
 .wrapper {
     display: flex;
     align-items: center;
@@ -78,7 +80,7 @@
 
             }
             .selected{
-                color:#ff09d4;
+                color:$accent-color;
             }
             .artist{
                 font-size: 12px;

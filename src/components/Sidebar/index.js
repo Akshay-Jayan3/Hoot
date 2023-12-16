@@ -9,7 +9,7 @@ const Sidebar = () => {
   return (
     <div className={styles.container}>
       <div className={styles.logo}>
-        <button onClick={()=>navigate("/")}>AirTune</button>
+        <button onClick={()=>navigate("/")}>Hoot</button>
       </div>
       <div className={styles.content}>
         <ul className={styles.sidebarLinks}>

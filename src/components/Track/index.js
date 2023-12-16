@@ -46,7 +46,7 @@ const Track = ({
               height="20"
               width="20"
               radius="9"
-              color="#ff09d4"
+              color="#FFD700"
               ariaLabel="three-dots-loading"
               wrapperStyle
               wrapperClass
@@ -57,7 +57,7 @@ const Track = ({
         </div>
         <div className={styles.titleArtist}>
           <ScrollingText scroll={nowplaying.id === track.id}>
-            <p style={{ color: nowplaying.id === track.id && "#ff09d4" }}>
+            <p style={{ color: nowplaying.id === track.id && "#FFD700" }}>
               {nowplaying.id === track.id
                 ? track?.title
                 : truncateText(track?.title, 30)}
@@ -74,7 +74,7 @@ const Track = ({
           className={`${styles.favouriteBtn}`}
         >
           {track.isFavorite ? (
-            <FavoriteIcon style={{ color: "#ff09d4" }} />
+            <FavoriteIcon style={{ color: "#FFD700" }} />
           ) : (
             <FavoriteBorderOutlinedIcon />
           )}

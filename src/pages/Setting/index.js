@@ -9,6 +9,7 @@ import Header from "../../components/Header";
 import LoadingScreen from "../../components/Loader";
 import CustomToast from "../../components/ToastMessage";
 import { useTheme } from "../../context/ThemeContext";
+import Sidebar from "../../components/Sidebar";
 
 var jsmediatags = window.jsmediatags;
 
@@ -184,47 +185,63 @@ const Settings = () => {
         />
       )}
       <>
-        <div className="page">
-          <Header
-            heading={"Settings"}
-            description={"Customize Your Experience"}
-          />
-          <div className="section">
-            <div className="setting-type">
-              <SettingsSuggestOutlinedIcon />
-              <h2>General Settings</h2>
+        <>
+          <div
+            className="container"
+            style={{
+              background: theme.background,
+              color: theme.textColor,
+              transition: "background-color 0.3s ease",
+            }}
+          >
+            <div class="sidebar-container">
+              <Sidebar />
             </div>
+            <div class="main-content">
+              <div className="page">
+                <Header
+                  heading={"Settings"}
+                  description={"Customize Your Experience"}
+                />
+                <div className="section">
+                  <div className="setting-type">
+                    <SettingsSuggestOutlinedIcon />
+                    <h2>General Settings</h2>
+                  </div>
 
-            <div className="setting">
-              <p>
-                Please select the folder where you keep your music files. Once
-                you've chosen your music folder, we'll organize your songs and
-                make them accessible for you.
-              </p>
-              <button className="selectButton" onClick={selectFolder}>
-                Select Folder <FolderOpenOutlinedIcon fontSize="small" />
-              </button>
-            </div>
-            <div className="setting-type">
-              <SettingsSuggestOutlinedIcon />
-              <h2>Theme</h2>
-            </div>
-            <div className="setting">
-              <p>Customize your view, your way !</p>
-              <div className="theme">
-                <p>Enable dark mode</p>
-                <button
-                  className={`theme-toggle-btn ${
-                    theme?.themeMode === "dark" ? "dark" : ""
-                  }`}
-                  onClick={toggleTheme}
-                >
-                  <div className="toggle-indicator"></div>
-                </button>
+                  <div className="setting">
+                    <p>
+                      Please select the folder where you keep your music files.
+                      Once you've chosen your music folder, we'll organize your
+                      songs and make them accessible for you.
+                    </p>
+                    <button className="selectButton" onClick={selectFolder}>
+                      Select Folder <FolderOpenOutlinedIcon fontSize="small" />
+                    </button>
+                  </div>
+                  <div className="setting-type">
+                    <SettingsSuggestOutlinedIcon />
+                    <h2>Theme</h2>
+                  </div>
+                  <div className="setting">
+                    <p>Customize your view, your way !</p>
+                    <div className="theme">
+                      <p>Enable dark mode</p>
+                      <button
+                        className={`theme-toggle-btn ${
+                          theme?.themeMode === "dark" ? "dark" : ""
+                        }`}
+                        onClick={toggleTheme}
+                      >
+                        <div className="toggle-indicator"></div>
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </>
       </>
     </>
   );

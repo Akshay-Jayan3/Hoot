@@ -14,7 +14,7 @@ const GridView = ({
     <>
       {items?.length > 0 && (
         <div className={styles.itemNo}>
-          <p>{items && items?.length} albums found</p>
+          <p>{items && items?.length} {items?.length > 1 ? 'albums found':"album found" }</p>
         </div>
       )}
       <div className={styles.AlbumContainer}>

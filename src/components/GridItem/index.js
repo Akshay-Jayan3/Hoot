@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styles from "./styles.module.scss";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import musicicon from "../../assects/musical-note.png"
+import musicicon from "../../assects/note.png"
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 const GridItem = ({ item, HandleFile, HandleSelected ,type,HandleAction }) => {

@@ -9,7 +9,7 @@ import ShuffleOutlinedIcon from "@mui/icons-material/ShuffleOutlined";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import { AudioContext } from "../../context/AudioContext";
 import { MainContext } from "../../context/MainContext";
-import musicNote from "../../assects/musical-note (2).png";
+import musicNote from "../../assects/music.png";
 
 const AudioPlayer = () => {
   const {
@@ -91,7 +91,7 @@ const AudioPlayer = () => {
                 }`}
               >
                 <RepeatOneOutlinedIcon
-                  style={{ color: isRepeat ? "#ff09d4" : "#fff" }}
+                  style={{ color: isRepeat ? "#FFD700" : "#fff" }}
                   // fontSize="small"
                 />
               </button>
@@ -118,7 +118,7 @@ const AudioPlayer = () => {
               <button onClick={toggleShuffle} className={`${styles.otherBtn}`}>
                 <ShuffleOutlinedIcon
                   fontSize="small"
-                  style={{ color: isShuffle ? "#ff09d4" : "#fff" }}
+                  style={{ color: isShuffle ? "#FFD700;" : "#fff" }}
                 />
               </button>
             </div>
