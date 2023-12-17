@@ -15,7 +15,7 @@ const Albums = () => {
   const [albums, setAlbums] = useState(null);
   const { setAllSongs } = useContext(MainContext);
   const [showAlbums, setShowAlbums] = useState(false);
-  const [selectedAlbum, setSelectedAlbum] = useState([]);
+  const [filteredSongs, setfilteredSongs] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchString, setSearchString] = useState("");
   const [filteredData, setFilteredData] = useState([]);
@@ -41,17 +41,14 @@ const Albums = () => {
       });
   }, []);
 
-  const filteredSongs = selectedAlbum
-    ? metaData?.filter((song) => song.album === selectedAlbum.name)
-    : metaData;
-
-  const HandleSelectAlbum = () => {
+  const HandleSelectAlbum = (album) => {
+    setfilteredSongs(metaData?.filter((song) => song.album === album.name))
     setShowAlbums(!showAlbums);
-    setAllSongs(filteredSongs);
+    setAllSongs(metaData?.filter((song) => song.album === album.name));
   };
 
   const performSearch = (value) => {
-    setSearchString(value);
+    setSearchString(value);   
     setFilteredData(
       showAlbums && filteredSongs
         ? filteredSongs.filter((item) =>
@@ -115,7 +112,6 @@ const Albums = () => {
                   searchString && searchString !== "" ? filteredData : albums
                 }
                 HandleFile={HandleSelectAlbum}
-                HandleSelected={setSelectedAlbum}
                 type={"Album"}
               />
             ) : (

@@ -1,12 +1,11 @@
 import React from "react";
 import styles from "./styles.module.scss";
-import Album from "../GridItem";
+import GridItem from "../GridItem";
 import norecord from "../../assects/nofile.png";
 
 const GridView = ({
   items,
   HandleFile,
-  HandleSelected,
   type,
   HandleAction,
 }) => {
@@ -20,10 +19,9 @@ const GridView = ({
       <div className={styles.AlbumContainer}>
         {items && items?.length > 0 ? (
           items?.map((item, i) => (
-            <Album
+            <GridItem
               item={item}
               HandleFile={HandleFile}
-              HandleSelected={HandleSelected}
               type={type}
               HandleAction={HandleAction}
               key={i}

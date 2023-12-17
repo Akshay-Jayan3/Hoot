@@ -4,7 +4,7 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import musicicon from "../../assects/note.png"
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
-const GridItem = ({ item, HandleFile, HandleSelected ,type,HandleAction }) => {
+const GridItem = ({ item, HandleFile ,type,HandleAction }) => {
   function truncateText(text, maxLength) {
     if (text?.length > maxLength) {
       return text.slice(0, maxLength) + "...";
@@ -16,8 +16,7 @@ const GridItem = ({ item, HandleFile, HandleSelected ,type,HandleAction }) => {
     <div
       className={styles.wrapper}
       onClick={() => {
-        HandleFile();
-        HandleSelected(item);
+        HandleFile(item);
       }}
     >
       <div className={styles.info}>

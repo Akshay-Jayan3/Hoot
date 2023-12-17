@@ -73,8 +73,9 @@ const Playlists = () => {
     );
   };
 
-  const HandleSelectPlaylist = () => {
+  const HandleSelectPlaylist = (playlist) => {
     setShowPlaylist(!showPlaylist);
+    setSelectedPlaylist(playlist)
   };
 
   const deletePlaylist = (event, PlaylistId) => {
@@ -169,7 +170,6 @@ const Playlists = () => {
                         : playlists
                     }
                     HandleFile={HandleSelectPlaylist}
-                    HandleSelected={setSelectedPlaylist}
                     HandleAction={deletePlaylist}
                   />
                 </>

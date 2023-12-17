@@ -14,7 +14,7 @@ const Artists = () => {
   const [artists, setArtists] = useState(null);
   const { setAllSongs } = useContext(MainContext);
   const [showArtists, setShowArtist] = useState(false);
-  const [selectedArtist, setSelectedArtist] = useState([]);
+  const [filteredSongs, setfilteredSongs] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchString, setSearchString] = useState("");
   const [filteredData, setFilteredData] = useState([]);
@@ -40,14 +40,11 @@ const Artists = () => {
       });
   }, []);
 
-  const filteredSongs = selectedArtist
-    ? metaData?.filter((song) => song.artist === selectedArtist.name)
-    : metaData;
 
   const HandleSelectArtist = (artist) => {
-    setSelectedArtist(artist);
+    setfilteredSongs(metaData?.filter((song) => song.artist === artist.name));
     setShowArtist(!showArtists);
-    setAllSongs(filteredSongs);
+    setAllSongs(metaData?.filter((song) => song.artist === artist.name));
   };
 
   const performSearch = (value) => {

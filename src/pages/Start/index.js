@@ -18,11 +18,11 @@ const Start = () => {
 
         <div className="content">
           <h3>
-            Ready to Set the Vibe? Customize your experience in settings to Get's
+            Ready to Set the Vibe? Customize your experience in the settings to get's
             started!
           </h3>
           <p>
-            📁 Add your beats! Don't forget to include a folder in the Music
+            📁 Add your beats! Don't forget to include a folder in the music
             settings
           </p>
         </div>

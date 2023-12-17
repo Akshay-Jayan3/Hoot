@@ -8,8 +8,8 @@ import { cacheEntities } from "../../cacheStore/cacheEntities";
 import LoadingScreen from "../../components/Loader";
 import ListView from "../../components/ListView";
 const Favourites = () => {
-  const { updateNowPlaying } = useContext(MainContext);
-  const [metaData, setMetaData] = useState(null);
+  const { updateNowPlaying, setAllSongs } = useContext(MainContext);
+  const [filteredSongs, setfilteredSongs] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchString, setSearchString] = useState("");
   const [filteredData, setFilteredData] = useState([]);
@@ -20,7 +20,9 @@ const Favourites = () => {
       .then((res) => {
         setIsLoading(false);
         if (res) {
-          setMetaData(res.data);
+          setfilteredSongs(res.data?.filter((song) => song.isFavorite));
+          setAllSongs(res.data?.filter((song) => song.isFavorite))
+          
         }
       })
       .catch((error) => {
@@ -28,7 +30,6 @@ const Favourites = () => {
       });
   }, []);
 
-  const filteredSongs = metaData?.filter((song) => song.isFavorite);
   const performSearch = (value) => {
     setSearchString(value);
     setFilteredData(
@@ -49,7 +50,7 @@ const Favourites = () => {
         if (nowplaying) {
           updateNowPlaying({ ...track, isFavorite: !track.isFavorite });
         }
-        setMetaData((prevTracks) =>
+        setfilteredSongs((prevTracks) =>
           prevTracks.map((prevTrack) =>
             prevTrack.id === trackId
               ? { ...prevTrack, isFavorite: !prevTrack.isFavorite }
