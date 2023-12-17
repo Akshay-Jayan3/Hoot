@@ -2,7 +2,7 @@ const { app } = require('electron');
 const { Sequelize } = require('sequelize');
 const path = require('path');
 const fs = require('fs').promises;
-const DB_FILENAME = 'AirtuneMusic.sqlite';
+const DB_FILENAME = 'Hoot.sqlite';
 const DB_PATH = path.join(app.getPath('userData'), "CacheDB", DB_FILENAME);
 
 async function deleteOldDatabase() {

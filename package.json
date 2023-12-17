@@ -1,5 +1,5 @@
 {
-  "name": "AirTune Music",
+  "name": "Hoot",
   "version": "0.0.1",
   "homepage": "./",
   "main": "./public/electron.js",
@@ -68,8 +68,8 @@
     "electron-builder": "^24.9.1"
   },
   "build": {
-    "appId": "com.Airtune.music",
-    "productName": "Airtune music",
+    "appId": "com.Hoot.music",
+    "productName": "Hoot",
     "files": [
       "build/**/*",
       "node_modules/**/*",
@@ -93,11 +93,10 @@
     "nsis": {
       "perMachine": false,
       "oneClick": false,
-      "productName":"Airtune Music",
       "allowElevation": true,
       "allowToChangeInstallationDirectory": true,
-      "artifactName": "Airtune Music.setup.${ext}",
-      "uninstallDisplayName": "Airtune Music"
+      "artifactName": "Hoot.setup.${ext}",
+      "uninstallDisplayName": "Hoot"
     }
   }
 }
