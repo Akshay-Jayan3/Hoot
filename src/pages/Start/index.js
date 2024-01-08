@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext";
+import logo from "../../assects/logo.png"
 const Start = () => {
   const navigate = useNavigate();
   const { theme } = useTheme();
@@ -14,6 +15,7 @@ const Start = () => {
       }}
     >
       <div className="startSection">
+        <img src={logo} alt="logo"/>
         <h1>Welcome to Hoot</h1>
 
         <div className="content">
