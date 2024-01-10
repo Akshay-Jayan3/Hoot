@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext";
-import logo from "../../assects/logo.png"
+import logo from "../../assects/logo.svg"
 const Start = () => {
   const navigate = useNavigate();
   const { theme } = useTheme();

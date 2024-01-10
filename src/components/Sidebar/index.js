@@ -2,7 +2,7 @@ import React from "react";
 import sidebarData from "../../utils/sidebarData";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styles from "./styles.module.scss";
-import logo from "../../assects/logo.png"
+import logo from "../../assects/logo.svg"
 
 const Sidebar = () => {
   const location = useLocation();

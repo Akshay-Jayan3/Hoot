@@ -76,14 +76,15 @@
       "package.json"
     ],
     "directories": {
-      "buildResources": "assets",
+      "buildResources": "public",
       "output": "App"
     },
     "mac": {
       "target": "dmg"
     },
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon":"build/favicon.ico"
       
       
     },
