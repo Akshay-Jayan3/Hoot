@@ -11,6 +11,10 @@ Hoot is a sleek and intuitive music player application built with Electron.js, R
 - [Features](#features)
 - [Technologies](#technologies)
 - [Screenshots](#screenshots)
+
+#Screenshots
+![Home Section](screenshots/home.png)
+![Album Section](screenshots/album.png)
   
 ## Installation
 
@@ -43,9 +47,7 @@ npm electron:package:win (for windows users) An App folder will be created which
 2. React : A JavaScript library for building user interfaces.
 3. SQLite: A lightweight, serverless database engine.
 
-#Screenshots
-![Home Section](screenshots/home.png)
-![Album Section](screenshots/album.png)
+
 
 
 
