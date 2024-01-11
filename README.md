@@ -16,7 +16,7 @@ Hoot is a sleek and intuitive music player application built with Electron.js, R
 ![Home Section](screenshots/home.png)
 ![Album Section](screenshots/album.png)
   
-## Installation
+## Installation <a name="installation"></a>
 
 To run Hoot Music Player locally, follow these steps:
 
@@ -29,18 +29,19 @@ cd hoot
 
 # Install dependencies
 npm install
+```markdown
 
-#Usage
+#Usage <a name="Usage"></a>
 npm electron:package:win (for windows users) An App folder will be created which will have hoot.exe file which can be installed on your device.
 
-#Features
+#Features <a name="Features"></a>
 1. Intuitive Interface: Clean and user-friendly interface for easy navigation.
 2. Playlist Management: Create, edit, and organize playlists effortlessly.
 3. Database Storage: Utilizes SQLite for efficient and reliable data storage.
 4. Upload music: One can upload their music collection and enjoy playing their favorite music tracks.
 5. Theme customization: Dark and light theme customization
 
-#Technologies
+#Technologies <a name="Technologies"></a>
 #Hoot Music Player is built with the following technologies:
 
 1. Electron.js: Enables cross-platform desktop app development.
