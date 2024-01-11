@@ -1,4 +1,4 @@
-# Hoot The Music Player Application
+# Hoot - A Music Player Application
 
 ## Overview
 
@@ -11,7 +11,7 @@ Hoot is a sleek and intuitive music player application built with Electron.js, R
 - [Features](#features)
 - [Technologies](#technologies)
 - [Screenshots](#screenshots)
-- 
+  
 ## Installation
 
 To run Hoot Music Player locally, follow these steps:
