@@ -44,7 +44,8 @@ npm electron:package:win (for windows users) An App folder will be created which
 3. SQLite: A lightweight, serverless database engine.
 
 #Screenshots
-<img width="960" alt="Screenshot 2024-01-08 161535" src="https://github.com/Akshay-Jayan3/Hoot/assets/111297134/9343a49b-acff-4a4f-9308-6913756358c7">
+![Home Section](screenshots/home.png)
+![Album Section](screenshots/album.png)
 
-<img width="960" alt="Screenshot 2024-01-08 170425" src="https://github.com/Akshay-Jayan3/Hoot/assets/111297134/cc169eb3-7d49-4c34-ac00-27063f2be09d">
+
 
