@@ -27,24 +27,24 @@ cd hoot
 npm install
 ```
 
-#Usage <a name="Usage"></a>
+## Usage <a name="Usage"></a>
 npm electron:package:win (for windows users) An App folder will be created which will have hoot.exe file which can be installed on your device.
 
-#Features <a name="Features"></a>
+## Features <a name="Features"></a>
 1. Intuitive Interface: Clean and user-friendly interface for easy navigation.
 2. Playlist Management: Create, edit, and organize playlists effortlessly.
 3. Database Storage: Utilizes SQLite for efficient and reliable data storage.
 4. Upload music: One can upload their music collection and enjoy playing their favorite music tracks.
 5. Theme customization: Dark and light theme customization
 
-#Technologies <a name="Technologies"></a>
-#Hoot Music Player is built with the following technologies:
+## Technologies <a name="Technologies"></a>
+Hoot Music Player is built with the following technologies:
 
 1. Electron.js: Enables cross-platform desktop app development.
 2. React : A JavaScript library for building user interfaces.
 3. SQLite: A lightweight, serverless database engine.
 
-#Screenshots  <a name="Screenshots"></a>
+## Screenshots  <a name="Screenshots"></a>
 ![Home Section](screenshots/home.png)
 ![Album Section](screenshots/album.png)
 
