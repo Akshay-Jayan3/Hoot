@@ -25,10 +25,11 @@ cd hoot
 
 # Install dependencies
 npm install
-```
 
-## Usage <a name="Usage"></a>
-npm electron:package:win (for windows users) An App folder will be created which will have hoot.exe file which can be installed on your device.
+# Build the Application
+npm electron:package:win (for Windows users)
+An App folder will be created which will have a hoot.exe file which can be installed on your device.
+```
 
 ## Features <a name="Features"></a>
 1. Intuitive Interface: Clean and user-friendly interface for easy navigation.
