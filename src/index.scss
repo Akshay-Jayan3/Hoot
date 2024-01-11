@@ -1,95 +1,281 @@
 @import './styles/color.scss';
-body {
+
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-
-/* Add these styles to your CSS */
-.container {
-  display: flex;
+.start {
+  width: 100%;
   height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Nunito', sans-serif;
+
+  .startSection {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap:32px;
+
+    img{
+      width:40%;
+      aspect-ratio: 1/1;
+    }
+   
+    .content{
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 4px
+    }
+  }
+
+  .gotosetting {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #fff;
+    padding-inline: 1em;
+    padding-block: 1em;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.5s ease ;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+      cursor: pointer;
+      transform: scale(1.05);
+      background-color: $accent-color;
+      color:#333;
+
+    }
+  }
+}
+
+.container {
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
 }
 
 .sidebar-container {
-  width: 200px; /* Set the width of the sidebar as needed */
-  background: #191D2F; /* Dark background color for the sidebar */
-  color: #fff; /* White text color */
+  width: 200px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
   padding: 20px;
-  position: fixed; /* Make the sidebar fixed */
-  top: 0; /* Position it at the top of the viewport */
-  left: 0; /* Position it on the left side */
-  height: 100%; /* Set the height to 100% of the viewport */
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
   overflow-y: auto;
 }
 
-/* 
-.current-song {
-  width: 300px; 
-  background: #191D2F; 
-  color: #fff; 
-  padding: 20px;
-  position: fixed;
-  top: 0; 
-  right: 0; 
-  height: 100%; 
-  overflow-y: auto; 
-} */
 
 .main-content {
-  flex: 1; /* Takes up the remaining available space within the container */
-  background: #141725; /* Light background color for the main content */
-  margin-left: 240px; /* Adjust the margin to accommodate the fixed sidebar width */ /* Adjust the margin to accommodate the fixed right section width */
-  height: 100%;
+  flex: 1;
+  margin-left: 240px;
+  height: 100vh;
+  overflow: auto;
 }
+
 
 
 /* Add these styles to your CSS */
 
 .page {
-  padding: 20px;
+  padding-block: 6rem;
+  padding-inline: 1rem;
   /* height: 100vh; */
 }
 
-.search-container{
+.Songspage {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  .mainsection {
+    padding-inline: 20px;
+    width: 60%;
+    height: 100vh;
+    overflow: auto;
+
+    // position: relative;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .songs-container {
+      width: 100%;
+      padding-block: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .Addplaylist {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: #fff;
+        padding-inline: 1em;
+        padding-block: 1em;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease ;
+
+        &:hover {
+          opacity: 0.8;
+          cursor: pointer;
+          transform: scale(1.05);
+          background-color: $accent-color;
+          color:#333;
+    
+        }
+      }
+    }
+
+  }
+
+  .currentMusic {
+    flex: 1;
+    height: 100vh;
+    padding-inline: 16px;
+    padding-block: 16px;
+
+    .musicCard {
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(18px);
+      border-radius: 10px;
+      padding-inline: 16px;
+      padding-block: 16px;
+    }
+
+  }
+
+}
+
+.search-container {
   height: 48px;
   width: 100%;
   padding-block: 8px;
 }
+
 .section {
   margin-top: 20px;
+
   padding: 10px;
-  .setting-type{
+
+  .setting-type {
     display: flex;
     gap: 8px;
-    align-items: center;
+
   }
 }
 
-h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
+// h1 {
+//   font-size: 24px;
+//   margin-bottom: 8px;
+// }
 
 h2 {
   font-size: 18px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .setting {
-  /* margin: 10px 0; */
+
+  margin-bottom: 40px;
   padding-left: 16px;
   padding-top: 16px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  .selectButton {
+    width: fit-content;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #fff;
+    padding-inline: 1em;
+    padding-block: 1em;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease ;
+
+    &:hover {
+      opacity: 0.8;
+      cursor: pointer;
+      transform: scale(1.05);
+      background-color: $accent-color;
+      color:#333;
+
+    }
+
+
+  }
+
+  .theme {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    p {
+      font-size: 14px;
+    }
+
+    .theme-toggle-btn {
+      position: relative;
+      appearance: none;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      padding: 0;
+      width: 40px;
+      height: 20px;
+      overflow: hidden;
+    }
+
+    .toggle-indicator {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      background-color: $accent-color;
+      /* Adjust the color based on your theme */
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+    }
+
+    .theme-toggle-btn.dark .toggle-indicator {
+      transform: translateX(100%);
+    }
+  }
+
 }
 
 p {
@@ -97,5 +283,3 @@ p {
   margin-bottom: 8px;
   font-weight: lighter;
 }
-
-

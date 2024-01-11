@@ -1,0 +1,77 @@
+.wrapper {
+    display: flex;
+    width:100%;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 5px;
+    padding-inline: 10px;
+    padding-block: 8px;
+    transition: transform 0.3s;
+    &:hover{
+        cursor: pointer;
+        transform: translateY(-5px);
+    }
+
+    .info {
+        width:100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-direction: column;
+        gap: 16px;
+        padding-block: 8px;
+        .picture {
+            width: 100%;
+            aspect-ratio: 1/1;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+
+        .detailsWrapper {
+
+            display: flex;
+            width:100%;
+            align-items: center;
+            justify-content: space-between;
+            padding-inline: 8px;
+            overflow: hidden;
+            .btn{
+                background: transparent;
+                border: none;
+                color: #fff;
+                transition: transform 0.3s ease-in-out;
+            
+                &:hover {
+                  transform: scale(1.1);
+                  cursor: pointer;
+                }
+            }
+            .details{
+                display: flex;
+                flex-direction: column;
+                .count{
+                    font-size: 12px;
+                }
+            }
+
+            p {
+                margin: 0;
+            }
+
+            .artist{
+                font-size: 16px;
+            }
+        }
+
+    }
+
+}

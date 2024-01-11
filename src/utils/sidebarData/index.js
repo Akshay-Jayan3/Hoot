@@ -1,5 +1,4 @@
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import LibraryMusicOutlinedIcon from "@mui/icons-material/LibraryMusicOutlined";
 import MusicNoteOutlinedIcon from "@mui/icons-material/MusicNoteOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
@@ -7,42 +6,36 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import AlbumOutlinedIcon from "@mui/icons-material/AlbumOutlined";
 
 const sidebarData = [
-  {
-    id: 1,
-    title: "Home",
-    path: "/",
-    icon: <HomeOutlinedIcon />,
-  },
-  { id: 2, 
+  { id: 1, 
     title: "Songs", 
-    path: "/songs", 
+    path: "/", 
     icon: <MusicNoteOutlinedIcon /> 
   },
-  { id: 3, 
+  { id: 2, 
     title: "Albums", 
     path: "/albums", 
     icon: <AlbumOutlinedIcon /> 
   },
   {
-    id: 4,
+    id: 3,
     title: "Artists",
     path: "/artists",
     icon: <PersonOutlineOutlinedIcon />,
   },
   {
-    id: 5,
+    id: 4,
     title: "favourites",
     path: "/favourites",
     icon: <FavoriteBorderOutlinedIcon />,
   },
   {
-    id: 6,
+    id: 5,
     title: "Playlists",
     path: "/playlists",
     icon: <LibraryMusicOutlinedIcon />,
   },
   {
-    id: 7,
+    id: 6,
     title: "Settings",
     path: "/settings",
     icon: <SettingsOutlinedIcon />,

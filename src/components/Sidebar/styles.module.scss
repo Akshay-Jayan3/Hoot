@@ -1,41 +1,64 @@
 @import '../../styles/color.scss';
-.container{
+
+.container {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-around;
+
+  .logo {
     display: flex;
-    height: 100%;
-    flex-direction: column;
-    gap: 54px;
-    .content {
-        padding: 20px;
-        .sidebarLinks {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-            .active {
-              color:$accent-color
-            }
-          
-          }
-          
-          
-          .sidebarLink a {
-            display: flex;
-            gap:16px;
-            text-decoration: none;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            &:hover{
-              color:$accent-color
-            }
-          }
-          
-         
-         
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+
+    img {
+      width: 70%;
+      aspect-ratio: 1/1;
+    }
+    
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .content {
+    padding: 20px;
+    height: 70vh;
+
+    .sidebarLinks {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+
+      .active {
+        color: $accent-color;
+        font-weight: 500;
       }
-      
-      
+
+    }
+
+
+    .sidebarLink a {
+      display: flex;
+      gap: 16px;
+      text-decoration: none;
+      color: #fff;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        color: $accent-color
+      }
+    }
+
+
+
+  }
+
+
 
 }

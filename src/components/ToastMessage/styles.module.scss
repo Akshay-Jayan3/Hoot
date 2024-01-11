@@ -1,0 +1,46 @@
+/* CustomToast.css */
+@import '../../styles/color.scss';
+
+.customToast {
+    position: fixed;
+    // bottom: 10px;
+    // left: 50%;
+    // transform: translate(-50%, 0);
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 3px solid $accent-color;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap:0.5rem;
+    animation: slideIn 0.5s ease, shake 0.3s ease 0.5s;
+    p{
+      font-size: 14px;
+    }
+  }
+  
+  .customToast button {
+    background-color:transparent;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .customToast button:hover {
+    cursor: pointer;
+  }
+  
+  @keyframes slideInY {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

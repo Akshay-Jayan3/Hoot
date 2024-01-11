@@ -1,0 +1,128 @@
+@import '../../styles//color.scss';
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+    .wrapper {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        padding-inline: 1rem;
+        padding-block: 1rem;
+
+        .details {
+            width: 100%;
+            height: 60%;
+            padding-inline: 1rem;
+            padding-block: 1rem;
+            display: flex;
+            justify-content: space-between;
+
+
+            .content {
+                .count {
+                    font-size: 1rem;
+                }
+
+                .name {
+                    font-size: 1.5rem;
+                }
+
+            }
+
+            .edit {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                button {
+                    background-color: transparent;
+                    color: #fff;
+                    border: none;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+                
+            }
+
+        }
+
+        .info {
+            width: 100%;
+            height: 40%;
+            padding-inline: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .btns {
+                display: flex;
+                gap: 0.5rem;
+
+                .btn {
+                    display: flex;
+                    align-items: center;
+                    background: rgba(255, 255, 255, 0.1);
+                    backdrop-filter: blur(18px);
+                    -webkit-backdrop-filter: blur(18px);
+                    font-size: 12px;
+                    border: 1px solid rgba(255, 255, 255, 0.18);
+                    padding-inline: 1em;
+                    padding-block: 0.5em;
+                    border-radius: 10px;
+                    color:#fff;
+                    gap: 0.5rem;
+                    transition: all 0.3s ease;
+                    &:hover {
+                        cursor: pointer;
+                        opacity: 0.8;
+                        transform: scale(1.05);
+                        background-color: $accent-color;
+                        color:#333;
+                      }
+                  }
+
+            }
+
+            .playpause {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                border: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                color: #fff;
+                background: rgba(255, 255, 255, 0.2);
+                backdrop-filter: blur(18px);
+                -webkit-backdrop-filter: blur(18px);
+                border: 1px solid rgba(255, 255, 255, 0.18);
+                transition: all 0.3s ease;
+                &:hover {
+                    cursor: pointer;
+                    opacity: 0.8;
+                    transform: scale(1.05);
+                    background-color: $accent-color;
+                    color:#333;
+                  }
+            }
+        }
+
+    }
+}

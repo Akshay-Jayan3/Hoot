@@ -1,11 +1,12 @@
-import React from 'react'
-import { Navigate } from 'react-router-dom'
+import React from "react";
+import { Navigate } from "react-router-dom";
+import Layout from "../Layout";
 
-const ProtectedRoute = ({children}) => {
-    const folderSelected = localStorage.getItem('selected-folder')
+const ProtectedRoute = ({ children }) => {
+  const folderSelected = localStorage.getItem("selected-folder");
   return (
-    <div>{folderSelected ? children:<Navigate to={'/settings'}/>}</div>
-  )
-}
+    <>{folderSelected ? <Layout>{children}</Layout> : <Navigate to={"/start"} />}</>
+  );
+};
 
-export default ProtectedRoute
+export default ProtectedRoute;

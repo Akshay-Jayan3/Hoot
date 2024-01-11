@@ -1,36 +1,25 @@
 import React, { lazy, Suspense } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from "react-router-dom";
-import Layout from "../Layout";
+import LoadingScreen from "../components/Loader";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 
-const Home = lazy(() => import("../pages/Home"));
 const Songs = lazy(() => import("../pages/Songs"));
 const Albums = lazy(() => import("../pages/Albums"));
 const Artists = lazy(() => import("../pages/Artists"));
 const Playlists = lazy(() => import("../pages/Playlists"));
 const Favourites = lazy(() => import("../pages/Favourites"));
 const Settings = lazy(() => import("../pages/Setting"));
+const Start = lazy(() => import("../pages/Start"));
 
 const AppRouter = () => {
   return (
-    <Router>
-      <Suspense fallback={"loading"}>
-        <Layout>
+    <Router basename="/">
+      <Suspense fallback={<LoadingScreen message={"Loading ..."} />}>
+       
           <Routes>
+            <Route path="/start" element={<Start />} />
             <Route
               path="/"
-              element={
-                <ProtectedRoute>
-                  <Home />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/songs"
               element={
                 <ProtectedRoute>
                   <Songs />
@@ -57,7 +46,7 @@ const AppRouter = () => {
               path="/favourites"
               element={
                 <ProtectedRoute>
-                  <Playlists />
+                  <Favourites />
                 </ProtectedRoute>
               }
             />
@@ -65,14 +54,19 @@ const AppRouter = () => {
               path="/playlists"
               element={
                 <ProtectedRoute>
-                  <Favourites />
+                  <Playlists />
                 </ProtectedRoute>
               }
             />
-            <Route path="/settings" element={<Settings />} />
+            <Route
+              path="/settings"
+              element={         
+                
+                  <Settings />
+              }
+            />
             {/* <Route path="*" element={<Error404 />} /> */}
           </Routes>
-        </Layout>
       </Suspense>
     </Router>
   );

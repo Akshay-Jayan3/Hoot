@@ -4,13 +4,19 @@ import "./index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { MainContextProvider } from "./context/MainContext";
+import { AudioProvider } from "./context/AudioContext";
+import { ThemeProvider } from "./context/ThemeContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <MainContextProvider>
-      <App />
-    </MainContextProvider>
+    <ThemeProvider>
+      <MainContextProvider>
+        <AudioProvider>
+          <App />
+        </AudioProvider>
+      </MainContextProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );
 
