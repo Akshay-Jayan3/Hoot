@@ -42,13 +42,13 @@ const Albums = () => {
   }, []);
 
   const HandleSelectAlbum = (album) => {
-    setfilteredSongs(metaData?.filter((song) => song.album === album.name))
+    setfilteredSongs(metaData?.filter((song) => song.album === album.name));
     setShowAlbums(!showAlbums);
     setAllSongs(metaData?.filter((song) => song.album === album.name));
   };
 
   const performSearch = (value) => {
-    setSearchString(value);   
+    setSearchString(value);
     setFilteredData(
       showAlbums && filteredSongs
         ? filteredSongs.filter((item) =>
@@ -76,6 +76,24 @@ const Albums = () => {
             prevTrack.id === trackId
               ? { ...prevTrack, isFavorite: !prevTrack.isFavorite }
               : prevTrack
+          )
+        );
+      })
+      .catch((error) => console.error("Error editing:", error));
+  };
+  const toggleFavoriteAlbums = (event, albumId, album) => {
+    event.stopPropagation();
+    cachemanager
+      .updateEntityById(cacheEntities.ALBUMS, albumId, {
+        ...album,
+        isFavorite: !album.isFavorite,
+      })
+      .then(() => {
+        setAlbums((prevAlbums) =>
+          prevAlbums.map((prevAlbum) =>
+            prevAlbum.id === albumId
+              ? { ...prevAlbum, isFavorite: !prevAlbum.isFavorite }
+              : prevAlbum
           )
         );
       })
@@ -113,6 +131,7 @@ const Albums = () => {
                 }
                 HandleFile={HandleSelectAlbum}
                 type={"Album"}
+                toggleFavoriteAlbums={toggleFavoriteAlbums}
               />
             ) : (
               <ListView

@@ -13,6 +13,7 @@ const ListView = ({
   RemoveFromPlaylist,
   playlistDetails,
   selectedPlaylist,
+  toggleFavoriteArtists,
   count,
 }) => {
   return (
@@ -44,7 +45,7 @@ const ListView = ({
               count={count}
             />
           ) : type === "artist" ? (
-            <ArtistList artist={track} key={i} HandleFile={HandleFile} />
+            <ArtistList artist={track} key={i} HandleFile={HandleFile} toggleFavoriteArtists={toggleFavoriteArtists}/>
           ) : (
             <></>
           )

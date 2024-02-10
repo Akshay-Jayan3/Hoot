@@ -40,7 +40,6 @@ const Artists = () => {
       });
   }, []);
 
-
   const HandleSelectArtist = (artist) => {
     setfilteredSongs(metaData?.filter((song) => song.artist === artist.name));
     setShowArtist(!showArtists);
@@ -81,6 +80,24 @@ const Artists = () => {
       })
       .catch((error) => console.error("Error editing:", error));
   };
+  const toggleFavoriteArtists = (event, artistId, artist) => {
+    event.stopPropagation();
+    cachemanager
+      .updateEntityById(cacheEntities.ARTISTS, artistId, {
+        ...artist,
+        isFavorite: !artist.isFavorite,
+      })
+      .then(() => {
+        setArtists((prevArtists) =>
+          prevArtists.map((prevArtist) =>
+            prevArtist.id === artistId
+              ? { ...prevArtist, isFavorite: !prevArtist.isFavorite }
+              : prevArtist
+          )
+        );
+      })
+      .catch((error) => console.error("Error editing:", error));
+  };
 
   return (
     <>
@@ -113,6 +130,7 @@ const Artists = () => {
                 }
                 HandleFile={HandleSelectArtist}
                 type={"artist"}
+                toggleFavoriteArtists={toggleFavoriteArtists}
               />
             ) : (
               <ListView

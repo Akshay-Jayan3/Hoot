@@ -15,6 +15,17 @@
         cursor: pointer;
         transform: translateY(-5px);
     }
+    .btn{
+        background: transparent;
+        border: none;
+        color: #fff;
+        transition: transform 0.3s ease-in-out;
+    
+        &:hover {
+          transform: scale(1.1);
+          cursor: pointer;
+        }
+    }
 
     .info {
         display: flex;

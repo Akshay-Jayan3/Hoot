@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import styles from "./styles.module.scss";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import { MainContext } from "../../context/MainContext";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
-const ArtistList = ({ artist, HandleFile }) => {
+const ArtistList = ({ artist, HandleFile, toggleFavoriteArtists }) => {
   return (
     <div
       className={styles.wrapper}
@@ -17,7 +17,16 @@ const ArtistList = ({ artist, HandleFile }) => {
         </div>
       </div>
       <div>
-        <FavoriteBorderOutlinedIcon />
+        <button
+          onClick={(e) => toggleFavoriteArtists(e, artist.id, artist)}
+          className={styles.btn}
+        >
+          {artist.isFavorite ? (
+            <FavoriteIcon style={{ color: "#FFD700" }} />
+          ) : (
+            <FavoriteBorderOutlinedIcon />
+          )}
+        </button>
       </div>
     </div>
   );

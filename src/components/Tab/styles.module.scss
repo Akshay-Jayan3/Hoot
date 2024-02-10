@@ -1,0 +1,41 @@
+@import '../../styles/color.scss';
+.normal{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color:#fff;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 16px;
+    padding-inline: 8px;
+    padding-block: 8px;
+    transition: transform 0.3s; 
+    &:hover{
+        cursor: pointer;
+       
+     
+  
+    }
+}
+.active{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $accent-color;
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-bottom: 5px solid $accent-color;
+    border-radius: 5px;
+    width: 100%;
+    padding-inline: 8px;
+    padding-block: 8px;
+    transition: transform 0.3s; 
+    &:hover {
+        cursor: pointer;
+  
+      }
+}

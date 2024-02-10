@@ -8,6 +8,7 @@ const GridView = ({
   HandleFile,
   type,
   HandleAction,
+  toggleFavoriteAlbums
 }) => {
   return (
     <>
@@ -25,6 +26,7 @@ const GridView = ({
               type={type}
               HandleAction={HandleAction}
               key={i}
+              toggleFavoriteAlbums={toggleFavoriteAlbums}
             />
           ))
         ) : (
