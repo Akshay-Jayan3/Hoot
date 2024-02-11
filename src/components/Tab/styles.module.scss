@@ -8,15 +8,12 @@
     border: none;
     border-radius: 5px;
     width: 100%;
-    font-size: 16px;
+    font-size: 14px;
     padding-inline: 8px;
     padding-block: 8px;
     transition: transform 0.3s; 
     &:hover{
         cursor: pointer;
-       
-     
-  
     }
 }
 .active{
@@ -25,7 +22,7 @@
     justify-content: center;
     background-color: $accent-color;
     color: #333;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     border: 1px solid rgba(255, 255, 255, 0.18);
     border-bottom: 5px solid $accent-color;
