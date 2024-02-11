@@ -1,6 +1,6 @@
 {
   "name": "Hoot",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "homepage": "./",
   "main": "./public/electron.js",
   "author": "Akshay Jayan",
