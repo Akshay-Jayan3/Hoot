@@ -13,12 +13,14 @@
     height: 48px;
 
     img {
-      width: 70%;
+      width: 60%;
       aspect-ratio: 1/1;
     }
     
-    &:hover {
-      cursor: pointer;
+    transition: transform 0.3s; 
+    &:hover{
+        cursor: pointer;
+        transform: scale(1.2);  
     }
   }
 
@@ -32,7 +34,7 @@
       margin: 0;
       display: flex;
       flex-direction: column;
-      gap: 40px;
+      gap: 40px; 
 
       .active {
         color: $accent-color;
@@ -49,10 +51,13 @@
       color: #fff;
       display: flex;
       align-items: center;
+      transition: transform 0.3s; 
 
-      &:hover {
-        color: $accent-color
-      }
+      &:hover{
+        cursor: pointer;
+        color: $accent-color;
+        transform: translateX(5px);
+    }
     }
 
 
