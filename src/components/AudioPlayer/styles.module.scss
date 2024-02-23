@@ -64,7 +64,7 @@
 
         .start {
             position: relative;
-            width:70%;
+            width:80%;
             margin-bottom: 25px;
             aspect-ratio: 1/1;
             &:before, &:after {
@@ -101,7 +101,7 @@
             }
         }
         .picture {
-            width: 70%;
+            width: 80%;
             aspect-ratio: 1/1;
             margin-bottom: 25px;
 
@@ -118,6 +118,9 @@
             flex-direction: column;
             white-space: nowrap;
             overflow: hidden;
+            .title{
+                color:"#fff"
+            }
             p{
                 color:rgba(255, 255, 255, 0.5);
                 font-size: 14px;

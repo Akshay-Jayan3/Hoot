@@ -21,12 +21,6 @@ const Track = ({
     useContext(MainContext);
   const { isPlaying } = useContext(AudioContext);
 
-  function truncateText(text, maxLength) {
-    if (text?.length > maxLength) {
-      return text.slice(0, maxLength) + "...";
-    }
-    return text;
-  }
 
   return (
     <div
@@ -57,14 +51,14 @@ const Track = ({
         </div>
         <div className={styles.titleArtist}>
           <ScrollingText scroll={nowplaying.id === track.id}>
-            <p style={{ color: nowplaying.id === track.id && "#FFD700" }}>
+            <p style={{ color: nowplaying.id === track.id && "#FFD700" }} title={track?.title}>
               {nowplaying.id === track.id
                 ? track?.title
-                : truncateText(track?.title, 30)}
+                : track?.title}
             </p>
           </ScrollingText>
           <p className={styles.artist} title={track?.artist}>
-            {truncateText(track?.artist, 50)}
+            {track?.artist}
           </p>
         </div>
       </div>

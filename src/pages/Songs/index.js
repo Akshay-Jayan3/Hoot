@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState} from "react";
 import Header from "../../components/Header";
 import { MainContext } from "../../context/MainContext";
 import Search from "../../components/Search";
@@ -89,6 +89,9 @@ const Songs = () => {
       )
       .then((res) => {
         handleShowToast("Added to Playlist");
+        setTimeout(() => {
+          navigate('/playlists')
+        }, 1000);
       });
   };
 
