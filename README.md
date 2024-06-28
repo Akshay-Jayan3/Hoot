@@ -27,7 +27,7 @@ cd hoot
 npm install
 
 # Build the Application
-npm electron:package:win (for Windows users)
+npm run electron:package:win (for Windows users)
 An App folder will be created which will have a Hoot.setup.exe file which can be installed on your device.
 ```
 
