@@ -28,6 +28,8 @@ npm install
 
 # Build the Application
 npm run electron:package:win (for Windows users)
+npm run electron:package:mac (for mac users)
+npm run electron:package:linux (for ubuntu users)
 An App folder will be created which will have a Hoot.setup.exe file which can be installed on your device.
 ```
 
