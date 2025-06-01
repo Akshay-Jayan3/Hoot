@@ -1,7 +1,9 @@
 const { app, BrowserWindow, dialog, ipcMain } = require("electron");
+const { autoUpdater } = require("electron-updater");
 const isDev = require("electron-is-dev");
 const path = require("path");
 const dbfunctions = require("./dbfunctions");
+const log = require('electron-log');
 const {
   GET_ALL,
   GET_BY_ID,
@@ -14,6 +16,11 @@ const {
   REMOVE_SONG_FROM_PLAYLIST,
   GET_SONGS_FROM_PLAYLIST
 } = require("./constants");
+
+// Configure logging
+log.transports.file.level = 'info';
+autoUpdater.logger = log;
+
 function createWindow() {
   const win = new BrowserWindow({
     width: 800,
@@ -34,8 +41,45 @@ function createWindow() {
   } else {
     win.loadURL(`file://${path.join(__dirname, "../build/index.html")}`); // Load the production build
   }
+
+  // Check for updates after the window is created
+  autoUpdater.checkForUpdatesAndNotify();
 }
 
+app.on("ready", () => {
+  createWindow();
+});
+
+autoUpdater.on('update-available', () => {
+  log.info('Update available.');
+  // Optionally, notify the user via a dialog or a custom UI element
+  // dialog.showMessageBox({
+  //   type: 'info',
+  //   title: 'Update Available',
+  //   message: 'A new version of Hoot is available. It will be downloaded in the background.',
+  // });
+});
+
+autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+  log.info('Update downloaded; will install now');
+  const dialogOpts = {
+    type: 'info',
+    buttons: ['Restart', 'Later'],
+    title: 'Application Update',
+    message: process.platform === 'win32' ? releaseNotes : releaseName,
+    detail: 'A new version has been downloaded. Restart the application to apply the updates.'
+  };
+
+  dialog.showMessageBox(dialogOpts).then((returnValue) => {
+    if (returnValue.response === 0) autoUpdater.quitAndInstall();
+  });
+});
+
+autoUpdater.on('error', (err) => {
+  log.error('Error in auto-updater. ' + err);
+  // Optionally, notify the user that an error occurred
+  // dialog.showErrorBox('Update Error', 'Failed to update the application. Please try again later.');
+});
 
 ipcMain.handle("select-folder", async () => {
   const result = await dialog.showOpenDialog({
@@ -173,9 +217,6 @@ ipcMain.handle(DELETE_ALL, async (event, modelName) => {
     throw error;
   }
 });
-
-
-app.on("ready", createWindow);
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {

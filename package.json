@@ -1,6 +1,6 @@
 {
   "name": "Hoot",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "homepage": "./",
   "main": "./public/electron.js",
   "author": "Akshay Jayan",
@@ -16,6 +16,8 @@
     "@testing-library/user-event": "^13.5.0",
     "electron-dialog": "^2.0.0",
     "electron-is-dev": "^2.0.0",
+    "electron-log": "^5.4.0",
+    "electron-updater": "^6.6.2",
     "electronmon": "^2.0.2",
     "howler": "^2.2.4",
     "react": "^18.2.0",
@@ -40,7 +42,10 @@
     "react": "cross-env PORT=3000 react-scripts start",
     "electron:package:mac": "yarn build && electron-builder -m -c.extraMetadata.main=build/electron.js",
     "electron:package:win": "yarn build && electron-builder -w -c.extraMetadata.main=build/electron.js",
-    "electron:package:linux": "yarn build && electron-builder -l -c.extraMetadata.main=build/electron.js"
+    "electron:package:linux": "yarn build && electron-builder -l -c.extraMetadata.main=build/electron.js",
+    "electron:publish:mac": "yarn build && electron-builder -m -c.extraMetadata.main=build/electron.js --publish always",
+    "electron:publish:win": "yarn build && electron-builder -w -c.extraMetadata.main=build/electron.js --publish always",
+    "electron:publish:linux": "yarn build && electron-builder -l -c.extraMetadata.main=build/electron.js --publish always"
   },
   "eslintConfig": {
     "extends": [
@@ -97,6 +102,13 @@
       "allowToChangeInstallationDirectory": true,
       "artifactName": "Hoot.setup.${ext}",
       "uninstallDisplayName": "Hoot"
-    }
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Akshay-Jayan3",
+        "repo": "Hoot"
+      }
+    ]
   }
 }
