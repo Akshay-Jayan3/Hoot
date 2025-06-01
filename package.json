@@ -39,7 +39,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "react": "cross-env PORT=3000 react-scripts start",
+    "react": "react-scripts start",
     "electron:package:mac": "yarn build && electron-builder -m -c.extraMetadata.main=build/electron.js",
     "electron:package:win": "yarn build && electron-builder -w -c.extraMetadata.main=build/electron.js",
     "electron:package:linux": "yarn build && electron-builder -l -c.extraMetadata.main=build/electron.js",
