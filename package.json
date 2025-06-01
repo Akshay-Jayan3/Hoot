@@ -43,9 +43,9 @@
     "electron:package:mac": "yarn build && electron-builder -m -c.extraMetadata.main=build/electron.js",
     "electron:package:win": "yarn build && electron-builder -w -c.extraMetadata.main=build/electron.js",
     "electron:package:linux": "yarn build && electron-builder -l -c.extraMetadata.main=build/electron.js",
-    "electron:publish:mac": "yarn build && electron-builder -m -c.extraMetadata.main=build/electron.js --publish always",
-    "electron:publish:win": "yarn build && electron-builder -w -c.extraMetadata.main=build/electron.js --publish always",
-    "electron:publish:linux": "yarn build && electron-builder -l -c.extraMetadata.main=build/electron.js --publish always"
+    "electron:publish:mac": "env-cmd yarn build && env-cmd electron-builder -m -c.extraMetadata.main=build/electron.js --publish always",
+    "electron:publish:win": "env-cmd yarn build && env-cmd electron-builder -w -c.extraMetadata.main=build/electron.js --publish always",
+    "electron:publish:linux": "env-cmd yarn build && env-cmd electron-builder -l -c.extraMetadata.main=build/electron.js --publish always"
   },
   "eslintConfig": {
     "extends": [
@@ -71,7 +71,8 @@
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
     "electron": "^27.0.2",
-    "electron-builder": "^24.9.1"
+    "electron-builder": "^24.9.1",
+    "env-cmd": "^10.1.0"
   },
   "build": {
     "appId": "com.Hoot.music",
