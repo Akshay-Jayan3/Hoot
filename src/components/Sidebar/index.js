@@ -19,7 +19,7 @@ const Sidebar = () => {
         className={styles.themeToggleButton} 
         onClick={toggleRetro}
       >
-        {isRetro ? "Main Theme" : "Retro Theme"}
+        {isRetro ? "Main Theme" : "Radio Mode"}
       </button>
 
       <div className={styles.content}>

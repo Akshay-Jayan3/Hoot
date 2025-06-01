@@ -23,7 +23,6 @@
   background-color: #554205; /* Dark AMBER/YELLOW tinted background */
   color: #FFD700; /* Primary AMBER/YELLOW text color */
   font-family: 'Press Start 2P', 'Courier New', Courier, monospace; /* Pixelated font */
-  padding: 1.5rem;
   border-radius: 0.25rem; /* Slightly rounded inner screen */
   text-align: center;
   width: 100%;
@@ -40,7 +39,7 @@
   /* Scanlines - only apply when screenContentOff is NOT present */
   &:not(.screenContentOff)::after {
     content: "";
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
@@ -57,6 +56,13 @@
     z-index: 1; 
     animation: rollScanlines 1s linear infinite; 
   }
+}
+.screenScrollArea {
+  overflow-y: auto;
+  height: 100%;
+  position: relative;
+  padding: 1rem;
+  z-index: 2; /* Above ::after background but still under the scanlines */
 }
 
 .screenContentOff {
@@ -92,23 +98,23 @@
 }
 
 /* Custom Scrollbar for .screenContent */
-.screenContent::-webkit-scrollbar {
+.screenScrollArea::-webkit-scrollbar {
   width: 10px; /* Width of the scrollbar */
 }
 
-.screenContent::-webkit-scrollbar-track {
+.screenScrollArea::-webkit-scrollbar-track {
   background: #1a1100; /* Dark AMBER/YELLOW tinted track background */
   border-radius: 0.25rem; /* Match screen content's border radius */
   border-left: 1px solid rgba(255, 215, 0, 0.15); /* Slightly more opaque amber/yellow separator line */
 }
 
-.screenContent::-webkit-scrollbar-thumb {
+.screenScrollArea::-webkit-scrollbar-thumb {
   background-color: #FFD700; /* AMBER/YELLOW color for the thumb */
   border-radius: 5px; /* Rounded thumb */
   border: 2px solid #1a1100; /* Border around thumb matching new track background */
 }
 
-.screenContent::-webkit-scrollbar-thumb:hover {
+.screenScrollArea::-webkit-scrollbar-thumb:hover {
   background-color: #FFB800; /* Darker AMBER on hover */
 }
 

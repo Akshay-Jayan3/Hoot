@@ -63,11 +63,13 @@ const RetroNeonPlayer = ({children}) => {
           </div>
           <div className={styles.centerContainerBody}>
             {/* MotionScreen is now always rendered, and manages its own on/off content display */}
-            <Suspense fallback={<StaticLoadingScreen />}>
-              <MotionScreen isRadioOn={isRadioOn}> {/* Pass isRadioOn prop */}
+         
+            <MotionScreen isRadioOn={isRadioOn}> {/* Pass isRadioOn prop */}
+              <Suspense fallback={<StaticLoadingScreen />}>
                 {children} {/* Pass children, MotionScreen will show/hide them */}
-              </MotionScreen>
-            </Suspense>
+              </Suspense>
+            </MotionScreen>
+      
           </div>
         </div>
         <div className={styles.rightSideContainer}>

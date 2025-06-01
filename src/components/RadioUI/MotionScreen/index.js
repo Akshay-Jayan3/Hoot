@@ -16,11 +16,15 @@ const MotionScreen = ({ children, isRadioOn }) => {
     <div className={motionScreenContainerClasses.trim()}>
       <div className={styles.screenBorder}>
         <div className={screenContentClasses.trim()}>
-          {isRadioOn && children}
+          {isRadioOn && (
+            <div className={styles.screenScrollArea}>
+              {children}
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default MotionScreen; 
+export default MotionScreen;
