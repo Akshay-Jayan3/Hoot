@@ -3,15 +3,25 @@ import sidebarData from "../../utils/sidebarData";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styles from "./styles.module.scss";
 import logo from "../../assects/logo.svg"
+import { useTheme } from "../../context/ThemeContext";
 
 const Sidebar = () => {
   const location = useLocation();
-  const navigate = useNavigate()
+  const { toggleRetro, isRetro } = useTheme();
   return (
     <div className={styles.container}>
-      <div className={styles.logo} onClick={()=>navigate("/")}>
-        <img src={logo} />
+      <div className={styles.logo}>
+        <img src={logo} alt="Hoot Logo" />
       </div>
+      
+      {/* Reverted to a normal button for theme toggle */}
+      <button 
+        className={styles.themeToggleButton} 
+        onClick={toggleRetro}
+      >
+        {isRetro ? "Main Theme" : "Retro Theme"}
+      </button>
+
       <div className={styles.content}>
         <ul className={styles.sidebarLinks}>
           {sidebarData.map((link) => (

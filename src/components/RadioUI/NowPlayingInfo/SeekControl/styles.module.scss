@@ -1,0 +1,122 @@
+.seekControlContainer {
+  width: 100%;
+  padding: 0.75rem 0.25rem; /* Increased padding for a chunkier feel */
+}
+
+.seekBar {
+  width: 100%;
+  height: 10px; /* Slightly thicker track */
+  -webkit-appearance: none;
+  appearance: none;
+  background: #222; /* Darker, flatter base for the track */
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  /* Inset shadow to make the track look like a groove */
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.6);
+}
+
+/* WebKit (Chrome, Safari, Edge) - Thumb */
+.seekBar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px; 
+  height: 20px;
+  background: radial-gradient(circle at 60% 40%, #555, #2a2a2a 70%, #1a1a1a); /* Dark 3D gradient */
+  border-radius: 50%;
+  border: 1px solid #666; /* Slightly lighter border for definition */
+  cursor: pointer;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.7),
+              inset 0 1px 1px rgba(100,100,100,0.3); /* Inner highlight for 3D effect */
+  margin-top: -5px; /* Track is 10px, thumb is 20px. (20-10)/2 = 5 */
+}
+
+/* Mozilla Firefox - Thumb */
+.seekBar::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: radial-gradient(circle at 60% 40%, #555, #2a2a2a 70%, #1a1a1a); /* Dark 3D gradient */
+  border-radius: 50%;
+  border: 1px solid #666;
+  cursor: pointer;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.7),
+              inset 0 1px 1px rgba(100,100,100,0.3);
+}
+
+/* WebKit - Track specific adjustments */
+.seekBar::-webkit-slider-runnable-track {
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(to right, 
+    #3a3a3a 0%, /* Was #1c1c1c, now filled part is #3a3a3a */
+    #3a3a3a var(--seek-before-width, 0%), /* Was #1c1c1c, now filled part is #3a3a3a */
+    #1c1c1c var(--seek-before-width, 0%), /* Was #3a3a3a, now unfilled part is #1c1c1c */
+    #1c1c1c 100%); /* Was #3a3a3a, now unfilled part is #1c1c1c */
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.6);
+}
+
+/* Mozilla Firefox - Track specific adjustments */
+.seekBar::-moz-range-track {
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(to right, 
+    #3a3a3a 0%, /* Was #1c1c1c, now filled part is #3a3a3a */
+    #3a3a3a var(--seek-before-width, 0%), /* Was #1c1c1c, now filled part is #3a3a3a */
+    #1c1c1c var(--seek-before-width, 0%), /* Was #3a3a3a, now unfilled part is #1c1c1c */
+    #1c1c1c 100%); /* Was #3a3a3a, now unfilled part is #1c1c1c */
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.6);
+  border: none; // Firefox might add a border by default on the track
+}
+
+/* Disabled state for the seek bar */
+.seekBar:disabled {
+  cursor: not-allowed;
+  // Optionally, change track and thumb appearance when disabled
+}
+
+.seekBar:disabled::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, 
+    #555 0%, 
+    #555 var(--seek-before-width, 0%), 
+    #222 var(--seek-before-width, 0%), 
+    #222 100%) !important; // More muted colors when disabled
+}
+
+.seekBar:disabled::-moz-range-track {
+  background: linear-gradient(to right, 
+    #555 0%, 
+    #555 var(--seek-before-width, 0%), 
+    #222 var(--seek-before-width, 0%), 
+    #222 100%) !important; // More muted colors when disabled
+}
+
+.seekBar:disabled::-webkit-slider-thumb {
+  background: #444 !important;
+  opacity: 0.7;
+}
+
+.seekBar:disabled::-moz-range-thumb {
+  background: #444 !important;
+  opacity: 0.7;
+}
+
+/* Optional: Style for the filled part of the track (progress) */
+/* This is harder to do consistently with just CSS for native range inputs */
+/* Often, people create custom sliders with divs for full control */
+/* However, a simple approach for WebKit is to use a background gradient on the thumb or track */
+
+/* Example: A subtle glow on hover/focus for the thumb */
+.seekBar:hover::-webkit-slider-thumb,
+.seekBar:focus::-webkit-slider-thumb {
+  background: radial-gradient(circle at 50% 35%, #666, #3a3a3a 70%, #2a2a2a); /* Lighter dark gradient */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.8),
+              inset 0 1px 1px rgba(120,120,120,0.4),
+              0 0 0 1px rgba(100,100,100,0.2); /* Subtle focus ring */
+}
+.seekBar:hover::-moz-range-thumb,
+.seekBar:focus::-moz-range-thumb {
+  background: radial-gradient(circle at 50% 35%, #666, #3a3a3a 70%, #2a2a2a); /* Lighter dark gradient */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.8),
+              inset 0 1px 1px rgba(120,120,120,0.4),
+              0 0 0 1px rgba(100,100,100,0.2);
+} 

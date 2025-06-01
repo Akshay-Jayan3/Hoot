@@ -24,6 +24,7 @@
     "react-loader-spinner": "^6.1.0",
     "react-router-dom": "^6.17.0",
     "react-scripts": "5.0.1",
+    "react-window": "^1.8.11",
     "sass": "^1.69.4",
     "sequelize": "^6.33.0",
     "sequelize-cli": "^6.6.1",
@@ -36,7 +37,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "react": "react-scripts start",
+    "react": "cross-env PORT=3000 react-scripts start",
     "electron:package:mac": "yarn build && electron-builder -m -c.extraMetadata.main=build/electron.js",
     "electron:package:win": "yarn build && electron-builder -w -c.extraMetadata.main=build/electron.js",
     "electron:package:linux": "yarn build && electron-builder -l -c.extraMetadata.main=build/electron.js"
@@ -84,9 +85,7 @@
     },
     "win": {
       "target": "nsis",
-      "icon":"build/favicon.ico"
-      
-      
+      "icon": "build/favicon.ico"
     },
     "linux": {
       "target": "deb"

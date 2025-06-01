@@ -98,6 +98,31 @@
   /* height: 100vh; */
 }
 
+.Addplaylist {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  padding-inline: 1em;
+  padding-block: 1em;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease ;
+
+  &:hover {
+    opacity: 0.8;
+    cursor: pointer;
+    transform: scale(1.05);
+    background-color: $accent-color;
+    color:#333;
+
+  }
+}
+
 .Songspage {
   display: flex;
   align-items: center;
@@ -122,30 +147,7 @@
       align-items: center;
       justify-content: center;
 
-      .Addplaylist {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        color: #fff;
-        padding-inline: 1em;
-        padding-block: 1em;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        transition: all 0.3s ease ;
 
-        &:hover {
-          opacity: 0.8;
-          cursor: pointer;
-          transform: scale(1.05);
-          background-color: $accent-color;
-          color:#333;
-    
-        }
-      }
     }
 
   }

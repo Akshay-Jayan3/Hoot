@@ -24,7 +24,7 @@ const sidebarData = [
   },
   {
     id: 4,
-    title: "favourites",
+    title: "Favourites",
     path: "/favourites",
     icon: <FavoriteBorderOutlinedIcon />,
   },

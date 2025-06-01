@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { createContext } from "react";
 
 export const MainContext = createContext({
@@ -8,18 +8,23 @@ export const MainContext = createContext({
   artists: null,
   isPlaying: false,
   AllSongs: null,
+  nowplaying: null,
+  isRadioOn: true,
   updateFolder: () => {},
   updateAlbums: () => {},
   updateArtists: () => {},
   updateNowPlaying: () => {},
   setAllSongs: () => {},
+  toggleRadioPower: () => {},
 });
 
 export const MainContextProvider = ({ children }) => {
   const [folderStored, setfolderStored] = useState(null);
   const [lastPlayed, setLastPlayed] = useState(null);
-  const [nowplaying, setNowplaying] = useState("");
+  const [nowplaying, setNowplaying] = useState(null);
   const [AllSongs, setAllSongs] = useState(null);
+  const [isRadioOn, setIsRadioOn] = useState(true);
+
   useEffect(() => {
     const storedFolder = localStorage.getItem("selected-folder");
     const lastplayed = localStorage.getItem("lastplayed");
@@ -41,7 +46,21 @@ export const MainContextProvider = ({ children }) => {
   };
 
   const updateNowPlaying = (song) => {
-    setNowplaying(song);
+    if (isRadioOn) {
+      setNowplaying(song);
+    } else {
+      setNowplaying(null);
+    }
+  };
+
+  const toggleRadioPower = () => {
+    setIsRadioOn(prevIsOn => {
+      const newIsOn = !prevIsOn;
+      if (!newIsOn) {
+        setNowplaying(null);
+      }
+      return newIsOn;
+    });
   };
 
   return (
@@ -51,10 +70,12 @@ export const MainContextProvider = ({ children }) => {
         lastPlayed,
         nowplaying,
         AllSongs,
+        isRadioOn,
         setAllSongs,
         updateFolder,
         updateLastPlayed,
         updateNowPlaying,
+        toggleRadioPower,
       }}
     >
       {children}

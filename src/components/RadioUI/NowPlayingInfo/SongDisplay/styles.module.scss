@@ -1,0 +1,237 @@
+.songDisplayScreen {
+  background-color: #554205; /* Dark AMBER/YELLOW tinted background */
+  color: #FFD700; /* Primary AMBER/YELLOW text color */
+  font-family: 'Press Start 2P', 'Courier New', Courier, monospace; /* Pixelated font */
+  padding: 1rem;
+  border-radius: 0.25rem;
+  box-shadow: inset 0 0 8px rgba(255, 184, 0, 0.3); /* AMBER inner glow */
+  border: 1px solid rgba(255, 184, 0, 0.3); /* AMBER border */
+  text-shadow: 0 0 4px rgba(255, 215, 0, 0.6); /* AMBER/YELLOW text glow */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  flex:1;
+  position: relative; /* Needed for pseudo-elements */
+  z-index: 0; /* Ensure content is below scanlines if using z-index on ::after */
+  overflow: hidden; /* Hide children if they somehow become visible */
+}
+
+.songDisplayScreenOff {
+  /* Glass effect for an "off" display */
+  background: linear-gradient(145deg, rgba(30, 30, 30, 0.85), rgba(15, 15, 15, 0.95)); /* Dark glassy gradient */
+  border: 1px solid rgba(50, 50, 50, 0.6); /* Subtle border */
+  box-shadow: 
+    inset 0 1px 1px rgba(60, 60, 60, 0.4),  /* Inner top highlight */
+    inset 0 -1px 1px rgba(0, 0, 0, 0.3);   /* Inner bottom shadow */
+  border-radius: 0.25rem; /* Match existing border-radius of the screen */
+  color: transparent; /* Ensure text is not visible */
+  text-shadow: none; /* Ensure no text glow is visible */
+
+  /* Hide all direct children content when screen is off */
+  & > * {
+    visibility: hidden; /* Hide all children */
+  }
+
+  /* Specifically ensure the scanline pseudo-element is also gone or non-intrusive */
+  &::after {
+    display: none; /* Remove scanlines completely when off */
+  }
+}
+
+/* Using the same animation definition as MotionScreen, or define locally if preferred */
+@keyframes rollScanlinesSongDisplay {
+  0% {
+    background-position-y: 0;
+  }
+  100% {
+    background-position-y: 4px; /* Match total height of one scanline cycle */
+  }
+}
+
+.songDisplayScreen::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 2px, 
+    rgba(0, 0, 0, 0.1) 3px, 
+    rgba(0, 0, 0, 0.1) 4px 
+  );
+  background-size: 100% 4px; /* Explicitly set background size y */
+  pointer-events: none; 
+  z-index: 1; 
+  border-radius: 0.25rem; 
+  animation: rollScanlinesSongDisplay 1.2s linear infinite; /* Apply animation, slightly different speed */
+}
+
+.nowPlayingTitle {
+  font-size: 0.9rem; /* Smaller than previous main heading */
+  color: #FFD700; /* AMBER/YELLOW */
+  text-shadow: 0 0 2px rgba(255, 184, 0, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem; /* Space below it */
+  padding: 0.2rem 0.4rem;
+  background-color: rgba(0,0,0,0.3); /* Keep slight dark background for contrast */
+  border-radius: 0.15rem;
+}
+
+.albumArtContainer {
+  width: 100px; /* Adjust size as needed */
+  height: 100px; /* Adjust size as needed */
+  margin-bottom: 0.5rem;
+}
+
+.albumArtPlaceholder {
+  width: 100%;
+  height: 100%;
+  background-color: #332200; /* Dark amber placeholder for album art */
+  border: 1px dashed #FFD700; /* AMBER/YELLOW dashed border */
+  color: #FFD700; /* AMBER/YELLOW text for "ART" */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem; /* Will use Press Start 2P */
+  border-radius: 0.15rem;
+}
+
+/* Styles for when you use an actual image */
+.albumArt {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.15rem;
+}
+
+.songInfoContainer {
+  text-align: center;
+}
+
+.songTitle {
+  font-size: 1.2rem;
+  font-weight: bold; /* Pixel fonts often don't have bold weights, this might not do much */
+  margin-bottom: 0.25rem;
+  /* text-shadow inherited from .songDisplayScreen */
+}
+
+.artistName {
+  font-size: 0.9rem;
+  color: #FFB800; /* Amber for artist name */
+  text-shadow: 0 0 2px rgba(255, 184, 0, 0.4); /* Softer amber glow */
+}
+
+.digitalTiming {
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  background-color: rgba(0,0,0,0.3);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.15rem;
+  color: #FFD700; /* Base AMBER/YELLOW for timing container */
+  /* text-shadow inherited or can be specific here */
+  display: flex; // Helps align spans if they have different properties
+  align-items: baseline; // Align text baselines
+  justify-content: center; // Center the whole timing block
+}
+
+.currentTimeDisplay {
+  color: #FFFFFF; // Brighter white for current time to make it stand out
+  font-weight: bold; // Pixel fonts might not support this, but good practice
+  text-shadow: 0 0 5px rgba(255,255,255,0.7); // Brighter glow for current time
+}
+
+.timeSeparator {
+  margin: 0 0.25em; // Add a little space around the separator
+  color: #FFB800; // Slightly less prominent color for the separator
+}
+
+.totalDurationDisplay {
+  color: #FFB800; // Slightly less prominent (or same as base) for total duration
+  // text-shadow can be inherited or slightly less prominent than current time
+}
+
+/* Visualizer Styles */
+.visualizerContainer {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem; // Or space-around
+  align-items: flex-end; // Bars grow upwards
+  width: 80%; // Adjust width as needed
+  height: 50px; // Max height of the visualizer area
+  margin-top: 0.75rem; // Space above the visualizer
+  padding: 0 0.25rem; // Some padding if bars are close to edges
+  // background-color: rgba(0,0,0,0.2); // Optional subtle background
+  // border-radius: 0.1rem;
+}
+
+.visualizerBar {
+  background-color: #FFD700; // AMBER/YELLOW color for bars
+  width: 5px; // Reduced width for more bars
+  height: 10%; // Initial height (will be animated)
+  border-radius: 1px 1px 0 0; // Slightly rounded tops
+  box-shadow: 0 0 2px rgba(255, 215, 0, 0.4); // Slightly reduced glow for smaller bars
+  animation-name: bounceBar;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  /* Individual animation speeds/delays for variation */
+  &:nth-child(1)  { animation-duration: 0.6s; animation-delay: 0.1s;  }
+  &:nth-child(2)  { animation-duration: 0.4s; animation-delay: 0.3s;  }
+  &:nth-child(3)  { animation-duration: 0.7s; animation-delay: 0.0s;  }
+  &:nth-child(4)  { animation-duration: 0.5s; animation-delay: 0.2s;  }
+  &:nth-child(5)  { animation-duration: 0.8s; animation-delay: 0.15s; }
+  &:nth-child(6)  { animation-duration: 0.6s; animation-delay: 0.25s; }
+  &:nth-child(7)  { animation-duration: 0.45s;animation-delay: 0.05s; }
+  &:nth-child(8)  { animation-duration: 0.75s;animation-delay: 0.12s; }
+  &:nth-child(9)  { animation-duration: 0.55s;animation-delay: 0.22s; }
+  &:nth-child(10) { animation-duration: 0.65s;animation-delay: 0.08s; }
+  &:nth-child(11) { animation-duration: 0.42s;animation-delay: 0.18s; }
+  &:nth-child(12) { animation-duration: 0.82s;animation-delay: 0.28s; }
+  &:nth-child(13) { animation-duration: 0.58s;animation-delay: 0.02s; }
+  &:nth-child(14) { animation-duration: 0.68s;animation-delay: 0.14s; }
+  &:nth-child(15) { animation-duration: 0.48s;animation-delay: 0.24s; }
+}
+
+@keyframes bounceBar {
+  0%, 100% { height: 10%; }
+  10%, 90% { height: 30%; }
+  20%, 80% { height: 60%; }
+  30%, 70% { height: 80%; }
+  40%, 60% { height: 100%; }
+  50% { height: 90%; }
+}
+
+/* New styles for the no song message */
+.noSongMessageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%; // Take up available height
+  color: #FFD700; /* AMBER/YELLOW text color */
+  font-family: 'Press Start 2P', 'Courier New', Courier, monospace; /* Pixelated font */
+  font-size: 1rem; /* Or adjust as needed */
+  text-shadow: 0 0 4px rgba(255, 215, 0, 0.6); /* AMBER/YELLOW text glow */
+  /* Ensures it's above the base background but respects overall screen styling */
+  position: relative; 
+  z-index: 2; /* Higher than scanlines if they were to somehow appear */
+}
+
+.noSongMessageContainer p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.noSongIcon {
+  width: 100px; /* Adjust size as needed */
+  height: 100px; /* Adjust size as needed */
+  margin-bottom: 1rem; /* Space between icon and text */
+  /* Optional: if your icon is not amber/yellow and needs to be colored via filter */
+  /* filter: invert(75%) sepia(83%) saturate(1077%) hue-rotate(357deg) brightness(102%) contrast(107%); */
+  /* This filter attempts to make it amber/yellow like #FFD700 */
+} 

@@ -1,0 +1,392 @@
+.retroNeonContainer {
+    background: #1a1a1a;
+    color: #fff;
+    height: 100vh;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .radioOuterBody {
+    width:100%;
+    height:100%;
+    background: #2c2c2c;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    display:flex
+  }
+  
+  .topNavBar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    
+    background: linear-gradient(145deg, #2a2a2a, #202020);
+    padding: 0.5rem 1rem;
+    border-radius: 0.35rem;
+    margin: 0.5rem 1rem;
+    box-shadow: 
+      inset 0 1px 1px rgba(60, 60, 60, 0.5),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.3),
+      0 2px 3px rgba(0,0,0,0.4);
+    border: 1px solid rgba(10,10,10,0.8);
+  }
+  
+  .topNavItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    outline: none;
+    cursor: pointer;
+    text-decoration: none;
+    color: #6a6a6a !important; 
+    background: #333333 !important; 
+    border-radius: 0.5rem !important; 
+    border: none !important; 
+    box-shadow: 0 2px 0px #1a1a1a, 0 4px 5px rgba(0,0,0,0.5) !important;
+    transition: all 0.15s ease-in-out !important;
+    transform: translateY(0);
+  
+    @media (min-width: 640px) {
+      padding: 0.6rem;
+      font-size: 1rem;
+    }
+  
+    &:active {
+      background: #252525 !important;
+      color: #FFD700 !important;
+      box-shadow: 0 1px 0px #1a1a1a, 0 1px 1px rgba(0,0,0,0.4) !important;
+      transform: translateY(1px) !important;
+    }
+  }
+  
+  /* Style for the active (selected) navigation item */
+  .active {
+    background: #1e1e1e !important;
+    color: #FFD700 !important;
+    box-shadow: 0 1px 0px #0f0f0f,
+                inset 0 1px 2px rgba(0,0,0,0.5) !important;
+    transform: translateY(1px);
+    
+    &:active {
+      background: #1e1e1e !important;
+      color: #FFD700 !important;
+      box-shadow: 0 1px 0px #0f0f0f, inset 0 1.5px 3px rgba(0,0,0,0.6) !important; 
+    }
+  }
+
+  .leftSideContainer{
+    width: 20%;
+    padding: 1rem;
+    height: 100%;
+    background: #2c2c2c;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .leftSideLogoContainer {
+    background: #2c2c2c;
+    border-radius: 50%;
+    padding: 0.75rem;
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    box-shadow: 0 2px 0px #1a1a1a,
+                0 4px 6px rgba(0,0,0,0.4),
+                inset 0 1px 1px rgba(80,80,80,0.3);
+    transform: scale(1) translateY(0);
+    opacity: 0.85;
+  }
+
+  // Styles for when the Radio Power is ON - to match TopNavBar style
+  .logoPowerOn {
+    background: linear-gradient(145deg, #2a2a2a, #202020); 
+    border: 1px solid rgba(10,10,10,0.8);                   
+    // Restored original box-shadow for pressed look, removed glow
+    box-shadow: 
+      inset 0 1px 1px rgba(60, 60, 60, 0.5),          
+      inset 0 -1px 1px rgba(0, 0, 0, 0.3),           
+      0 1px 2px rgba(0,0,0,0.3); // Original flatter shadow
+    
+    opacity: 1; 
+    transform: scale(0.98) translateY(1px); 
+  }
+
+  // Styles for when the Radio Power is OFF 
+  .logoPowerOff { 
+    background: #2c2c2c; // Match base .leftSideLogoContainer or a bit darker for OFF
+    // Standard shadow for an 'out' or 'flat' appearance, similar to .leftSideLogoContainer base
+    box-shadow: 
+      0 2px 0px #1a1a1a,                
+      0 4px 6px rgba(0,0,0,0.4),
+      inset 0 1px 1px rgba(80,80,80,0.3); // Copied from .leftSideLogoContainer base
+    transform: scale(1) translateY(0); // No press, default state
+    opacity: 0.7; // Slightly more visible than 0.6 perhaps, but still 'off'
+    border: 1px solid #222; // Slightly less prominent border than power on
+  }
+
+  .leftSideLogoImage {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: brightness(1);
+  }
+
+  // If .logoPowerOff is used and distinct from base:
+  .logoPowerOff .leftSideLogoImage {
+    filter: brightness(0.6);
+  }
+  // If .leftSideLogoContainer is the "off" state, this can be applied directly when not .logoPowerOn:
+  .leftSideLogoContainer:not(.logoPowerOn) .leftSideLogoImage {
+    filter: brightness(0.7);
+  }
+
+  .logoPowerOn .leftSideLogoImage {
+    filter: brightness(1);
+  }
+
+  // New styles for the power switch area, label, and LED
+  .powerSwitchArea {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    margin-bottom: 1.5rem; 
+  }
+
+  .powerLabel {
+    font-size: 0.6rem;
+    color: #aaa; 
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 0.5rem; // Restored margin for LED
+  }
+
+  // Restored styles for .powerLed, .ledOff, .ledOn
+  .powerLed {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-top: 0.5rem; // Space between logo and LED
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #111; // Dark border for the LED housing
+  }
+
+  .ledOff {
+    background-color: #5a0000; // Dark, unlit red
+    box-shadow: inset 0 0 3px rgba(0,0,0,0.7);
+  }
+
+  .ledOn {
+    background-color: #ff1a1a; // Bright red
+    box-shadow: 0 0 5px #ff1a1a, 
+                0 0 10px #ff1a1a, 
+                0 0 15px #ff4d4d, 
+                inset 0 0 2px rgba(255,150,150,0.5); // Inner glow
+    border-color: #440000; // Slightly darker border when lit
+  }
+
+  // Styles for the Screen Off Display (Glass Effect) - THIS CLASS IS NO LONGER USED HERE.
+  // The logic has been moved to MotionScreen/styles.module.scss as .screenContentOff
+  // .screenOffDisplay {
+  //   width: 100%;
+  //   height: 100%;
+  //   background: linear-gradient(145deg, rgba(30, 30, 30, 0.85), rgba(15, 15, 15, 0.95)); 
+  //   border: 1px solid rgba(50, 50, 50, 0.6); 
+  //   box-shadow: 
+  //     inset 0 1px 1px rgba(60, 60, 60, 0.4),  
+  //     inset 0 -1px 1px rgba(0, 0, 0, 0.3);   
+  //   border-radius: 0.5rem; 
+  //   display: flex; 
+  //   align-items: center;
+  //   justify-content: center;
+  //   position: relative;
+  //   overflow: hidden; 
+  // }
+
+  // @keyframes screenNoise can be removed if not used elsewhere
+  // @keyframes screenNoise {
+  //   0% { transform: translate(0,0); }
+  //   10% { transform: translate(-2%,-2%); }
+  //   20% { transform: translate(2%,-2%); }
+  //   30% { transform: translate(-2%,2%); }
+  //   40% { transform: translate(2%,2%); }
+  //   50% { transform: translate(0,0); }
+  //   60% { transform: translate(-2%,2%); }
+  //   70% { transform: translate(2%,-2%); }
+  //   80% { transform: translate(-2%,-2%); }
+  //   90% { transform: translate(2%,2%); }
+  //   100% { transform: translate(0,0); }
+  // }
+
+  .centerContainer{
+    width: 50%;
+    flex: 1;
+    height: 100%;
+    background: #2c2c2c;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    .centerContainerBody{
+      width: 100%;
+      height: 100%;
+      background: #2c2c2c;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      border-radius: 0.5rem;
+    }
+  }
+  .rightSideContainer{
+    width: 30%;
+    height: 100%;
+    background: #2c2c2c;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    padding: 1rem;
+  }
+  
+  
+  /* Wrapper for TopNavBar and side elements (speakers) */
+  .topNavAreaWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(100% - 2rem); 
+    margin: 0.5rem auto;  
+  }
+
+  /* Styles for Small Round Speakers flanking the TopNavBar */
+  .smallRoundSpeaker {
+    width: 70px;  /* User-defined size */
+    height: 70px; /* User-defined size */
+    background: linear-gradient(145deg, #4a4a4a, #303030); /* Slightly adjusted gradient for the ring */
+    border-radius: 50%; 
+    padding: 6px; /* Increased padding for a thicker frame/ring */
+    box-shadow: 
+      /* Outer shadow for the speaker unit */
+      0 3px 6px rgba(0,0,0,0.4),
+      /* Inset shadow for the ring's 3D effect */
+      inset 0 2px 2px rgba(100,100,100,0.25), /* Softer, wider top highlight */
+      inset 0 -2px 2px rgba(0,0,0,0.25);  /* Softer, wider bottom shadow */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #111; /* Darker outer border for the ring */
+    position: relative; /* Added for screw positioning */
+
+    /* Inner grille part */
+    &::before {
+      content: '';
+      width: 100%; 
+      height: 100%;
+      border-radius: 50%;
+      background-color: #0A0A0A; 
+      background-image: radial-gradient(#202020 15%, transparent 16%),
+                        radial-gradient(#202020 15%, transparent 16%);
+      background-size: 8px 8px;
+      background-position: 0 0, 4px 4px;
+      box-shadow: inset 0 0 4px rgba(0,0,0,0.8); /* Slightly stronger inset shadow for grille */
+    }
+  }
+
+  /* Styles for the screws on the small round speakers */
+  .speakerScrew {
+    position: absolute;
+    width: 6px; // Increased screw size
+    height: 6px; // Increased screw size
+    // Metallic look with gradient and border
+    background: radial-gradient(circle at 35% 35%, #999, #555); // Lighter gradient for metallic look
+    border-radius: 50%;
+    border: 1px solid #2c2c2c; // Darker border for definition
+    box-shadow: inset 0.5px 0.5px 1px #4a4a4a, // Inner shadow for depth
+                0px 0px 1px rgba(0,0,0,0.7);   // Subtle outer shadow to lift it slightly
+    z-index: 1; // Ensure screws are above the ::before pseudo-element (grille)
+  }
+
+  .speakerScrew:nth-child(1) { // Top-left
+    top: 4px; // Adjusted for slightly larger screw and border
+    left: 4px; // Adjusted for slightly larger screw and border
+  }
+  .speakerScrew:nth-child(2) { // Top-right
+    top: 4px;
+    right: 4px;
+  }
+  .speakerScrew:nth-child(3) { // Bottom-right
+    bottom: 4px;
+    right: 4px;
+  }
+  .speakerScrew:nth-child(4) { // Bottom-left
+    bottom: 4px;
+    left: 4px;
+  }
+
+  /* OLD ROTARY KNOB STYLES - TO BE ENSURED THEY ARE DELETED IF PRESENT */
+  /* .rotaryKnobContainer (ensure deleted) */
+  /* .rotaryKnob (ensure deleted) */
+  /* .rotaryKnob::after (ensure deleted) */
+  
+  /* Remove old .retroExitButton styles or ensure they are deleted */
+  /* .retroExitButton (and its :hover, :active) should be removed */
+
+  // Styles for the Exit Player button, to match PlaybackControls buttons
+  .retroExitButton {
+    color: #E0E0E0; // Keep text light, as it's not an icon
+    background: #333333; 
+    border-radius: 0.5rem; 
+    border: none; 
+    box-shadow: 0 2px 0px #1a1a1a, 0 4px 5px rgba(0,0,0,0.5);
+    transition: all 0.15s ease-in-out;
+    transform: translateY(0);
+    
+    font-size: 0.9rem; // Keep a readable font size
+    font-weight: 600; // Keep font weight
+    text-shadow: none; // Remove specific text shadow if aiming for flat icon button style
+    padding: 0.6rem 1.2rem; // Adjust padding for text
+    min-width: 120px; // Ensure decent width for text
+    height: auto; // Let padding define height
+
+    cursor: pointer;
+    margin-top: 1.2rem; 
+    margin-bottom: 1rem; 
+    display: block; 
+    margin-left: auto;
+    margin-right: auto;
+
+    &:hover {
+      // For text buttons, often just a background or color change is enough
+      // Or keep consistent with playback control's :active state if preferred for hover
+      background: #404040; // Slightly lighter background on hover
+      color: #FFFFFF;
+      // transform: translateY(0); // No lift on hover to match flat design
+      // box-shadow: 0 2px 0px #1a1a1a, 0 4px 5px rgba(0,0,0,0.5); // Keep shadow same on hover
+    }
+
+    &:active {
+      background: #252525; 
+      color: #FFD700; // Orange text highlight on click, like icons
+      box-shadow: 0 1px 0px #1a1a1a, 0 1px 1px rgba(0,0,0,0.4);
+      transform: translateY(1px); 
+    }
+  }

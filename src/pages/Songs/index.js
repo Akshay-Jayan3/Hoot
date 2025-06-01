@@ -6,9 +6,11 @@ import AudioPlayer from "../../components/AudioPlayer";
 import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
 import LoadingScreen from "../../components/Loader";
+import StaticLoadingScreen from "../../components/StaticLoadingScreen";
 import { useLocation, useNavigate } from "react-router-dom";
 import CustomToast from "../../components/ToastMessage";
 import ListView from "../../components/ListView";
+import { useTheme } from "../../context/ThemeContext";
 
 const Songs = () => {
   const { updateNowPlaying, setAllSongs } = useContext(MainContext);
@@ -20,6 +22,7 @@ const Songs = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [showToast, setShowToast] = useState(false);
   const [message, setMessage] = useState("");
+  const { isRetroTheme } = useTheme();
 
   const handleShowToast = (message) => {
     setMessage(message);
@@ -94,7 +97,7 @@ const Songs = () => {
 
   return (
     <>
-      {isLoading && <LoadingScreen message={"Loading ..."} />}
+      {isLoading && (isRetroTheme ? <StaticLoadingScreen /> : <LoadingScreen message={"Loading ..."} />)}
       {showToast && (
         <CustomToast
           message={message}
@@ -102,7 +105,15 @@ const Songs = () => {
           bottom={true}
         />
       )}
-      <div className="Songspage">
+      {isRetroTheme ? <ListView
+        tracks={
+          searchString && searchString !== "" ? filteredData : metadData
+        }
+        type={"track"}
+        toggleFavorite={toggleFavorite}
+        AddtoPlaylist={AddtoPlaylist}
+        playlistDetails={playlistDetails}
+      /> : <div className="Songspage">
         <div className="mainsection">
           <Search
             showback={playlistDetails}
@@ -133,7 +144,8 @@ const Songs = () => {
             <AudioPlayer />
           </div>
         </div>
-      </div>
+      </div>};
+
     </>
   );
 };

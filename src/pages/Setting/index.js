@@ -169,14 +169,14 @@ const Settings = () => {
 
   return (
     <>
-      {isLoading && (
+      {isLoading && 
         <LoadingScreen
           message={
             "Discovering your music collection. Just a few more moments!"
           }
           setting={true}
         />
-      )}
+      }
       {showToast && (
         <CustomToast
           message={message}

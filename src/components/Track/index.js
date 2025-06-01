@@ -21,6 +21,10 @@ const Track = ({
     useContext(MainContext);
   const { isPlaying } = useContext(AudioContext);
 
+  if (!track) {
+    return null;
+  }
+
   function truncateText(text, maxLength) {
     if (text?.length > maxLength) {
       return text.slice(0, maxLength) + "...";
@@ -31,7 +35,7 @@ const Track = ({
   return (
     <div
       className={`${styles.wrapper} ${
-        nowplaying.id === track.id && styles.animateborder
+        nowplaying?.id === track?.id && styles.animateborder
       }`}
       onClick={() => {
         updateNowPlaying(track);
@@ -41,7 +45,7 @@ const Track = ({
     >
       <div className={styles.info}>
         <div className={styles.thumbnail}>
-          {nowplaying.id === track.id && isPlaying ? (
+          {nowplaying?.id === track?.id && isPlaying ? (
             <Audio
               height="20"
               width="20"
@@ -52,15 +56,13 @@ const Track = ({
               wrapperClass
             />
           ) : (
-            <img src={track.picture} alt="cover art"/>
+            <img src={track?.picture} alt="cover art"/>
           )}
         </div>
         <div className={styles.titleArtist}>
-          <ScrollingText scroll={nowplaying.id === track.id}>
-            <p style={{ color: nowplaying.id === track.id && "#FFD700" }}>
-              {nowplaying.id === track.id
-                ? track?.title
-                : truncateText(track?.title, 30)}
+          <ScrollingText scroll={nowplaying?.id === track?.id}>
+            <p style={{ color: nowplaying?.id === track?.id && "#FFD700" }}>
+              {track?.title}
             </p>
           </ScrollingText>
           <p className={styles.artist} title={track?.artist}>
@@ -70,10 +72,10 @@ const Track = ({
       </div>
       <div>
         <button
-          onClick={(e) => toggleFavorite(e, track.id, track)}
+          onClick={(e) => toggleFavorite(e, track?.id, track)}
           className={`${styles.favouriteBtn}`}
         >
-          {track.isFavorite ? (
+          {track?.isFavorite ? (
             <FavoriteIcon style={{ color: "#FFD700" }} />
           ) : (
             <FavoriteBorderOutlinedIcon />
@@ -84,7 +86,7 @@ const Track = ({
         <div>
           <button
             onClick={(e) =>
-              AddtoPlaylist(e, playlistDetails?.playlistId, track.id)
+              AddtoPlaylist(e, playlistDetails?.playlistId, track?.id)
             }
             className={`${styles.addPlaylist}`}
           >
@@ -96,7 +98,7 @@ const Track = ({
         <div>
           <button
             onClick={(e) =>
-              RemoveFromPlaylist(e, selectedPlaylist?.id, track.id)
+              RemoveFromPlaylist(e, selectedPlaylist?.id, track?.id)
             }
             className={`${styles.addPlaylist}`}
           >

@@ -1,0 +1,76 @@
+.playbackControlsContainer {
+  display: flex;
+  justify-content: space-around; /* Distribute buttons evenly */
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.controlButton {
+  color: #6a6a6a !important; /* Dark grey icon color by default */
+  background: #333333 !important; /* Background from topNavItem */
+  border-radius: 0.5rem !important; /* Slightly rounder for a button feel */
+  width: 45px !important; /* Adjusted size */
+  height: 45px !important;
+  border: none !important; /* topNavItem has no border property */
+  box-shadow: 0 2px 0px #1a1a1a, 0 4px 5px rgba(0,0,0,0.5) !important;
+  transition: all 0.15s ease-in-out !important;
+  transform: translateY(0);
+  padding: 0 !important; /* Reset IconButton padding */
+}
+
+.controlButton:hover {
+  cursor: pointer;
+}
+
+.controlButton:active {
+  background: #252525 !important;
+  color: #FFD700 !important; /* Orange icon highlight on click */
+  box-shadow: 0 1px 0px #1a1a1a, 0 1px 1px rgba(0,0,0,0.4) !important; /* Active shadow from topNavItem */
+  transform: translateY(1px) !important; /* Pressed effect from topNavItem */
+}
+
+.playPauseButton {
+  width: 55px !important; /* Larger play/pause */
+  height: 55px !important;
+  /* It can share the same .controlButton styles or have slight variations */
+}
+
+/* Toggled state - icon becomes orange */
+.toggled {
+  background: #1e1e1e !important; /* Darker background when toggled */
+  color: #FFD700 !important; /* Orange icon when toggled */
+  box-shadow: 0 1px 0px #0f0f0f, inset 0 1px 2px rgba(0,0,0,0.5) !important; /* Inset shadow to look pressed */
+  transform: translateY(1px);
+}
+
+.toggled:hover {
+ cursor: pointer;/* Brighter orange on hover when toggled */
+}
+
+.controlButton svg {
+  fill: currentColor;
+  font-size: 1.6rem !important; /* Adjusted icon size for new button size */
+}
+
+.playPauseButton svg {
+  font-size: 2.0rem !important; /* Adjusted for new play/pause button size */
+}
+
+/* Styles for disabled control buttons */
+.controlButton:disabled {
+  opacity: 0.5; // Make them look faded
+  cursor: not-allowed; // Indicate they are not clickable
+  background: #333333 !important; // Ensure background doesn't change weirdly
+  color: #6a6a6a !important; // Ensure icon color is the default disabled color
+  box-shadow: 0 2px 0px #1a1a1a, 0 4px 5px rgba(0,0,0,0.5) !important; // Keep base shadow
+  transform: translateY(0); // Ensure no transform from active/hover states
+}
+
+.controlButton:disabled:hover,
+.controlButton:disabled:active {
+  // Override hover/active styles when disabled
+  background: #333333 !important;
+  color: #6a6a6a !important;
+  box-shadow: 0 2px 0px #1a1a1a, 0 4px 5px rgba(0,0,0,0.5) !important;
+  transform: translateY(0);
+} 

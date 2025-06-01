@@ -1,0 +1,178 @@
+/* New styles for the outer frame */
+.speakerGrillFrame {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, #6b6b6b, #424242); /* Slightly lighter metallic frame */
+  border-radius: 0.4rem; /* Frame's own radius */
+  padding: 12px; /* Thickness of the frame itself, screws will sit on this */
+  box-shadow: 0 2px 1px rgba(0,0,0,0.3), /* Softer bottom shadow */
+              0 4px 5px rgba(0,0,0,0.2), /* Main pop-out shadow */
+              inset 0 0 0 1px rgba(20,20,20,0.5), /* Inner dark line to separate frame from mesh */
+              inset 0 1px 0px rgba(180,180,180,0.25); /* Top edge highlight */
+  position: relative; /* For positioning screws and mesh */
+  display: flex; /* To center the mesh inside */
+  align-items: center;
+  justify-content: center;
+}
+
+/* Styles for the inner mesh area (previously .speakerGrillContainer) */
+.speakerGrillMesh {
+  width: 100%;
+  height: 100%;
+  background-color: #080808;
+  border-radius: 0.2rem;
+  display: grid;
+  grid-template-columns: repeat(18, 1fr);
+  grid-template-rows: repeat(25, 1fr);
+  gap: 0.2rem;
+  padding: 0.25rem;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.8);
+  overflow: hidden;
+  position: relative; /* For positioning the mesh label */
+}
+
+/* Renamed from .meshLogoContainer */
+.meshTextLabelContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1; /* Above the dots */
+  text-align: center;
+}
+
+/* New styles for metallic text, renamed from .meshLogoImage */
+.meshTextLabel {
+  font-family: 'Great Vibes', cursive, sans-serif; /* Changed to Great Vibes, fallback to cursive */
+  font-size: 2.2rem; /* Adjusted size for Great Vibes, script fonts can vary */
+  font-weight: normal; /* Script fonts usually don't need bold */
+  font-style: normal; /* Great Vibes is inherently scripty/italic */
+  text-transform: none; /* Avoid uppercase for script fonts */
+  /* Metallic text effect */
+  background: linear-gradient(145deg, #c0c0c0, #808080); /* Silver gradient */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent; /* Makes the text take on the background gradient */
+  text-shadow: 1px 1px 1px rgba(255,255,255,0.2), /* Top-left highlight */
+               -1px -1px 1px rgba(0,0,0,0.5),   /* Bottom-right shadow for depth */
+               0 0 3px rgba(180,180,180,0.3); /* Subtle overall glow/shine */
+  letter-spacing: 0.05em;
+  padding: 5px; /* Give it some space if background clipping is odd */
+  display: inline-block; /* Important for background-clip to work well with padding */
+}
+
+.grillDot {
+  width: 100%;
+  height: 100%;
+  background-color: #1c1c1c;
+  border-radius: 50%;
+  box-shadow: inset 0 0.5px 0.5px rgba(0,0,0,0.9),
+              inset 0 -0.25px 0.25px rgba(60,60,60,0.5);
+  /* Ensure dots are behind the logo */
+  position: relative; 
+  z-index: 0;
+}
+
+.grillScrew {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: linear-gradient(145deg, #707070, #404040);
+  border-radius: 50%;
+  box-shadow: 0 0.5px 1px rgba(0,0,0,0.8),
+              inset 0 0.5px 0.5px rgba(180,180,180,0.4);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Phillips head (+) pattern for screws */
+.grillScrew::before,
+.grillScrew::after {
+  content: '';
+  position: absolute;
+  background-color: rgba(0,0,0,0.4);
+  box-shadow: 1px 1px 1px rgba(255,255,255,0.05);
+}
+
+.grillScrew::before {
+  width: 60%;
+  height: 15%;
+  border-radius: 0.5px;
+}
+
+.grillScrew::after {
+  width: 15%;
+  height: 60%;
+  border-radius: 0.5px;
+}
+
+/* New styles for the metallic plate */
+.metallicPlate {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 4px 8px; /* Padding inside the plate, around the text */
+  background: linear-gradient(145deg, #b0b0b0, #787878); /* Metallic silver gradient */
+  border-radius: 3px; /* Slightly rounded corners for the plate */
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5), /* Outer shadow for pop */
+              inset 0 0.5px 0.5px rgba(255,255,255,0.2), /* Inner top highlight */
+              inset 0 -0.5px 0.5px rgba(0,0,0,0.3); /* Inner bottom shadow */
+  z-index: 1; /* Below screws if they overlap, but above frame elements */
+}
+
+.engravedLabel {
+  font-family: 'Arial Black', Gadget, sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #303030; /* This acts as the main shadow/depth of the engraving */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  /* For engraved look (light from top-left): */
+  /* Highlight on top-left inner edge (text casts shadow to bottom-right) */
+  text-shadow: 0.5px 0.5px 0px rgba(195, 195, 195, 0.6); /* Sharp, light silver highlight */
+}
+
+.topLeft {
+  top: 3px;
+  left: 3px;
+}
+
+.topRight {
+  top: 3px;
+  right: 3px;
+}
+
+.bottomLeft {
+  bottom: 3px;
+  left: 3px;
+}
+
+.bottomRight {
+  bottom: 3px;
+  right: 3px;
+}
+
+/* Vibration Animation */
+@keyframes vibrateGrill {
+  0% { transform: translate(0, 0); }
+  10% { transform: translate(-0.25px, 0.25px); }
+  20% { transform: translate(0.25px, -0.25px); }
+  30% { transform: translate(-0.25px, -0.25px); }
+  40% { transform: translate(0.25px, 0.25px); }
+  50% { transform: translate(0, 0); }
+  60% { transform: translate(0.25px, -0.25px); }
+  70% { transform: translate(-0.25px, 0.25px); }
+  80% { transform: translate(0.25px, 0.25px); }
+  90% { transform: translate(-0.25px, -0.25px); }
+  100% { transform: translate(0, 0); }
+}
+
+.grillVibrating {
+  animation-name: vibrateGrill;
+  animation-duration: 0.1s; /* Very fast for a subtle vibration */
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+} 

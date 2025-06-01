@@ -8,8 +8,10 @@ import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
 import AddPlaylistModal from "../../components/AddplaylistModal";
 import LoadingScreen from "../../components/Loader";
+import StaticLoadingScreen from "../../components/StaticLoadingScreen";
 import GridView from "../../components/GridView";
 import { MainContext } from "../../context/MainContext";
+import { useTheme } from "../../context/ThemeContext";
 
 const Playlists = () => {
   const [songs, setSongs] = useState(null);
@@ -22,6 +24,7 @@ const Playlists = () => {
   const [searchString, setSearchString] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [showToast, setShowToast] = useState(false);
+  const { isRetroTheme } = useTheme();
 
   const handleShowToast = () => {
     setShowToast(true);
@@ -129,78 +132,123 @@ const Playlists = () => {
 
   return (
     <>
-      {isLoading && <LoadingScreen message={"Loading ..."} />}
-      <div className="Songspage">
-        <div className="mainsection">
-          <Search
-            showback={showPlaylist}
-            HandleBack={HandleSelectPlaylist}
-            onChange={performSearch}
-            value={searchString}
-            placeholder={
-              showPlaylist
-                ? "Search your favourite Songs"
-                : "Search your favourite Playlists"
-            }
+      {isLoading && (isRetroTheme ? <StaticLoadingScreen /> : <LoadingScreen message={"Loading ..."} />)}
+      {isRetroTheme ? 
+      <div className="songs-container">
+        {showModal ? (
+          <AddPlaylistModal
+            closeModal={closeModal}
+            setPlaylist={setPlaylist}
           />
-          <Header
-            heading={"Rhythmic Playgrounds"}
-            description={
-              "Immerse yourself in handpicked playlists for every mood"
-            }
-          />
-
-          <div className="songs-container">
-            {showModal ? (
-              <AddPlaylistModal
-                closeModal={closeModal}
-                setPlaylist={setPlaylist}
-              />
-            ) : !showPlaylist ? (
-              playlists && playlists?.length > 0 ? (
-                <>
-                  <button className="Addplaylist" onClick={openModal}>
-                    <ControlPointOutlinedIcon fontSize="small" />
-                    Add New Playlist
-                  </button>
-                  <GridView
-                    items={
-                      searchString && searchString !== ""
-                        ? filteredData
-                        : playlists
-                    }
-                    HandleFile={HandleSelectPlaylist}
-                    HandleAction={deletePlaylist}
-                  />
-                </>
-              ) : (
-                !showModal && (
-                  <button className="Addplaylist" onClick={openModal}>
-                    <ControlPointOutlinedIcon fontSize="small" />
-                    Add New Playlist
-                  </button>
-                )
-              )
-            ) : (
-              <PlaylistSongs
-                selectedPlaylist={selectedPlaylist}
-                songs={
-                  searchString && searchString !== "" ? filteredData : songs
+        ) : !showPlaylist ? (
+          playlists && playlists?.length > 0 ? (
+            <>
+              <button className="Addplaylist" onClick={openModal}>
+                <ControlPointOutlinedIcon fontSize="small" />
+                Add New Playlist
+              </button>
+              <GridView
+                items={
+                  searchString && searchString !== ""
+                    ? filteredData
+                    : playlists
                 }
-                RemoveFromPlaylist={RemoveFromPlaylist}
-                showToast={showToast}
-                handleCloseToast={handleCloseToast}
-                toggleFavorite={toggleFavorite}
+                HandleFile={HandleSelectPlaylist}
+                HandleAction={deletePlaylist}
               />
-            )}
+            </>
+          ) : (
+            !showModal && (
+              <button className="Addplaylist" onClick={openModal}>
+                <ControlPointOutlinedIcon fontSize="small" />
+                Add New Playlist
+              </button>
+            )
+          )
+        ) : (
+          <PlaylistSongs
+            selectedPlaylist={selectedPlaylist}
+            songs={
+              searchString && searchString !== "" ? filteredData : songs
+            }
+            RemoveFromPlaylist={RemoveFromPlaylist}
+            showToast={showToast}
+            handleCloseToast={handleCloseToast}
+            toggleFavorite={toggleFavorite}
+          />
+        )}
+      </div> :
+        <div className="Songspage">
+          <div className="mainsection">
+            <Search
+              showback={showPlaylist}
+              HandleBack={HandleSelectPlaylist}
+              onChange={performSearch}
+              value={searchString}
+              placeholder={
+                showPlaylist
+                  ? "Search your favourite Songs"
+                  : "Search your favourite Playlists"
+              }
+            />
+            <Header
+              heading={"Rhythmic Playgrounds"}
+              description={
+                "Immerse yourself in handpicked playlists for every mood"
+              }
+            />
+
+            <div className="songs-container">
+              {showModal ? (
+                <AddPlaylistModal
+                  closeModal={closeModal}
+                  setPlaylist={setPlaylist}
+                />
+              ) : !showPlaylist ? (
+                playlists && playlists?.length > 0 ? (
+                  <>
+                    <button className="Addplaylist" onClick={openModal}>
+                      <ControlPointOutlinedIcon fontSize="small" />
+                      Add New Playlist
+                    </button>
+                    <GridView
+                      items={
+                        searchString && searchString !== ""
+                          ? filteredData
+                          : playlists
+                      }
+                      HandleFile={HandleSelectPlaylist}
+                      HandleAction={deletePlaylist}
+                    />
+                  </>
+                ) : (
+                  !showModal && (
+                    <button className="Addplaylist" onClick={openModal}>
+                      <ControlPointOutlinedIcon fontSize="small" />
+                      Add New Playlist
+                    </button>
+                  )
+                )
+              ) : (
+                <PlaylistSongs
+                  selectedPlaylist={selectedPlaylist}
+                  songs={
+                    searchString && searchString !== "" ? filteredData : songs
+                  }
+                  RemoveFromPlaylist={RemoveFromPlaylist}
+                  showToast={showToast}
+                  handleCloseToast={handleCloseToast}
+                  toggleFavorite={toggleFavorite}
+                />
+              )}
+            </div>
           </div>
-        </div>
-        <div className="currentMusic">
-          <div className="musicCard">
-            <AudioPlayer />
+          <div className="currentMusic">
+            <div className="musicCard">
+              <AudioPlayer />
+            </div>
           </div>
-        </div>
-      </div>
+        </div>}
     </>
   );
 };

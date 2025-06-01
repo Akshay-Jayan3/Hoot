@@ -6,13 +6,16 @@ import AudioPlayer from "../../components/AudioPlayer";
 import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
 import LoadingScreen from "../../components/Loader";
+import StaticLoadingScreen from "../../components/StaticLoadingScreen";
 import ListView from "../../components/ListView";
+import { useTheme } from "../../context/ThemeContext";
 const Favourites = () => {
   const { updateNowPlaying, setAllSongs } = useContext(MainContext);
   const [filteredSongs, setfilteredSongs] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchString, setSearchString] = useState("");
   const [filteredData, setFilteredData] = useState([]);
+  const { isRetroTheme } = useTheme();
 
   useEffect(() => {
     cachemanager
@@ -63,37 +66,48 @@ const Favourites = () => {
 
   return (
     <>
-      {isLoading && <LoadingScreen message={"Loading ..."} />}
-      <div className="Songspage">
-        <div className="mainsection">
-          <Search
-            onChange={performSearch}
-            value={searchString}
-            placeholder={"Search your favourite Songs"}
-          />
-          <Header
-            heading={"Heartbeats Collection"}
-            description={"Your personal sanctuary of beloved songs"}
-          />
-
-          <div className="songs-container">
-            <ListView
-              tracks={
-                searchString && searchString !== ""
-                  ? filteredData
-                  : filteredSongs
-              }
-              type={"track"}
-              toggleFavorite={toggleFavorite}
+      {isLoading && (isRetroTheme ? <StaticLoadingScreen /> : <LoadingScreen message={"Loading ..."} />)}
+      {isRetroTheme ? <div className="songs-container">
+        <ListView
+          tracks={
+            searchString && searchString !== ""
+              ? filteredData
+              : filteredSongs
+          }
+          type={"track"}
+          toggleFavorite={toggleFavorite}
+        />
+      </div> :
+        <div className="Songspage">
+          <div className="mainsection">
+            <Search
+              onChange={performSearch}
+              value={searchString}
+              placeholder={"Search your favourite Songs"}
             />
+            <Header
+              heading={"Heartbeats Collection"}
+              description={"Your personal sanctuary of beloved songs"}
+            />
+
+            <div className="songs-container">
+              <ListView
+                tracks={
+                  searchString && searchString !== ""
+                    ? filteredData
+                    : filteredSongs
+                }
+                type={"track"}
+                toggleFavorite={toggleFavorite}
+              />
+            </div>
           </div>
-        </div>
-        <div className="currentMusic">
-          <div className="musicCard">
-            <AudioPlayer />
+          <div className="currentMusic">
+            <div className="musicCard">
+              <AudioPlayer />
+            </div>
           </div>
-        </div>
-      </div>
+        </div>}
     </>
   );
 };

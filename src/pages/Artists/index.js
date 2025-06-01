@@ -6,7 +6,9 @@ import AudioPlayer from "../../components/AudioPlayer";
 import * as cachemanager from "../../cacheStore/index";
 import { cacheEntities } from "../../cacheStore/cacheEntities";
 import LoadingScreen from "../../components/Loader";
+import StaticLoadingScreen from "../../components/StaticLoadingScreen";
 import ListView from "../../components/ListView";
+import { useTheme } from "../../context/ThemeContext";
 
 const Artists = () => {
   const [metaData, setMetaData] = useState(null);
@@ -18,6 +20,7 @@ const Artists = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchString, setSearchString] = useState("");
   const [filteredData, setFilteredData] = useState([]);
+  const { isRetroTheme } = useTheme();
 
   useEffect(() => {
     const promises = [
@@ -84,8 +87,28 @@ const Artists = () => {
 
   return (
     <>
-      {isLoading && <LoadingScreen message={"Loading ..."} />}
-      <div className="Songspage">
+      {isLoading && (isRetroTheme ? <StaticLoadingScreen /> : <LoadingScreen message={"Loading ..."} />)}
+      {isRetroTheme ? <div className="songs-container">
+        {!showArtists ? (
+          <ListView
+            tracks={
+              searchString && searchString !== "" ? filteredData : artists
+            }
+            HandleFile={HandleSelectArtist}
+            type={"artist"}
+          />
+        ) : (
+          <ListView
+            tracks={
+              searchString && searchString !== ""
+                ? filteredData
+                : filteredSongs
+            }
+            type={"track"}
+            toggleFavorite={toggleFavorite}
+          />
+        )}
+      </div> : <div className="Songspage">
         <div className="mainsection">
           <Search
             showback={showArtists}
@@ -133,6 +156,7 @@ const Artists = () => {
           </div>
         </div>
       </div>
+      }
     </>
   );
 };
