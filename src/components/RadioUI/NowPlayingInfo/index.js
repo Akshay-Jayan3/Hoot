@@ -59,7 +59,7 @@ const NowPlayingInfo = () => {
       {/* <h2 className={styles.heading}>Now Playing</h2> */}
       <SongDisplay
         albumArt={safeDisplaySong.picture}
-        title={truncateText(safeDisplaySong.title, 30)}
+        title={truncateText(safeDisplaySong.title, 20)}
         artist={truncateText(safeDisplaySong.artist, 30)}
         currentTime={displayCurrentTime}
         duration={displayDuration}

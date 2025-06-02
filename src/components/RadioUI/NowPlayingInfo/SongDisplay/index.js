@@ -41,8 +41,8 @@ const SongDisplay = ({
         )}
       </div>
       <div className={styles.songInfoContainer}>
-        <div className={styles.songTitle}>{title}</div>
-        <div className={styles.artistName}>{artist}</div>
+        <div className={styles.songTitle} title={title}>{title}</div>
+        <div className={styles.artistName} title={artist}>{artist}</div>
       </div>
       <div className={styles.digitalTiming}>
         <span className={styles.currentTimeDisplay}>{currentTime}</span>

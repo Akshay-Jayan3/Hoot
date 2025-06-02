@@ -12,6 +12,7 @@
   align-items: center;
   gap: 0.75rem;
   flex:1;
+  max-height: 70%;
   position: relative; /* Needed for pseudo-elements */
   z-index: 0; /* Ensure content is below scanlines if using z-index on ::after */
   overflow: hidden; /* Hide children if they somehow become visible */
@@ -83,8 +84,8 @@
 }
 
 .albumArtContainer {
-  width: 100px; /* Adjust size as needed */
-  height: 100px; /* Adjust size as needed */
+  width: 45%; /* Adjust size as needed */
+  aspect-ratio: 1/1; /* Adjust size as needed */
   margin-bottom: 0.5rem;
 }
 
@@ -158,12 +159,14 @@
 /* Visualizer Styles */
 .visualizerContainer {
   display: flex;
+  flex: 1;
+  max-height: 30%;
   justify-content: center;
   gap: 0.5rem; // Or space-around
   align-items: flex-end; // Bars grow upwards
   width: 80%; // Adjust width as needed
   height: 50px; // Max height of the visualizer area
-  margin-top: 0.75rem; // Space above the visualizer
+  margin-top: auto; // Space above the visualizer
   padding: 0 0.25rem; // Some padding if bars are close to edges
   // background-color: rgba(0,0,0,0.2); // Optional subtle background
   // border-radius: 0.1rem;
