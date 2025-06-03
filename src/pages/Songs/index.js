@@ -144,7 +144,7 @@ const Songs = () => {
             <AudioPlayer />
           </div>
         </div>
-      </div>};
+      </div>}
 
     </>
   );
