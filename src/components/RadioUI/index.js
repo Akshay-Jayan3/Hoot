@@ -17,7 +17,6 @@ import { MainContext } from '../../context/MainContext';
 // );
 
 const RetroNeonPlayer = ({children}) => {
-  const { toggleRetro } = useTheme();
   const { isPlaying } = useContext(AudioContext);
   const { isRadioOn, toggleRadioPower } = useContext(MainContext);
 
@@ -37,12 +36,6 @@ const RetroNeonPlayer = ({children}) => {
             <div className={`${styles.powerLed} ${isRadioOn ? styles.ledOn : styles.ledOff}`}></div>
             <span className={styles.powerLabel}>POWER</span>
           </div>
-          <button 
-            className={styles.retroExitButton} 
-            onClick={toggleRetro}
-          >
-            Exit Player
-          </button>
           <SpeakerGrill isPlaying={isPlaying && isRadioOn} />
         </div>
         <div className={styles.centerContainer}>

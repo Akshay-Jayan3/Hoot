@@ -5,9 +5,9 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useTheme } from "../../context/ThemeContext";
 
 const Search = ({ showback, HandleBack, value, onChange, placeholder }) => {
-  const { theme } = useTheme();
+  const { dynamicTheme } = useTheme();
   return (
-    <div className={styles.SearchBar} style={{ background: theme.background }}>
+    <div className={styles.SearchBar}>
       {showback && (
         <button onClick={HandleBack}>
           <ChevronLeftOutlinedIcon fontSize="large" />

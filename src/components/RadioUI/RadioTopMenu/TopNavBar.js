@@ -2,9 +2,12 @@ import React from 'react';
 import styles from '../styles.module.scss';
 import sidebarData from '../../../utils/sidebarData';
 import { Link, useLocation } from 'react-router-dom';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useTheme } from '../../../context/ThemeContext';
 
 const TopNavBar = () => {
   const location = useLocation();
+  const { toggleRetro } = useTheme();
 
   return (
     <nav className={styles.topNavBar}>
@@ -23,6 +26,7 @@ const TopNavBar = () => {
           </Link>
         );
       })}
+      <button className={`${styles.topNavItem}`} onClick={toggleRetro}><LogoutIcon/></button>
     </nav>
   );
 };

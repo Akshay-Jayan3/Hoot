@@ -15,12 +15,12 @@ const Sidebar = () => {
       </div>
       
       {/* Reverted to a normal button for theme toggle */}
-      <button 
+      { location.pathname  !== "/settings" && <button 
         className={styles.themeToggleButton} 
         onClick={toggleRetro}
       >
         {isRetro ? "Main Theme" : "Radio Mode"}
-      </button>
+      </button>}
 
       <div className={styles.content}>
         <ul className={styles.sidebarLinks}>

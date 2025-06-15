@@ -81,7 +81,7 @@
 
             }
             .selected{
-                color:$accent-color;
+                color:var(--accent-color);
             }
             .artist{
                 font-size: 12px;

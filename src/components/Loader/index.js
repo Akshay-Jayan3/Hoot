@@ -3,8 +3,10 @@
 import React from "react";
 import styles from "./styles.module.scss";
 import { Bars,MagnifyingGlass } from "react-loader-spinner";
+import { useTheme } from "../../context/ThemeContext";
 
 const LoadingScreen = ({ message, setting }) => {
+   const { theme, dynamicTheme } = useTheme();
   return (
     <div className={styles.loadingScreen}>
       {setting ? (
@@ -16,13 +18,13 @@ const LoadingScreen = ({ message, setting }) => {
           wrapperStyle={{}}
           wrapperClass="MagnifyingGlass-wrapper"
           glassColor="#465285"
-          color="#FFD700"
+          color={dynamicTheme?.accent || theme?.accent || "#FFC916"}
         />
       ) : (
         <Bars
           height="60"
           width="60"
-          color="#FFD700"
+          color={dynamicTheme?.accent || theme?.accent || "#FFC916"}
           ariaLabel="bars-loading"
           wrapperStyle={{}}
           wrapperClass=""

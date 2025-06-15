@@ -8,6 +8,7 @@ import { MainContext } from "../../context/MainContext";
 import { AudioContext } from "../../context/AudioContext";
 import { Audio } from "react-loader-spinner";
 import ScrollingText from "../ScrollingText";
+import { useTheme } from "../../context/ThemeContext";
 
 const Track = ({
   track,
@@ -20,6 +21,7 @@ const Track = ({
   const { updateLastPlayed, updateNowPlaying, nowplaying } =
     useContext(MainContext);
   const { isPlaying } = useContext(AudioContext);
+   const { theme, dynamicTheme } = useTheme();
 
   if (!track) {
     return null;
@@ -50,7 +52,7 @@ const Track = ({
               height="20"
               width="20"
               radius="9"
-              color="#FFD700"
+              color={dynamicTheme?.accent || theme?.accent || "#FFC916"}
               ariaLabel="three-dots-loading"
               wrapperStyle
               wrapperClass
@@ -61,7 +63,7 @@ const Track = ({
         </div>
         <div className={styles.titleArtist}>
           <ScrollingText scroll={nowplaying?.id === track?.id}>
-            <p style={{ color: nowplaying?.id === track?.id && "#FFD700" }}>
+            <p style={{ color: nowplaying?.id === track?.id ? dynamicTheme?.accent || theme?.accent || "#FFC916" :"#fff"}}>
               {track?.title}
             </p>
           </ScrollingText>
@@ -76,7 +78,8 @@ const Track = ({
           className={`${styles.favouriteBtn}`}
         >
           {track?.isFavorite ? (
-            <FavoriteIcon style={{ color: "#FFD700" }} />
+            <FavoriteIcon style={{ color: dynamicTheme?.accent || theme?.accent || "#FFC916" }} />
+
           ) : (
             <FavoriteBorderOutlinedIcon />
           )}

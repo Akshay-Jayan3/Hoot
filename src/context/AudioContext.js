@@ -7,8 +7,9 @@ import React, {
 } from "react";
 import { MainContext } from "./MainContext";
 import { Howl, Howler } from "howler";
-
-// const EQ_FREQUENCIES = [32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]; // Hz
+import { useTheme } from './ThemeContext';
+import { Vibrant } from "node-vibrant/browser"
+import { extractGradientColors } from "../utils/theme";
 
 export const AudioContext = createContext({
   isPlaying: null,
@@ -38,6 +39,7 @@ export const AudioContext = createContext({
 export const AudioProvider = ({ children }) => {
   const { updateLastPlayed, updateNowPlaying, AllSongs } =
     useContext(MainContext);
+  const { setColorFromImage,isDynamicEnabled } = useTheme()
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSong, setCurrentSong] = useState(null);
   const [sound, setSound] = useState(null);
@@ -54,11 +56,21 @@ export const AudioProvider = ({ children }) => {
     min: "00",
     sec: "00",
   });
-  // const [eqGains, setEqGains] = useState(new Array(EQ_FREQUENCIES.length).fill(0));
-  // const eqNodesRef = useRef([]);
-  // const eqInputGainRef = useRef(null);
-  // const eqOutputGainRef = useRef(null);
-  // const sourceNodeRef = useRef(null);
+
+useEffect(() => {
+  if (isDynamicEnabled && currentSong?.picture?.startsWith("data:image/")) {
+    extractGradientColors(currentSong.picture)
+      .then((gradientColors) => {
+        setColorFromImage(gradientColors); // Only sets if dynamic mode is on
+      })
+      .catch((err) => {
+        console.error("Failed to extract gradient from image", err);
+      });
+  }
+}, [currentSong, isDynamicEnabled]);
+
+console.log(currentSong)
+
 
   const changeVolume = (newVal) => {
     const clampedVolume = Math.max(0, Math.min(1, parseFloat(newVal)));
@@ -161,52 +173,6 @@ export const AudioProvider = ({ children }) => {
     sound.seek(newSeekPosition);
     setCurrentTime(newSeekPosition);
   };
-
-  // useEffect(() => {
-  //   if (!Howler.ctx) return;
-
-  //   const audioCtx = Howler.ctx;
-
-  //   eqInputGainRef.current = audioCtx.createGain();
-  //   eqOutputGainRef.current = audioCtx.createGain();
-
-  //   const newEqNodes = EQ_FREQUENCIES.map((freq, index) => {
-  //     const filterNode = audioCtx.createBiquadFilter();
-  //     filterNode.type = "peaking";
-  //     filterNode.frequency.value = freq;
-  //     filterNode.Q.value = 1; 
-  //     filterNode.gain.value = eqGains[index]; 
-  //     return filterNode;
-  //   });
-
-  //   eqInputGainRef.current.connect(newEqNodes[0]);
-  //   for (let i = 0; i < newEqNodes.length - 1; i++) {
-  //     newEqNodes[i].connect(newEqNodes[i + 1]);
-  //   }
-  //   newEqNodes[newEqNodes.length - 1].connect(eqOutputGainRef.current);
-
-  //   eqOutputGainRef.current.connect(Howler.masterGain);
-    
-  //   eqNodesRef.current = newEqNodes;
-
-  //   return () => {
-  //     eqInputGainRef.current?.disconnect();
-  //     eqOutputGainRef.current?.disconnect();
-  //     newEqNodes.forEach(node => node.disconnect());
-  //   };
-  // }, [Howler.ctx]);
-
-  // const setEqGain = (bandIndex, gainValue) => {
-  //   if (eqNodesRef.current[bandIndex]) {
-  //     const newGain = parseFloat(gainValue);
-  //     eqNodesRef.current[bandIndex].gain.value = newGain;
-  //     setEqGains(prevGains => {
-  //       const nextGains = [...prevGains];
-  //       nextGains[bandIndex] = newGain;
-  //       return nextGains;
-  //     });
-  //   }
-  // };
 
   useEffect(() => {
     Howler.volume(volume);

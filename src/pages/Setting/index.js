@@ -18,7 +18,7 @@ const Settings = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [showToast, setShowToast] = useState(false);
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme ,toggleDynamicColor,isDynamicEnabled ,dynamicTheme} = useTheme();
   const [message, setMessage] = useState("");
 
   const handleShowToast = (message) => {
@@ -137,8 +137,13 @@ const Settings = () => {
           } else if (metadata.length === 0 && musicFiles.length === 0) {
             // This case is already handled earlier
           }
+          await Promise.all([
+            cachemanager.deleteALLEntity(cacheEntities.SONGS),
+            cachemanager.deleteALLEntity(cacheEntities.ALBUMS),
+            cachemanager.deleteALLEntity(cacheEntities.ARTISTS),
+          ]);
 
-          Promise.all([
+          await Promise.all([
             cachemanager.addEntity(cacheEntities.SONGS, metadata),
             cachemanager.addEntity(
               cacheEntities.ALBUMS,
@@ -199,9 +204,9 @@ const Settings = () => {
           <div
             className="container"
             style={{
-              background: theme.background,
-              color: theme.textColor,
-              transition: "background-color 0.3s ease",
+              background: dynamicTheme?.background || theme.background,
+              color: dynamicTheme.textColor || theme.textColor,
+              transition: "background 0.6s ease, color 0.4s ease",
             }}
           >
             <div class="sidebar-container">
@@ -242,6 +247,15 @@ const Settings = () => {
                           theme?.themeMode === "dark" ? "dark" : ""
                         }`}
                         onClick={toggleTheme}
+                      >
+                        <div className="toggle-indicator"></div>
+                      </button>
+                    </div>
+                    <div className="theme">
+                      <p>Enable dynamic mode</p>
+                      <button
+                        className={`theme-toggle-btn ${isDynamicEnabled ? "dark" : ""}`}
+                        onClick={() => toggleDynamicColor(!isDynamicEnabled)}
                       >
                         <div className="toggle-indicator"></div>
                       </button>
